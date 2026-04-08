@@ -4,6 +4,7 @@
   <Home />
   <hr />
   <Options />
+  <h1>test</h1>
 </template>
 
 <script setup>
