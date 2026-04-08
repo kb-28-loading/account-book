@@ -10,7 +10,7 @@
   </div>
 </template>
 <script setup>
-import Calender from '@/pages/MoneyCalendar/Calender.vue';
+import Calender from '@/components/Calender.vue';
 import Budget from './Budget.vue';
 import Header from './Header.vue';
 import MoneyList from './MoneyList.vue';
