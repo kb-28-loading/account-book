@@ -9,15 +9,11 @@
         </tr>
       </thead>
       <tbody>
-        <router-link
-          :to="{ name: 'moneyItem' }"
-          v-for="item in loginStore.user.moneyList"
-          ><tr>
-            <td>{{ item.title }}</td>
-            <td>{{ item.category }}</td>
-            <td>{{ item.date }}</td>
-          </tr></router-link
-        >
+        <tr>
+          <td>{{ item.title }}</td>
+          <td>{{ item.category }}</td>
+          <td>{{ item.date }}</td>
+        </tr>
       </tbody>
     </table>
   </div>
