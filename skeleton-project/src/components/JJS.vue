@@ -1,5 +1,6 @@
 <template>
   <div>파일을 그냥 만들어버려 나는</div>
+  <div>습관적으로 나만 Vue만들었네</div>
 </template>
 
 <script setup>
