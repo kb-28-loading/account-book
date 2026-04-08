@@ -9,10 +9,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>{{ item.title }}</td>
-          <td>{{ item.category }}</td>
-          <td>{{ item.date }}</td>
+        <tr v-for="value in dddd" :key="value.listId">
+          <td>{{ value.title }}</td>
+          <td>{{ value.category }}</td>
+          <td>{{ value.date }}</td>
         </tr>
       </tbody>
     </table>
@@ -22,4 +22,6 @@
 import { useLoginStore } from '@/stores/login';
 
 const loginStore = useLoginStore();
+const dddd = loginStore.user.moneyList;
+console.log(dddd);
 </script>

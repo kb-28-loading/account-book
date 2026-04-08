@@ -24,7 +24,7 @@ const lastDate = new Date(year, month + 1, 0).getDate();
 // new Date(2026, 4, 0).getDate()   4월의 마지막 날짜는 며칠인가?   30(30일)
 // **getDate()**는 날짜(1~31)를 숫자로 가져옵니다.
 
-const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 let dates = [];
 // 전체 달력 (주 단위 배열들을 모아놓은 2차원 배열)
@@ -62,6 +62,27 @@ if (week.length > 0) {
   dates.push(week);
   // 빈칸까지 다 차면 마지막 주 단위 넣기
 }
+
+// ===========================================================================
+
+// const router = useRouter();
+
+const getFormattedDate = (day) => {
+  // 2026-4-1을 2026-04-01로 으로 사용하기 위해 사용
+
+  if (!day) return '';
+
+  const fMonth = String(month + 1).padStart(2, '0');
+  // String(value) : 숫자인 월을 문자로 변환
+  // padStart(2, "0") : 문자열의 길이를 2자로 만듬, 빈칸은 "0"으로 채움
+
+  const fDay = String(day).padStart(2, '0');
+  // String(value) : 숫자인 일을 문자로 변환
+  // padStart(2, "0") : 문자열의 길이를 2자로 만듬, 빈칸은 "0"으로 채움
+  console.log(`${year}-${fMonth}-${fDay}`);
+
+  return `${year}-${fMonth}-${fDay}`;
+};
 </script>
 
 <template>
@@ -80,17 +101,24 @@ if (week.length > 0) {
       <tr v-for="(week, index) in dates" :key="index">
         <!-- tr : 행 만들기 dates배열의 week 수만큼 반복(키는 index) -->
 
-        <td v-for="day in week" :key="day">
-          <!-- 해당 week배열의 day 수만큼 반복(키는 day) -->
+        <td v-for="(day, dIdx) in week" :key="dIdx">
+          <!-- 
+          (day, dIdx) in week : week 배열에서 값(day)뿐만 아니라 해당 요소의 순서 번호인
+          인덱스(dIdx)를 꺼냅니다. 
+          -->
+          <router-link
+            v-if="day"
+            :to="{
+              name: 'moneyListDaily',
+              params: { selectedDate: getFormattedDate(day) },
+            }"
+          >
+            {{ day }}
+            <div>+312,323</div>
+            <div>-12,323</div>
+          </router-link>
 
-          <div>
-            <span>{{ day }}</span>
-
-            <div v-if="day">+ 312,323</div>
-
-            <div v-if="day">- 12,323</div>
-          </div>
-          <!-- 칸마다 넣었던 day값 넣기 -->
+          <span v-else></span>
         </td>
       </tr>
     </table>
@@ -107,8 +135,5 @@ td {
   padding: 10px;
   text-align: center;
   vertical-align: top;
-}
-span {
-  text-align: left;
 }
 </style>
