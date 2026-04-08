@@ -2,4 +2,7 @@ import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
-export const useLoginStore = defineStore('login', () => {});
+export const useLoginStore = defineStore('login', () => {
+  // states
+  const user = ref({});
+});
