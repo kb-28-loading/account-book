@@ -16,6 +16,7 @@ export const useLoginStore = defineStore('login', () => {
         userMoney: 50000,
         type: 'pay',
         category: 'culture',
+        listId: 834291,
       },
       {
         title: '카페',
@@ -23,6 +24,7 @@ export const useLoginStore = defineStore('login', () => {
         userMoney: 5500,
         type: 'pay',
         category: 'food',
+        listId: 192847,
         memo: '아이스 아메리카노',
       },
       {
@@ -31,6 +33,7 @@ export const useLoginStore = defineStore('login', () => {
         userMoney: 8200,
         type: 'pay',
         category: 'food',
+        listId: 563920,
       },
       {
         title: '버스',
@@ -38,6 +41,7 @@ export const useLoginStore = defineStore('login', () => {
         userMoney: 1500,
         type: 'pay',
         category: 'transport',
+        listId: 774512,
       },
       {
         title: '알바비',
@@ -45,6 +49,7 @@ export const useLoginStore = defineStore('login', () => {
         userMoney: 120000,
         type: 'income',
         category: 'salary',
+        listId: 309485,
         memo: '주말 근무',
       },
     ],

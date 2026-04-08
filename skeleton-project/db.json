@@ -13,7 +13,8 @@
           "date": "2026-04-07",
           "userMoney": 50000,
           "type": "pay",
-          "category": "culture"
+          "category": "culture",
+          "listId": 834291
         },
         {
           "title": "카페",
@@ -21,6 +22,7 @@
           "userMoney": 5500,
           "type": "pay",
           "category": "food",
+          "listId": 192847,
           "memo": "아이스 아메리카노"
         },
         {
@@ -28,14 +30,16 @@
           "date": "2026-04-05",
           "userMoney": 8200,
           "type": "pay",
-          "category": "food"
+          "category": "food",
+          "listId": 563920
         },
         {
           "title": "버스",
           "date": "2026-04-05",
           "userMoney": 1500,
           "type": "pay",
-          "category": "transport"
+          "category": "transport",
+          "listId": 774512
         },
         {
           "title": "알바비",
@@ -43,6 +47,7 @@
           "userMoney": 120000,
           "type": "income",
           "category": "salary",
+          "listId": 309485,
           "memo": "주말 근무"
         }
       ],
@@ -61,7 +66,8 @@
           "date": "2026-04-07",
           "userMoney": 9000,
           "type": "pay",
-          "category": "food"
+          "category": "food",
+          "listId": 681203
         },
         {
           "title": "영화",
@@ -69,6 +75,7 @@
           "userMoney": 14000,
           "type": "pay",
           "category": "culture",
+          "listId": 957124,
           "memo": "팝콘 포함"
         },
         {
@@ -76,7 +83,8 @@
           "date": "2026-04-05",
           "userMoney": 12000,
           "type": "pay",
-          "category": "transport"
+          "category": "transport",
+          "listId": 442198
         },
         {
           "title": "쇼핑",
@@ -84,6 +92,7 @@
           "userMoney": 67000,
           "type": "pay",
           "category": "shopping",
+          "listId": 713650,
           "memo": "옷 구매"
         },
         {
@@ -91,7 +100,8 @@
           "date": "2026-04-02",
           "userMoney": 50000,
           "type": "income",
-          "category": "etc"
+          "category": "etc",
+          "listId": 298471
         }
       ],
       "id": 2
@@ -109,14 +119,16 @@
           "date": "2026-04-07",
           "userMoney": 4500,
           "type": "pay",
-          "category": "food"
+          "category": "food",
+          "listId": 555902
         },
         {
           "title": "지하철",
           "date": "2026-04-06",
           "userMoney": 1350,
           "type": "pay",
-          "category": "transport"
+          "category": "transport",
+          "listId": 804331
         },
         {
           "title": "책 구매",
@@ -124,6 +136,7 @@
           "userMoney": 22000,
           "type": "pay",
           "category": "culture",
+          "listId": 267194,
           "memo": "전공 서적"
         },
         {
@@ -131,7 +144,8 @@
           "date": "2026-04-03",
           "userMoney": 200000,
           "type": "income",
-          "category": "salary"
+          "category": "salary",
+          "listId": 990284
         },
         {
           "title": "저녁",
@@ -139,6 +153,7 @@
           "userMoney": 11000,
           "type": "pay",
           "category": "food",
+          "listId": 134778,
           "memo": "치킨"
         }
       ],
@@ -158,6 +173,7 @@
           "userMoney": 30000,
           "type": "pay",
           "category": "culture",
+          "listId": 721563,
           "memo": "아이템 구매"
         },
         {
@@ -165,21 +181,24 @@
           "date": "2026-04-06",
           "userMoney": 7600,
           "type": "pay",
-          "category": "food"
+          "category": "food",
+          "listId": 482901
         },
         {
           "title": "택배",
           "date": "2026-04-05",
           "userMoney": 4000,
           "type": "pay",
-          "category": "etc"
+          "category": "etc",
+          "listId": 639275
         },
         {
           "title": "월급",
           "date": "2026-04-01",
           "userMoney": 2500000,
           "type": "income",
-          "category": "salary"
+          "category": "salary",
+          "listId": 110392
         },
         {
           "title": "헬스장",
@@ -187,6 +206,7 @@
           "userMoney": 80000,
           "type": "pay",
           "category": "health",
+          "listId": 908564,
           "memo": "3개월 등록"
         }
       ],
