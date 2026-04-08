@@ -1,0 +1,196 @@
+{
+  "user": [
+    {
+      "userID": "hj4094",
+      "userPW": "gPwl09092001",
+      "userName": "한혜지",
+      "account": [
+        { "bank": "KB", "info": "48550201280534", "balance": 100000 }
+      ],
+      "moneyList": [
+        {
+          "title": "티켓팅",
+          "date": "2026-04-07",
+          "userMoney": 50000,
+          "type": "pay",
+          "category": "culture"
+        },
+        {
+          "title": "카페",
+          "date": "2026-04-06",
+          "userMoney": 5500,
+          "type": "pay",
+          "category": "food",
+          "memo": "아이스 아메리카노"
+        },
+        {
+          "title": "편의점",
+          "date": "2026-04-05",
+          "userMoney": 8200,
+          "type": "pay",
+          "category": "food"
+        },
+        {
+          "title": "버스",
+          "date": "2026-04-05",
+          "userMoney": 1500,
+          "type": "pay",
+          "category": "transport"
+        },
+        {
+          "title": "알바비",
+          "date": "2026-04-03",
+          "userMoney": 120000,
+          "type": "income",
+          "category": "salary",
+          "memo": "주말 근무"
+        }
+      ],
+      "id": 1
+    },
+    {
+      "userID": "guyoungah",
+      "userPW": "som123456789",
+      "userName": "신송윤",
+      "account": [
+        { "bank": "wow", "info": "48550201280534", "balance": 150000 }
+      ],
+      "moneyList": [
+        {
+          "title": "점심",
+          "date": "2026-04-07",
+          "userMoney": 9000,
+          "type": "pay",
+          "category": "food"
+        },
+        {
+          "title": "영화",
+          "date": "2026-04-06",
+          "userMoney": 14000,
+          "type": "pay",
+          "category": "culture",
+          "memo": "팝콘 포함"
+        },
+        {
+          "title": "택시",
+          "date": "2026-04-05",
+          "userMoney": 12000,
+          "type": "pay",
+          "category": "transport"
+        },
+        {
+          "title": "쇼핑",
+          "date": "2026-04-04",
+          "userMoney": 67000,
+          "type": "pay",
+          "category": "shopping",
+          "memo": "옷 구매"
+        },
+        {
+          "title": "용돈",
+          "date": "2026-04-02",
+          "userMoney": 50000,
+          "type": "income",
+          "category": "etc"
+        }
+      ],
+      "id": 2
+    },
+    {
+      "userID": "acgrp103",
+      "userPW": "qwer1234",
+      "userName": "장진서",
+      "account": [
+        { "bank": "SHinhan", "info": "110499289321", "balance": 200000 }
+      ],
+      "moneyList": [
+        {
+          "title": "커피",
+          "date": "2026-04-07",
+          "userMoney": 4500,
+          "type": "pay",
+          "category": "food"
+        },
+        {
+          "title": "지하철",
+          "date": "2026-04-06",
+          "userMoney": 1350,
+          "type": "pay",
+          "category": "transport"
+        },
+        {
+          "title": "책 구매",
+          "date": "2026-04-05",
+          "userMoney": 22000,
+          "type": "pay",
+          "category": "culture",
+          "memo": "전공 서적"
+        },
+        {
+          "title": "과외비",
+          "date": "2026-04-03",
+          "userMoney": 200000,
+          "type": "income",
+          "category": "salary"
+        },
+        {
+          "title": "저녁",
+          "date": "2026-04-02",
+          "userMoney": 11000,
+          "type": "pay",
+          "category": "food",
+          "memo": "치킨"
+        }
+      ],
+      "id": 3
+    },
+    {
+      "userID": "qkdvo1530",
+      "userPW": "105qj2980!",
+      "userName": "강예찬",
+      "account": [
+        { "bank": "KB", "info": "94160201040065", "balance": 250000 }
+      ],
+      "moneyList": [
+        {
+          "title": "게임 결제",
+          "date": "2026-04-07",
+          "userMoney": 30000,
+          "type": "pay",
+          "category": "culture",
+          "memo": "아이템 구매"
+        },
+        {
+          "title": "편의점",
+          "date": "2026-04-06",
+          "userMoney": 7600,
+          "type": "pay",
+          "category": "food"
+        },
+        {
+          "title": "택배",
+          "date": "2026-04-05",
+          "userMoney": 4000,
+          "type": "pay",
+          "category": "etc"
+        },
+        {
+          "title": "월급",
+          "date": "2026-04-01",
+          "userMoney": 2500000,
+          "type": "income",
+          "category": "salary"
+        },
+        {
+          "title": "헬스장",
+          "date": "2026-03-30",
+          "userMoney": 80000,
+          "type": "pay",
+          "category": "health",
+          "memo": "3개월 등록"
+        }
+      ],
+      "id": 4
+    }
+  ]
+}
