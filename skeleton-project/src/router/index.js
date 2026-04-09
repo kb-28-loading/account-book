@@ -31,7 +31,7 @@ const router = createRouter({
           name: 'moneyListDaily',
         },
         {
-          path: '/',
+          path: '',
           component: MoneyListLatest,
           name: 'moneyListLatest',
         },
