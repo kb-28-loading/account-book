@@ -9,7 +9,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="value in dddd" :key="value.listId">
+        <tr v-for="value in moneyList" :key="value.listId">
           <td>{{ value.title }}</td>
           <td>{{ value.category }}</td>
           <td>{{ value.date }}</td>
@@ -22,6 +22,6 @@
 import { useLoginStore } from '@/stores/login';
 
 const loginStore = useLoginStore();
-const dddd = loginStore.user.moneyList;
+const moneyList = loginStore.user.moneyList;
 console.log(dddd);
 </script>
