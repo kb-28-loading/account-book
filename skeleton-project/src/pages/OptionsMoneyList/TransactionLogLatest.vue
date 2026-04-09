@@ -25,12 +25,24 @@
         </div>
       </div>
     </div>
+    <div>
+      <TransactionLogList
+        v-if="showList"
+        :startDate="startDate"
+        :endDate="endDate"
+      />
+    </div>
   </div>
 </template>
 <script setup>
 import { ref } from "vue";
+import TransactionLogList from "./TransactionLogList.vue";
 const showCalendar = ref(false);
+const showList = ref(false);
+const inputData = () => {
+  showList.value = true;
+};
+
 const startDate = ref("start");
 const endDate = ref("end");
-const inputData = ref(() => {});
 </script>
