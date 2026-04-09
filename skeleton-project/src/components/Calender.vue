@@ -78,6 +78,7 @@ if (week.length > 0) {
 // Router_Link로 연결될 to들을 어디로 연결할지 정하는 함수
 
 // 2026-4-1을 2026-04-01로 으로 사용하기 위한 함수
+
 const getFormattedDate = (day) => {
   if (!day) return '';
   // 빈칸 누르거나 잘못 누를경우 아무것도 안함
@@ -100,6 +101,7 @@ const getFormattedDate = (day) => {
 <!-- 4. 화면 만들기 -->
 <template>
   <div>
+    <moneyListDaily />
     <h1>{{ year }}년 {{ month + 1 }}월</h1>
     <!-- JS에서는 getMonth()는 0~11만 반환 -> 함수 진행에는 문제 없지만 출력에는
     1적게 출력되므로 +1 -->
