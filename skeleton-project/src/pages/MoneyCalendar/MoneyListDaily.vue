@@ -23,23 +23,12 @@ import { useLoginStore } from '@/stores/login';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 
-// route를 통해 경로에서 날짜를 문자열로 추출
 const currentRoute = useRoute();
-const router = useRouter();
 
 // 저장되어있는 사용자의 거래내역 중 해당 날짜인 객체 추출 후 배열로 저장
 const loginStore = useLoginStore();
 
-const dailyList = ref([]);
-// ref로 해야 실시간으로 바뀜
-
-const getFilteredList = async (date) => {
-  const resp = await axios.get(`/api/users/${loginStore.user.id}`);
-  dailyList.value = resp.data.moneyList.filter((item) => item.date === date);
-  // 같은 날에 있는 값들 챙기기
-};
-
-// 주소가 바뀔때 마다 감시해서 데이터를 새로 필터링함(2번 사용)
+// 주소가 바뀔때 마다 감시해서 데이터를 새로 필터링함
 watch(
   () => currentRoute.params.selectedDate,
   // currentRoute : 현재 페이지 정보
@@ -60,9 +49,29 @@ watch(
 // watch(변수, (newVal) => { 함수A })
 // 변수를 지켜보고 값이 바뀌면 함수A 작동
 
+const dailyList = ref([]);
+// ref로 해야 실시간으로 바뀜
+
+// 같은 날에 있는 값들 챙기기
+const getFilteredList = async (date) => {
+  const resp = await axios.get(`/api/users/${loginStore.user.id}`);
+  dailyList.value = resp.data.moneyList.filter((item) => item.date === date);
+  // .filter((item) => item.date === date) : 배열 안에서 같은 것을 골라냄
+};
+
 // onMounted(()=>{...}) : 사용자가 페이지에 접속하자마자 실행되는 것
+// 사용 이유 -> 처음 홈으로 들어온다면 '이전 값'이 존재하지않기 때문에 사
 onMounted(() => {
   const defaultDate = currentRoute.params.selectedDate;
-  getFilteredList(defaultDate.toString());
+  // defaultDate에 현재 주소값을 넣음
+
+  if (defaultDate) {
+    getFilteredList(defaultDate.toString());
+    // 날짜가 있으면: 데이터만 가져온다 (화면 유지)
+    // + /home에 뒷부분이 있다면 작동
+  } else {
+    router.push('/login');
+    // 날짜가 아예 없으면: 홈으로 보낸다
+  }
 });
 </script>
