@@ -2,15 +2,19 @@
   <RouterLink :to="{ name: 'login' }">로그인</RouterLink>
   <RouterLink :to="{ name: 'home' }">홈</RouterLink>
   <RouterLink :to="{ name: 'options' }">옵션</RouterLink>
-  <RouterView></RouterView>
+  <RouterView @login-success="goHome"></RouterView>
 </template>
 
 <script setup>
-import Home from './components/Home.vue';
-import Login from './components/Login.vue';
-import Options from './components/Options.vue';
-import Join from './components/Join.vue';
-import TransactionLogLatest from './pages/OptionsMoneyList/TransactionLogLatest.vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+// 로그인 성공 시 보이는 화면을 '/home'으로 변경
+const goHome = () => {
+  // console.log('함수 실행');
+  // console.log(router);
+  router.replace('/home');
+};
 </script>
 
 <style scoped></style>
