@@ -19,7 +19,7 @@
   </div>
 </template>
 <script setup>
-import { useLoginStore } from '@/stores/login';
+import { useLoginStore } from "@/stores/login";
 
 const loginStore = useLoginStore();
 const moneyList = loginStore.user.moneyList;
