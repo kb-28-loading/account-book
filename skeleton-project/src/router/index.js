@@ -1,72 +1,74 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from 'vue-router';
 
-import MoneyListDaily from "@/pages/MoneyCalendar/MoneyListDaily.vue";
-import MoneyListLatest from "@/pages/MoneyCalendar/MoneyListLatest.vue";
-import MoneyItem from "@/pages/MoneyCalendar/MoneyItem.vue";
-import Login from "@/components/Login.vue";
-import Home from "@/components/Home.vue";
-import Options from "@/components/Options.vue";
-import Calender from "@/components/Calender.vue";
-import BudgetInOptions from "@/pages/BudgetSetting/BudgetInOptions.vue";
-import Report from "@/pages/MoneyReport/Report.vue";
-import TransactionLogLatest from "@/pages/OptionsMoneyList/TransactionLogLatest.vue";
-import TransactionLogList from "@/pages/OptionsMoneyList/TransactionLogList.vue";
-import Budget from "@/pages/BudgetSetting/Budget.vue";
+import MoneyListDaily from '@/pages/MoneyCalendar/MoneyListDaily.vue';
+import MoneyListLatest from '@/pages/MoneyCalendar/MoneyListLatest.vue';
+import MoneyItem from '@/pages/MoneyCalendar/MoneyItem.vue';
+import Login from '@/components/Login.vue';
+import Home from '@/components/Home.vue';
+import Options from '@/components/Options.vue';
+import Calender from '@/components/Calender.vue';
+import BudgetInOptions from '@/pages/BudgetSetting/BudgetInOptions.vue';
+import Report from '@/pages/MoneyReport/Report.vue';
+import TransactionLogLatest from '@/pages/OptionsMoneyList/TransactionLogLatest.vue';
+import TransactionLogList from '@/pages/OptionsMoneyList/TransactionLogList.vue';
+import Budget from '@/pages/BudgetSetting/Budget.vue';
+import Join from '@/components/Join.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: "/login", component: Login, name: "login" },
+    { path: '/login', component: Login, name: 'login' },
+    { path: '/join', component: Join, name: 'join' },
     {
-      path: "/home",
+      path: '/home',
       component: Home,
-      name: "home",
+      name: 'home',
       children: [
-        { path: "/calender", component: Calender, name: "calender" },
+        { path: '/calender', component: Calender, name: 'calender' },
         {
-          path: "/home/:selectedDate",
+          path: '/home/:selectedDate',
           component: MoneyListDaily,
-          name: "moneyListDaily",
+          name: 'moneyListDaily',
         },
         {
-          path: "",
+          path: '',
           component: MoneyListLatest,
-          name: "moneyListLatest",
+          name: 'moneyListLatest',
         },
       ],
     },
     {
-      path: "/options",
+      path: '/options',
       component: Options,
-      name: "options",
+      name: 'options',
       children: [
         {
-          path: "/options/transaction",
+          path: 'transaction',
           component: TransactionLogLatest,
-          name: "options/transaction",
+          name: 'options/transaction',
           children: [
             {
-              path: "/options/transaction/list",
+              path: 'transaction/list',
               component: TransactionLogList,
-              name: "loglist",
+              name: 'loglist',
             },
           ],
         },
         {
-          path: "/budget-setting",
+          path: 'budget-setting',
           component: BudgetInOptions,
-          name: "options/budget-setting",
+          name: 'budget-setting',
         },
-        { path: "/budget", component: Budget, name: "options/budget" },
+        { path: 'budget', component: Budget, name: 'options/budget' },
         {
-          path: "/moneyreport",
+          path: 'moneyreport',
           component: Report,
-          name: "options/moneyreport",
+          name: 'options/moneyreport',
         },
       ],
     },
 
-    { path: "/moneyItem/:id", component: MoneyItem, name: "moneyItem" },
+    { path: '/moneyItem/:id', component: MoneyItem, name: 'moneyItem' },
   ],
 });
 
