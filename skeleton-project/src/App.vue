@@ -10,17 +10,39 @@
 import Practice from './pages/BudgetSetting/Practice.vue';
 import practice from './pages/BudgetSetting/Practice.vue';
 import { useRouter } from 'vue-router';
+import { useLoginStore } from './stores/login';
+import { onMounted } from 'vue';
+
 const router = useRouter();
+
+// login.js에서 회원정보 받아오기
+const loginStore = useLoginStore();
+
+// 첫 화면으로 로그인 화면 노출, 이때 회원정보가 존재한다면, 홈 화면으로 이동
+onMounted(() => {
+  // console.log('마운트되었음');
+
+  if (Object.keys(loginStore.user).length !== 0) {
+    // console.log(1);
+    router.replace('/home');
+  } else {
+    // console.log(2);
+    router.push('/login');
+  }
+});
 
 // 로그인 성공 시 보이는 화면을 '/home'으로 변경
 const goHome = () => {
   // console.log('함수 실행');
   // console.log(router);
+
+  // router.replace의 경우 이전화면 접근 불가. 뒤로가기를 통한 이동 제어
   router.replace('/home');
 };
 
 // 회원가입 페이지로 이동
 const goJoin = () => {
+  // 강제로 '/join'라우터로 이동
   router.push('/join');
 };
 </script>
