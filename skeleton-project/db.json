@@ -5,7 +5,11 @@
       "userPW": "gPwl09092001",
       "userName": "한혜지",
       "account": [
-        { "bank": "KB", "info": "48550201280534", "balance": 100000 }
+        {
+          "bank": "KB",
+          "info": "48550201280534",
+          "balance": 100000
+        }
       ],
       "moneyList": [
         {
@@ -58,7 +62,11 @@
       "userPW": "som123456789",
       "userName": "신송윤",
       "account": [
-        { "bank": "wow", "info": "48550201280534", "balance": 150000 }
+        {
+          "bank": "wow",
+          "info": "48550201280534",
+          "balance": 150000
+        }
       ],
       "moneyList": [
         {
@@ -111,7 +119,11 @@
       "userPW": "qwer1234",
       "userName": "장진서",
       "account": [
-        { "bank": "SHinhan", "info": "110499289321", "balance": 200000 }
+        {
+          "bank": "SHinhan",
+          "info": "110499289321",
+          "balance": 200000
+        }
       ],
       "moneyList": [
         {
@@ -164,7 +176,11 @@
       "userPW": "105qj2980!",
       "userName": "강예찬",
       "account": [
-        { "bank": "KB", "info": "94160201040065", "balance": 250000 }
+        {
+          "bank": "KB",
+          "info": "94160201040065",
+          "balance": 250000
+        }
       ],
       "moneyList": [
         {
@@ -211,9 +227,27 @@
         }
       ],
       "id": 4
+    },
+    {
+      "userID": "eopwefpjokl",
+      "userPW": "dkdkdk1234",
+      "userName": "dkdkla",
+      "account": [
+        {
+          "bank": "한국씨티",
+          "info": "12345e",
+          "balance": 12354
+        }
+      ],
+      "moneyList": [],
+      "id": 5
     }
   ],
-  "income-category": ["salary", "dividend", "interest"],
+  "income-category": [
+    "salary",
+    "dividend",
+    "interest"
+  ],
   "outcome-category": [
     "food",
     "culture",
