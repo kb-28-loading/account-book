@@ -24,9 +24,9 @@ const router = createRouter({
       component: Home,
       name: 'home',
       children: [
-        { path: '/calender', component: Calender, name: 'calender' },
+        { path: 'calender', component: Calender, name: 'calender' },
         {
-          path: '/home/:selectedDate',
+          path: ':selectedDate',
           component: MoneyListDaily,
           name: 'moneyListDaily',
         },
@@ -57,7 +57,7 @@ const router = createRouter({
         {
           path: 'budget-setting',
           component: BudgetInOptions,
-          name: 'budget-setting',
+          name: 'options/budget-setting',
         },
         { path: 'budget', component: Budget, name: 'options/budget' },
         {
