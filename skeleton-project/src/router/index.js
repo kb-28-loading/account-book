@@ -3,10 +3,41 @@ import { createRouter, createWebHistory } from 'vue-router';
 import MoneyListDaily from '@/pages/MoneyCalendar/MoneyListDaily.vue';
 import MoneyListLatest from '@/pages/MoneyCalendar/MoneyListLatest.vue';
 import MoneyItem from '@/pages/MoneyCalendar/MoneyItem.vue';
+import Login from '@/components/Login.vue';
+import Home from '@/components/Home.vue';
+import Options from '@/components/Options.vue';
+import Calender from '@/components/Calender.vue';
+import BudgetInOptions from '@/pages/BudgetSetting/BudgetInOptions.vue';
+import Report from '@/pages/MoneyReport/Report.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    { path: '/login', component: Login, name: 'login' },
+    {
+      path: '/home',
+      component: Home,
+      name: 'home',
+      children: [{ path: '/calender', component: Calender, name: 'calender' }],
+    },
+    {
+      path: '/options',
+      component: Options,
+      name: 'options',
+      children: [
+        {
+          path: '/transaction',
+          component: Transaction,
+          name: 'options/transaction',
+        },
+        { path: '/budget', component: BudgetInOptions, name: 'options/budget' },
+        {
+          path: '/moneyreport',
+          component: Report,
+          name: 'options/moneyreport',
+        },
+      ],
+    },
     {
       path: '/',
       component: MoneyListLatest,
