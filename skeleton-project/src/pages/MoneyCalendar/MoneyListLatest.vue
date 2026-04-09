@@ -23,5 +23,4 @@ import { useLoginStore } from '@/stores/login';
 
 const loginStore = useLoginStore();
 const moneyList = loginStore.user.moneyList;
-console.log(dddd);
 </script>
