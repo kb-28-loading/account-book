@@ -3,7 +3,11 @@
   <RouterLink :to="{ name: 'login' }">로그인</RouterLink>
   <RouterLink :to="{ name: 'home' }">홈</RouterLink>
   <RouterLink :to="{ name: 'options' }">옵션</RouterLink>
-  <RouterView @login-success="goHome" @go-join="goJoin"></RouterView>
+  <RouterView
+    @login-success="goHome"
+    @go-join="goJoin"
+    @new-user="goLogin"
+  ></RouterView>
 </template>
 
 <script setup>
@@ -44,6 +48,11 @@ const goHome = () => {
 const goJoin = () => {
   // 강제로 '/join'라우터로 이동
   router.push('/join');
+};
+
+// 회원가입 완료 시 로그인 창으로 이동
+const goLogin = () => {
+  router.replace('/login');
 };
 </script>
 
