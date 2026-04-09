@@ -1,22 +1,23 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory } from "vue-router";
 
-import MoneyListDaily from '@/pages/MoneyCalendar/MoneyListDaily.vue';
-import MoneyListLatest from '@/pages/MoneyCalendar/MoneyListLatest.vue';
-import MoneyItem from '@/pages/MoneyCalendar/MoneyItem.vue';
-import Login from '@/components/Login.vue';
-import Home from '@/components/Home.vue';
-import Options from '@/components/Options.vue';
-import Calender from '@/components/Calender.vue';
-import BudgetInOptions from '@/pages/BudgetSetting/BudgetInOptions.vue';
-import Report from '@/pages/MoneyReport/Report.vue';
-import TransactionLogLatest from '@/pages/OptionsMoneyList/TransactionLogLatest.vue';
+import MoneyListDaily from "@/pages/MoneyCalendar/MoneyListDaily.vue";
+import MoneyListLatest from "@/pages/MoneyCalendar/MoneyListLatest.vue";
+import MoneyItem from "@/pages/MoneyCalendar/MoneyItem.vue";
+import Login from "@/components/Login.vue";
+import Home from "@/components/Home.vue";
+import Options from "@/components/Options.vue";
+import Calender from "@/components/Calender.vue";
+import BudgetInOptions from "@/pages/BudgetSetting/BudgetInOptions.vue";
+import Report from "@/pages/MoneyReport/Report.vue";
+import TransactionLogLatest from "@/pages/OptionsMoneyList/TransactionLogLatest.vue";
+import TransactionLogList from "@/pages/OptionsMoneyList/TransactionLogList.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/login', component: Login, name: 'login' },
+    { path: "/login", component: Login, name: "login" },
     {
-      path: '/home',
+      path: "/home",
       component: Home,
       name: 'home',
       children: [
@@ -34,20 +35,27 @@ const router = createRouter({
       ],
     },
     {
-      path: '/options',
+      path: "/options",
       component: Options,
-      name: 'options',
+      name: "options",
       children: [
         {
-          path: '/transaction',
+          path: "/options/transaction",
           component: TransactionLogLatest,
-          name: 'options/transaction',
+          name: "options/transaction",
+          children: [
+            {
+              path: "/options/transaction/list",
+              component: TransactionLogList,
+              name: "loglist",
+            },
+          ],
         },
-        { path: '/budget', component: BudgetInOptions, name: 'options/budget' },
+        { path: "/budget", component: BudgetInOptions, name: "options/budget" },
         {
-          path: '/moneyreport',
+          path: "/moneyreport",
           component: Report,
-          name: 'options/moneyreport',
+          name: "options/moneyreport",
         },
       ],
     },
