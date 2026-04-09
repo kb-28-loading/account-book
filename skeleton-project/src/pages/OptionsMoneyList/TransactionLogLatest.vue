@@ -41,8 +41,10 @@ const showCalendar = ref(false);
 const showList = ref(false);
 const inputData = () => {
   showList.value = true;
+  console.log(showList.value);
 };
 
 const startDate = ref("start");
 const endDate = ref("end");
+console.log();
 </script>

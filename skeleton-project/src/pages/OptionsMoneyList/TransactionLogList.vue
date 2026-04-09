@@ -24,12 +24,20 @@
   </div>
 </template>
 <script setup>
-import { useLoginStore } from "@/stores/login";
+// import { useLoginStore } from "@/stores/login";
+import { ref, onMounted } from "vue";
+import axios from "axios";
 const props = defineProps({
   startDate: String,
   endDate: String,
 });
 
-const loginStore = useLoginStore();
-const moneyList = loginStore.user.moneyList;
+const moneyList = ref([]);
+
+onMounted(async () => {
+  const response = await axios.get("/api/users/1");
+});
+// const loginStore = useLoginStore();
+// const moneyList = loginStore.user.moneyList;
+// console.log(moneyList);
 </script>
