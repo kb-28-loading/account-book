@@ -19,8 +19,17 @@
   </div>
 </template>
 <script setup>
-import { useLoginStore } from "@/stores/login";
+import { ref } from 'vue';
+import { useLoginStore } from '@/stores/login';
+import axios from 'axios';
 
 const loginStore = useLoginStore();
-const moneyList = loginStore.user.moneyList;
+const LatestList = ref([]);
+
+const getMoneyList = async () => {
+  const res = await axios.get(`/api/users/${loginStore.user.id}`);
+  LatestList.value = res.data.moneyList;
+  console.log(LatestList.value);
+};
+getMoneyList();
 </script>

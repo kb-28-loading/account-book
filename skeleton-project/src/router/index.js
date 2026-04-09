@@ -26,12 +26,12 @@ const router = createRouter({
       children: [
         { path: '/calender', component: Calender, name: 'calender' },
         {
-          path: '/home/:selectedDate',
+          path: ':selectedDate',
           component: MoneyListDaily,
           name: 'moneyListDaily',
         },
         {
-          path: '',
+          path: '/',
           component: MoneyListLatest,
           name: 'moneyListLatest',
         },
