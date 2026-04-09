@@ -5,9 +5,9 @@
       <hr />
     </div>
     <div>
-      <div @click=""><h5>최신순</h5></div>
-      <div @click=""><h5>주간</h5></div>
-      <div @click=""><h5>월간</h5></div>
+      <div @click="latest()"><button>최신순</button></div>
+      <div @click=""><button>주간</button></div>
+      <div @click=""><button>월간</button></div>
 
       <!-- 날짜 표시 + 버튼 -->
       <div class="date-box">
@@ -30,6 +30,7 @@
         v-if="showList"
         :startDate="startDate"
         :endDate="endDate"
+        @latest="latest"
       />
     </div>
   </div>
@@ -37,14 +38,20 @@
 <script setup>
 import { ref } from "vue";
 import TransactionLogList from "./TransactionLogList.vue";
+const latestData = ref();
+const latest = (moneyList) => {
+  latestData.value = moneyList.value;
+  console.log(latestData.value);
+};
 const showCalendar = ref(false);
 const showList = ref(false);
+
 const inputData = () => {
   showList.value = true;
   console.log(showList.value);
 };
 
-const startDate = ref("start");
-const endDate = ref("end");
-console.log();
+const startDate = ref("yyyy - MM - dd");
+const endDate = ref("yyyy - MM - dd");
+// ---------------------------------------------
 </script>

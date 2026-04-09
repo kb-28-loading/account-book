@@ -31,11 +31,17 @@ const props = defineProps({
   startDate: String,
   endDate: String,
 });
-
+const emit = defineEmits(["latest"]);
 const moneyList = ref([]);
 
 onMounted(async () => {
-  const response = await axios.get("/api/users/1");
+  const response = await axios.get("/api/users/2");
+  moneyList.value = response.data.moneyList;
+
+  moneyList.value.sort((a, b) => {
+    return new Date(b.date) - new Date(a.date);
+  });
+  emit("latest", moneyList);
 });
 // const loginStore = useLoginStore();
 // const moneyList = loginStore.user.moneyList;
