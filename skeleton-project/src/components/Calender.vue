@@ -106,40 +106,41 @@ const getFormattedDate = (day) => {
 
     <table border="1">
       <!-- 표에 선 만들기 -->
+      <tbody>
+        <tr>
+          <th v-for="value in daysOfWeek" :key="value">{{ value }}</th>
+          <!-- 요일 배열 가져다가 넣기 -->
+        </tr>
 
-      <tr>
-        <th v-for="value in daysOfWeek" :key="value">{{ value }}</th>
-        <!-- 요일 배열 가져다가 넣기 -->
-      </tr>
+        <tr v-for="(week, index) in dates" :key="index">
+          <!-- tr : 행 만들기 dates배열의 week 수만큼 반복(키는 index) -->
 
-      <tr v-for="(week, index) in dates" :key="index">
-        <!-- tr : 행 만들기 dates배열의 week 수만큼 반복(키는 index) -->
+          <td v-for="(day, dIdx) in week" :key="dIdx">
+            <!-- 
+            (day, dIdx) in week : week 배열에서 값(day)뿐만 아니라 해당 요소의 순서 번호인
+            인덱스(dIdx)를 꺼냄. 
+            -->
+            <router-link
+              v-if="day"
+              :to="{
+                // 만들어 질때 to에 해당하는 곳으로 링크 만들어둠 -> 누르면 이동
+                name: 'moneyListDaily',
+                // index.js에 있는 moneyListDaily사용
+                params: { selectedDate: getFormattedDate(day) },
+                // 동기 방식 : 날짜 클릭시 getFormattedDate()함수에서
+                //            눌린 날 정보를 return함
+              }"
+            >
+              {{ day }}
+              <div>+312,323</div>
+              <div>-12,323</div>
+            </router-link>
 
-        <td v-for="(day, dIdx) in week" :key="dIdx">
-          <!-- 
-          (day, dIdx) in week : week 배열에서 값(day)뿐만 아니라 해당 요소의 순서 번호인
-          인덱스(dIdx)를 꺼냄. 
-          -->
-          <router-link
-            v-if="day"
-            :to="{
-              // 만들어 질때 to에 해당하는 곳으로 링크 만들어둠 -> 누르면 이동
-              name: 'moneyListDaily',
-              // index.js에 있는 moneyListDaily사용
-              params: { selectedDate: getFormattedDate(day) },
-              // 동기 방식 : 날짜 클릭시 getFormattedDate()함수에서
-              //            눌린 날 정보를 return함
-            }"
-          >
-            {{ day }}
-            <div>+312,323</div>
-            <div>-12,323</div>
-          </router-link>
-
-          <span v-else></span>
-          <!-- 만약 day가 ''이라면 -->
-        </td>
-      </tr>
+            <span v-else></span>
+            <!-- 만약 day가 ''이라면 -->
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </template>
