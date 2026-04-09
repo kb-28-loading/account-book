@@ -11,9 +11,9 @@
 
 <script setup>
 import Home from './components/Home.vue';
-import Join from './components/Join.vue';
 import Login from './components/Login.vue';
 import Options from './components/Options.vue';
+import Join from './components/Join.vue';
 </script>
 
 <style scoped></style>

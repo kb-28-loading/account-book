@@ -1,7 +1,24 @@
 <template>
   <div>해당 날짜에 해당하는 거래내역</div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>거래명</th>
+        <th>카테고리</th>
+        <th>금액</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="value in dailyList" :key="value.listId">
+        <td>{{ value.title }}</td>
+        <td>{{ value.category }}</td>
+        <td>{{ value.date }}</td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 <script setup>
+import { ref, watch, onMounted } from 'vue';
 import { useLoginStore } from '@/stores/login';
 import { useRoute } from 'vue-router';
 
