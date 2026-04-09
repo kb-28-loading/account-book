@@ -96,11 +96,11 @@
           "memo": "옷 구매"
         },
         {
-          "title": "용돈",
+          "title": "배당금",
           "date": "2026-04-02",
           "userMoney": 50000,
           "type": "income",
-          "category": "etc",
+          "category": "dividend",
           "listId": 298471
         }
       ],
@@ -185,11 +185,11 @@
           "listId": 482901
         },
         {
-          "title": "택배",
+          "title": "택시",
           "date": "2026-04-05",
           "userMoney": 4000,
           "type": "pay",
-          "category": "etc",
+          "category": "transport",
           "listId": 639275
         },
         {
@@ -212,5 +212,29 @@
       ],
       "id": 4
     }
+  ],
+  "income-category": ["salary", "dividend", "interest"],
+  "outcome-category": [
+    "food",
+    "culture",
+    "transport",
+    "shopping",
+    "rent",
+    "housing",
+    "life",
+    "cafe"
+  ],
+  "bank-category": [
+    "KB",
+    "신한",
+    "하나",
+    "우리",
+    "NH농협",
+    "SC제일",
+    "한국씨티",
+    "iM",
+    "카카오뱅크",
+    "케이뱅크",
+    "토스뱅크"
   ]
 }

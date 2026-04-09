@@ -1,4 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    Header
+    <hr />
+  </div>
 </template>
 <script setup></script>
