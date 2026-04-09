@@ -11,6 +11,7 @@ import BudgetInOptions from "@/pages/BudgetSetting/BudgetInOptions.vue";
 import Report from "@/pages/MoneyReport/Report.vue";
 import TransactionLogLatest from "@/pages/OptionsMoneyList/TransactionLogLatest.vue";
 import TransactionLogList from "@/pages/OptionsMoneyList/TransactionLogList.vue";
+import Budget from "@/pages/BudgetSetting/Budget.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,7 +21,19 @@ const router = createRouter({
       path: "/home",
       component: Home,
       name: "home",
-      children: [{ path: "/calender", component: Calender, name: "calender" }],
+      children: [
+        { path: "/calender", component: Calender, name: "calender" },
+        {
+          path: "/home/:selectedDate",
+          component: MoneyListDaily,
+          name: "moneyListDaily",
+        },
+        {
+          path: "",
+          component: MoneyListLatest,
+          name: "moneyListLatest",
+        },
+      ],
     },
     {
       path: "/options",
@@ -39,7 +52,12 @@ const router = createRouter({
             },
           ],
         },
-        { path: "/budget", component: BudgetInOptions, name: "options/budget" },
+        {
+          path: "/budget-setting",
+          component: BudgetInOptions,
+          name: "options/budget-setting",
+        },
+        { path: "/budget", component: Budget, name: "options/budget" },
         {
           path: "/moneyreport",
           component: Report,
@@ -47,17 +65,8 @@ const router = createRouter({
         },
       ],
     },
-    {
-      path: "/",
-      component: MoneyListLatest,
-      name: "moneyListLatest",
-    },
+
     { path: "/moneyItem/:id", component: MoneyItem, name: "moneyItem" },
-    {
-      path: "/moneyList/:selectedDate",
-      component: MoneyListDaily,
-      name: "moneyListDaily",
-    },
   ],
 });
 

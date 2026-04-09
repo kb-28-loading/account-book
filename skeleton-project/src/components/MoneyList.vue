@@ -8,5 +8,5 @@
 <script setup>
 import { useLoginStore } from '@/stores/login';
 const loginStore = useLoginStore();
-console.log(loginStore.user);
+// console.log(loginStore.user);
 </script>

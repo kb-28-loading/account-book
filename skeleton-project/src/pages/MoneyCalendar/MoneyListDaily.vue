@@ -20,10 +20,12 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue';
 import { useLoginStore } from '@/stores/login';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import axios from 'axios';
 
 // route를 통해 경로에서 날짜를 문자열로 추출
 const currentRoute = useRoute();
+const router = useRouter();
 
 // 저장되어있는 사용자의 거래내역 중 해당 날짜인 객체 추출 후 배열로 저장
 const loginStore = useLoginStore();
@@ -31,10 +33,9 @@ const loginStore = useLoginStore();
 const dailyList = ref([]);
 // ref로 해야 실시간으로 바뀜
 
-const getFilteredList = (date) => {
-  dailyList.value = loginStore.user.moneyList.filter(
-    (item) => item.date === date,
-  );
+const getFilteredList = async (date) => {
+  const resp = await axios.get(`/api/users/${loginStore.user.id}`);
+  dailyList.value = resp.data.moneyList.filter((item) => item.date === date);
   // 같은 날에 있는 값들 챙기기
 };
 
@@ -61,8 +62,7 @@ watch(
 
 // onMounted(()=>{...}) : 사용자가 페이지에 접속하자마자 실행되는 것
 onMounted(() => {
-  getFilteredList(currentRoute.params.selectedDate.toString());
-  // 주소창에 있는 날짜를 읽음 -> 해당 날짜를 데이터로 가져와서 dailyList에 채움
-  // why? -> watch함수는 새로운 값으로 변경되면 작동하지만 처음에 입장시에는 작동하지않음
+  const defaultDate = currentRoute.params.selectedDate;
+  getFilteredList(defaultDate.toString());
 });
 </script>
