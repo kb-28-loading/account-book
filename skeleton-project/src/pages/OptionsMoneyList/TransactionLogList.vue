@@ -38,6 +38,17 @@ onMounted(async () => {
   const response = await axios.get("/api/users/2");
   moneyList.value = response.data.moneyList;
 
+  const isVaildDate = (dateStr) => !isNaN(new Date(dateStr));
+
+  if (isVaildDate(props.startDate) && isVaildDate(props.endDate)) {
+    moneyList.value = moneyList.value.filter((item) => {
+      const itemDate = new Date(item.date);
+      const start = new Date(props.startDate);
+      const end = new Date(props.endDate);
+      return itemDate >= start && itemDate <= end;
+    });
+  }
+
   moneyList.value.sort((a, b) => {
     return new Date(b.date) - new Date(a.date);
   });
