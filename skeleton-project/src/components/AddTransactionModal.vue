@@ -46,11 +46,11 @@ const onCome = () => {
       <div>카테고리</div>
       <select v-if="!categoryOn">
         <option value="">수입 카테고리를 선택하세요</option>
-        <option v-for="item in inCategories" ::key="item">{{ item }}</option>
+        <option v-for="item in inCategories" :key="item">{{ item }}</option>
       </select>
       <select v-if="categoryOn">
         <option value="">지출 카테고리를 선택하세요</option>
-        <option v-for="item in outCategories" ::key="item">{{ item }}</option>
+        <option v-for="item in outCategories" :key="item">{{ item }}</option>
       </select>
 
       <div>거래명</div>
@@ -59,7 +59,7 @@ const onCome = () => {
       <div>결제수단</div>
       <select>
         <option value="">은행 카테고리를 선택하세요</option>
-        <option v-for="item in bankCategories" ::key="item">{{ item }}</option>
+        <option v-for="item in bankCategories" :key="item">{{ item }}</option>
       </select>
 
       <div>날짜</div>
@@ -68,7 +68,7 @@ const onCome = () => {
       <div>메모</div>
       <textarea name="" id=""></textarea>
 
-      <button>저장</button>
+      <button @click="saveBtn">저장</button>
       <button>닫기</button>
     </div>
   </div>
