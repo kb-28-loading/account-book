@@ -289,11 +289,7 @@
       "id": 5
     }
   ],
-  "income-category": [
-    "salary",
-    "dividend",
-    "interest"
-  ],
+  "income-category": ["salary", "dividend", "interest"],
   "outcome-category": [
     "food",
     "culture",

@@ -34,11 +34,29 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from "vue";
 
-const month = ref(4);
+const month = ref(1);
+const selectedUser = ref("신송윤");
+const userBudgetData = {
+  신송윤: {
+    1: { food: 250000, culture: 150000, transport: 100000 },
+    2: { food: 300000, shopping: 200000 },
+    3: { food: 250000, culture: 200000, shopping: 150000 },
+  },
+  한혜지: {
+    1: { food: 300000, transport: 100000, culture: 200000 },
+    2: { food: 350000, shopping: 200000, transport: 100000 },
+    3: { food: 300000, shopping: 200000, culture: 300000 },
+  },
+  장진서: {
+    1: { food: 200000, culture: 150000 },
+    2: { food: 250000, transport: 100000 },
+    3: { food: 200000, shopping: 100000, culture: 200000 },
+  },
+};
 
-const budget = ref({
+const defaultBudget = {
   food: 0,
   housing: 0,
   life: 0,
@@ -46,8 +64,26 @@ const budget = ref({
   cafe: 0,
   transport: 0,
   culture: 0,
-});
+};
 
+const budget = ref({ ...defaultBudget });
+
+// 사용자 + 월 바뀔 때마다 자동 반영
+watch(
+  [month, selectedUser],
+  () => {
+    const userData = userBudgetData[selectedUser.value];
+    const monthData = userData?.[month.value];
+
+    budget.value = {
+      ...defaultBudget,
+      ...monthData,
+    };
+  },
+  { immediate: true },
+);
+
+// 월 이동
 const prevMonth = () => {
   if (month.value > 1) month.value--;
 };
@@ -57,6 +93,8 @@ const nextMonth = () => {
 };
 
 const setting = () => {
-  console.log(budget.value);
+  console.log("현재 유저:", selectedUser.value);
+  console.log("현재 월:", month.value);
+  console.log("예산:", budget.value);
 };
 </script>
