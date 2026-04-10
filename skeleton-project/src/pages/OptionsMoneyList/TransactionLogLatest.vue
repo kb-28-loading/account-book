@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <h1>거래 내역 조회</h1>
+      <h1>거래 내역 조회(DATE)</h1>
       <hr />
     </div>
     <div>

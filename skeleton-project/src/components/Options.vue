@@ -8,8 +8,12 @@
     />
     <div class="main-monitor">
       <div class="left-side-menu">
-        <RouterLink :to="{ name: 'options/transaction' }"
-          >거래내역 확인</RouterLink
+        <RouterLink :to="{ name: 'options/transactionDate' }"
+          >날짜별 거래내역</RouterLink
+        >
+        <br />
+        <RouterLink :to="{ name: 'options/transactionCategory' }"
+          >카테고리별 거래내역</RouterLink
         >
         <br />
         <RouterLink :to="{ name: 'options/budget-setting' }"
@@ -30,12 +34,12 @@
   </div>
 </template>
 <script setup>
-import BudgetInOptions from '@/pages/BudgetSetting/BudgetInOptions.vue';
-import Report from '@/pages/MoneyReport/Report.vue';
-import Header from './Header.vue';
-import Footer from './Footer.vue';
+import BudgetInOptions from "@/pages/BudgetSetting/BudgetInOptions.vue";
+import Report from "@/pages/MoneyReport/Report.vue";
+import Header from "./Header.vue";
+import Footer from "./Footer.vue";
 
-const emit = defineEmits(['user-logout']);
+const emit = defineEmits(["user-logout"]);
 </script>
 <style scoped>
 .outer {
