@@ -1,9 +1,8 @@
 <script setup>
 import AddTransactionModal from '@/components/AddTransactionModal.vue'; // 자식 가져오기
-
+import EditTransactionModal from '@/components/EditTransactionModal.vue'; // 자식 가져오기
 import { ref, onMounted, watch, onBeforeUpdate } from 'vue';
 import { useLoginStore } from '@/stores/login';
-
 import axios from 'axios';
 
 const loginStore = useLoginStore();
@@ -59,7 +58,7 @@ const isModaClose = () => {
   isModalOpen.value = false;
 };
 // ==========================================================
-
+// 삭제 기능
 const deleteList = async (targetid) => {
   console.log(targetid);
 
@@ -83,14 +82,25 @@ const deleteList = async (targetid) => {
       moneyList: updatedMoneyList,
     });
     console.log("삭제 성공 >_<");
-    
+
     getMoneyList();
-    
-  }catch{
+
+  } catch {
     console.log("삭제 실패 0_0..");
-    
+
   }
 }
+// =========================================================
+// 부모에서 자식에게 데이터 보내기
+
+// 추가: 수정할 데이터를 담을 바구니
+const editData = ref(null);
+
+// 수정 버튼 클릭 함수
+const editList = (item) => {
+  editData.value = item; // 클릭한 행의 데이터를 담고
+  isModalOpen.value = true; // 모달을 엽니다
+};
 
 </script>
 
@@ -115,12 +125,13 @@ const deleteList = async (targetid) => {
           <td>{{ value.category }}</td>
           <td>{{ value.userMoney }}</td>
           <td>{{ value.date }}</td>
-          <td><button>수정</button><button @click="deleteList(value.id)">삭제</button></td>
+          <td><button @click="editList">수정</button><button @click="deleteList(value.id)">삭제</button></td>
         </tr>
       </tbody>
     </table>
     <!-- 목록 추가 버튼 -->
     <button @click="AddList">+</button>
     <AddTransactionModal v-if="isModalOpen === true" @post="getMoneyList" @close="isModaClose" />
+    <EditTransactionModal v-if="isModalOpen === true" @post="getMoneyList" @close="isModaClose" />
   </div>
 </template>
