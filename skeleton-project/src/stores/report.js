@@ -41,6 +41,7 @@ export const useReportStore = defineStore('report', () => {
     // 객체에 담긴 소비 총 금액을 퍼센트로 계산
     calcPercent(categoryIncomeMoney, totIncome);
     calcPercent(categoryOutcomeMoney, totOutcome);
+    // 배열에 담긴 카테고리 순서대로 금액 퍼센트를 정렬
     sortingMoney(usedCategoryIncome, categoryIncomeMoney, sortedIncomeMoney);
     sortingMoney(usedCategoryOutcome, categoryOutcomeMoney, sortedOutcomeMoney);
   };

@@ -7,10 +7,12 @@
         class="report-graph"
         :category="usedCategoryIncome"
         :data="sortedIncomeMoney"
+        :colorList="colorList"
       /><ReportRight
         class="report-graph graph-right"
         :category="usedCategoryOutcome"
         :data="sortedOutcomeMoney"
+        :colorList="colorList"
       />
     </div>
   </div>
@@ -25,6 +27,15 @@ import ReportLeft from '@/components/MoneyReport/ReportLeft.vue';
 import ReportRight from '@/components/MoneyReport/ReportRight.vue';
 
 const reportStore = useReportStore();
+
+const colorList = [
+  '#F3F7FF',
+  '#F8F4FC',
+  '#BFA5D4',
+  '#CDBAE7',
+  '#E1DAE5',
+  '#FEF2FC',
+];
 
 onMounted(async () => {
   await reportStore.userData();
