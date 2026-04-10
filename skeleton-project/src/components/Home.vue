@@ -1,7 +1,12 @@
 <template>
   <div>
     <h1>가계부 기본 화면</h1>
-    <Header @user-logout="emit('user-logout')" />
+    <Header
+      @user-logout="emit('user-logout')"
+      @go-home="emit('go-home')"
+      @go-options-transaction="emit('go-options-transaction')"
+      @go-options-budget="emit('go-options-budget')"
+    />
     <Budget />
     <div>
       <router-view></router-view>
@@ -15,5 +20,10 @@ import Budget from './Budget.vue';
 import Header from './Header.vue';
 import MoneyList from './MoneyList.vue';
 
-const emit = defineEmits(['user-logout']);
+const emit = defineEmits([
+  'user-logout',
+  'go-home',
+  'go-options-transaction',
+  'go-options-budget',
+]);
 </script>
