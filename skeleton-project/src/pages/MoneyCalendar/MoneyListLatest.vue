@@ -59,6 +59,26 @@ const isModaClose = () => {
   isModalOpen.value = false;
 };
 // ==========================================================
+
+const deleteList = async (targetid) => {
+  console.log(targetid);
+
+  if (!confirm("정말 삭제하시겠습니까?")) return;
+
+  const userId = loginStore.user.id;
+
+  const res = await axios.get(`/api/users/${userId}`);
+  console.log("res", res);
+
+  const currentUser = res.data.moneyList;
+
+  console.log("currentUser", currentUser);
+
+  const updatedMoneyList = currentUser.filter((item) => { return item.listId !== Number(targetid)})
+
+  console.log("updatedMoneyList", updatedMoneyList);
+
+}
 </script>
 
 <template>
@@ -73,6 +93,7 @@ const isModaClose = () => {
           <th>카테고리</th>
           <th>금액</th>
           <th>날짜</th>
+          <th>-</th>
         </tr>
       </thead>
       <tbody>
@@ -81,15 +102,12 @@ const isModaClose = () => {
           <td>{{ value.category }}</td>
           <td>{{ value.userMoney }}</td>
           <td>{{ value.date }}</td>
+          <td><button>수정</button><button @click="deleteList">삭제</button></td>
         </tr>
       </tbody>
     </table>
     <!-- 목록 추가 버튼 -->
     <button @click="AddList">+</button>
-    <AddTransactionModal
-      v-if="isModalOpen === true"
-      @post="getMoneyList"
-      @close="isModaClose"
-    />
+    <AddTransactionModal v-if="isModalOpen === true" @post="getMoneyList" @close="isModaClose" />
   </div>
 </template>
