@@ -8,15 +8,6 @@
       <span class="arrow" @click="nextMonth">→</span>
     </div>
 
-    <div>
-      <label>사용자 선택 : </label>
-      <select v-model="selectedUser">
-        <option value="신송윤">신송윤</option>
-        <option value="한혜지">한혜지</option>
-        <option value="장진서">장진서</option>
-      </select>
-    </div>
-
     <br />
 
     <div>
@@ -33,8 +24,17 @@
       :aria-valuenow="totalProgress"
       aria-valuemin="0"
       aria-valuemax="100"
+      style="height: 28px; border-radius: 16px"
     >
-      <div class="progress-bar" :style="{ width: totalProgress + '%' }"></div>
+      <div
+        class="progress-bar"
+        :style="{
+          width: totalProgress + '%',
+          backgroundColor: '#b79ad2',
+          transition: 'width 0.5s ease',
+          borderRadius: '16px',
+        }"
+      ></div>
     </div>
 
     <br />
@@ -51,10 +51,16 @@
         :aria-valuenow="getCategoryProgress(item.key)"
         aria-valuemin="0"
         aria-valuemax="100"
+        style="height: 18px; border-radius: 12px"
       >
         <div
           class="progress-bar"
-          :style="{ width: getCategoryProgress(item.key) + '%' }"
+          :style="{
+            width: getCategoryProgress(item.key) + '%',
+            backgroundColor: '#c4addd',
+            transition: 'width 0.5s ease',
+            borderRadius: '12px',
+          }"
         ></div>
       </div>
 
@@ -67,7 +73,9 @@
 import { ref, computed, watch } from "vue";
 
 const month = ref(1);
-const selectedUser = ref("신송윤");
+
+// 로그인 성공 시 저장한 사용자 이름을 가져오는 방식
+const selectedUser = ref(localStorage.getItem("loginUserName") || "신송윤");
 
 const userData = {
   신송윤: {
