@@ -38,10 +38,13 @@ const goBudget = () => {
 .header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   background-color: white;
+  height: 60px;
 }
 img {
   width: 113px;
+  height: 59.7px;
   border-radius: 60px;
 }
 .buttons {
