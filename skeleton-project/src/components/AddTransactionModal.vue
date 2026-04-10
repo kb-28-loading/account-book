@@ -4,16 +4,20 @@ import axios from 'axios';
 
 const inCategories = ref({ 'income-category': [] });
 const outCategories = ref({ 'outcome-category': [] });
+const bankCategories = ref({ 'bank-category': [] });
 onMounted(async () => {
   // 카테고리 정보를 서버에서 가져옴
 
   const res = await axios.get('/api/income-category');
   const res2 = await axios.get('/api/outcome-category');
+  const res3 = await axios.get('/api/bank-category');
   inCategories.value = res.data;
   outCategories.value = res2.data;
+  bankCategories.value = res3.data;
 
-  console.log('데이터 받아오기', inCategories);
-  console.log('데이터 받아오기', outCategories);
+  console.log('수입데이터 받아오기', inCategories);
+  console.log('지출데이터 받아오기', outCategories);
+  console.log('결제수단 데이터 받아오기', outCategories);
 });
 
 const categoryOn = ref('');
@@ -54,10 +58,8 @@ const onCome = () => {
 
       <div>결제수단</div>
       <select>
-        <option value="" disabled>카테고리를 선택하세요</option>
-        <option value="meal">식비</option>
-        <option value="transport">교통비</option>
-        <option value="mart">생필품</option>
+        <option value="">은행 카테고리를 선택하세요</option>
+        <option v-for="item in bankCategories" ::key="item">{{ item }}</option>
       </select>
 
       <div>날짜</div>
