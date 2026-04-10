@@ -31,9 +31,8 @@ const selectedDate = ref('2026-04-10'); // 기본값 설정
 const userMoney = ref(0);
 const selectedCategory = ref('');
 const memo = ref('');
-const acountBank = ref('');
-const acountInfo = ref('');
-const acountCode = ref('');
+const accountBank = ref('');
+const accountCode = ref('');
 const listId = ref(0);
 
 const saveBtn = async () => {
@@ -56,7 +55,7 @@ const saveBtn = async () => {
     category: selectedCategory.value,
     listId: Date.now(),
     memo: memo.value,
-    acountInfo: `${acountBank.value}-${acountCode.value}`,
+    accountInfo: `${accountBank.value}-${accountCode.value}`,
   };
 
   try {
@@ -119,12 +118,12 @@ const onCome = () => {
       <input v-model="title" placeholder="거래명" />
 
       <div>결제수단</div>
-      <select v-model="acountBank">
+      <select v-model="accountBank">
         <option value="">은행 카테고리를 선택하세요</option>
         <option v-for="item in bankCategories" :key="item">{{ item }}</option>
       </select>
       <input
-        v-model="acountCode"
+        v-model="accountCode"
         type="number"
         placeholder="계좌번호를 입력하세요"
       />

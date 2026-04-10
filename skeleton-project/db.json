@@ -18,7 +18,8 @@
           "userMoney": 50000,
           "type": "pay",
           "category": "culture",
-          "listId": 834291
+          "listId": 834291,
+          "accountInfo": "KB-48550201280534"
         },
         {
           "title": "카페",
@@ -27,7 +28,8 @@
           "type": "pay",
           "category": "food",
           "listId": 192847,
-          "memo": "아이스 아메리카노"
+          "memo": "아이스 아메리카노",
+          "accountInfo": "KB-48550201280534"
         },
         {
           "title": "편의점",
@@ -35,7 +37,8 @@
           "userMoney": 8200,
           "type": "pay",
           "category": "food",
-          "listId": 563920
+          "listId": 563920,
+          "accountInfo": "KB-48550201280534"
         },
         {
           "title": "버스",
@@ -43,7 +46,8 @@
           "userMoney": 1500,
           "type": "pay",
           "category": "transport",
-          "listId": 774512
+          "listId": 774512,
+          "accountInfo": "KB-48550201280534"
         },
         {
           "title": "알바비",
@@ -52,7 +56,40 @@
           "type": "income",
           "category": "salary",
           "listId": 309485,
-          "memo": "주말 근무"
+          "memo": "주말 근무",
+          "accountInfo": "KB-48550201280534"
+        }
+      ],
+      "userBudget": [
+        {
+          "budgetYearMonth": "2026-01",
+          "budgetTot": 900000,
+          "budgetListId": 548291,
+          "budgetCategory": {
+            "food": 300000,
+            "culture": 200000,
+            "transport": 100000
+          }
+        },
+        {
+          "budgetYearMonth": "2026-02",
+          "budgetTot": 950000,
+          "budgetListId": 772104,
+          "budgetCategory": {
+            "food": 350000,
+            "shopping": 200000,
+            "transport": 100000
+          }
+        },
+        {
+          "budgetYearMonth": "2026-03",
+          "budgetTot": 1000000,
+          "budgetListId": 991245,
+          "budgetCategory": {
+            "food": 300000,
+            "culture": 300000,
+            "shopping": 200000
+          }
         }
       ],
       "id": 1
@@ -63,7 +100,7 @@
       "userName": "신송윤",
       "account": [
         {
-          "bank": "wow",
+          "bank": "우리",
           "info": "48550201280534",
           "balance": 150000
         }
@@ -75,7 +112,8 @@
           "userMoney": 9000,
           "type": "pay",
           "category": "food",
-          "listId": 681203
+          "listId": 681203,
+          "accountInfo": "우리-48550201280534"
         },
         {
           "title": "영화",
@@ -84,7 +122,8 @@
           "type": "pay",
           "category": "culture",
           "listId": 957124,
-          "memo": "팝콘 포함"
+          "memo": "팝콘 포함",
+          "accountInfo": "우리-48550201280534"
         },
         {
           "title": "택시",
@@ -92,7 +131,8 @@
           "userMoney": 12000,
           "type": "pay",
           "category": "transport",
-          "listId": 442198
+          "listId": 442198,
+          "accountInfo": "우리-48550201280534"
         },
         {
           "title": "쇼핑",
@@ -101,7 +141,8 @@
           "type": "pay",
           "category": "shopping",
           "listId": 713650,
-          "memo": "옷 구매"
+          "memo": "옷 구매",
+          "accountInfo": "우리-48550201280534"
         },
         {
           "title": "배당금",
@@ -109,7 +150,39 @@
           "userMoney": 50000,
           "type": "income",
           "category": "dividend",
-          "listId": 298471
+          "listId": 298471,
+          "accountInfo": "우리-48550201280534"
+        }
+      ],
+      "userBudget": [
+        {
+          "budgetYearMonth": "2026-01",
+          "budgetTot": 700000,
+          "budgetListId": 183742,
+          "budgetCategory": {
+            "food": 250000,
+            "culture": 150000,
+            "transport": 100000
+          }
+        },
+        {
+          "budgetYearMonth": "2026-02",
+          "budgetTot": 750000,
+          "budgetListId": 672913,
+          "budgetCategory": {
+            "food": 300000,
+            "shopping": 200000
+          }
+        },
+        {
+          "budgetYearMonth": "2026-03",
+          "budgetTot": 800000,
+          "budgetListId": 904321,
+          "budgetCategory": {
+            "food": 250000,
+            "culture": 200000,
+            "shopping": 150000
+          }
         }
       ],
       "id": 2
@@ -120,7 +193,7 @@
       "userName": "장진서",
       "account": [
         {
-          "bank": "SHinhan",
+          "bank": "신한",
           "info": "110499289321",
           "balance": 200000
         }
@@ -132,7 +205,8 @@
           "userMoney": 4500,
           "type": "pay",
           "category": "food",
-          "listId": 555902
+          "listId": 555902,
+          "accountInfo": "신한-110499289321"
         },
         {
           "title": "지하철",
@@ -140,7 +214,8 @@
           "userMoney": 1350,
           "type": "pay",
           "category": "transport",
-          "listId": 804331
+          "listId": 804331,
+          "accountInfo": "신한-110499289321"
         },
         {
           "title": "책 구매",
@@ -149,7 +224,8 @@
           "type": "pay",
           "category": "culture",
           "listId": 267194,
-          "memo": "전공 서적"
+          "memo": "전공 서적",
+          "accountInfo": "신한-110499289321"
         },
         {
           "title": "과외비",
@@ -157,7 +233,8 @@
           "userMoney": 200000,
           "type": "income",
           "category": "salary",
-          "listId": 990284
+          "listId": 990284,
+          "accountInfo": "신한-110499289321"
         },
         {
           "title": "저녁",
@@ -166,67 +243,41 @@
           "type": "pay",
           "category": "food",
           "listId": 134778,
-          "memo": "치킨"
+          "memo": "치킨",
+          "accountInfo": "신한-110499289321"
+        }
+      ],
+      "userBudget": [
+        {
+          "budgetYearMonth": "2026-01",
+          "budgetTot": 600000,
+          "budgetListId": 512390,
+          "budgetCategory": {
+            "food": 200000,
+            "culture": 150000
+          }
+        },
+        {
+          "budgetYearMonth": "2026-02",
+          "budgetTot": 650000,
+          "budgetListId": 845120,
+          "budgetCategory": {
+            "food": 250000,
+            "transport": 100000
+          }
+        },
+        {
+          "budgetYearMonth": "2026-03",
+          "budgetTot": 700000,
+          "budgetListId": 234981,
+          "budgetCategory": {
+            "food": 200000,
+            "culture": 200000,
+            "shopping": 100000
+          }
         }
       ],
       "id": 3
-    },
-    {
-      "userID": "qkdvo1530",
-      "userPW": "105qj2980!",
-      "userName": "강예찬",
-      "account": [
-        {
-          "bank": "KB",
-          "info": "94160201040065",
-          "balance": 250000
-        }
-      ],
-      "moneyList": [
-        {
-          "title": "게임 결제",
-          "date": "2026-04-07",
-          "userMoney": 30000,
-          "type": "pay",
-          "category": "culture",
-          "listId": 721563,
-          "memo": "아이템 구매"
-        },
-        {
-          "title": "편의점",
-          "date": "2026-04-06",
-          "userMoney": 7600,
-          "type": "pay",
-          "category": "food",
-          "listId": 482901
-        },
-        {
-          "title": "택시",
-          "date": "2026-04-05",
-          "userMoney": 4000,
-          "type": "pay",
-          "category": "transport",
-          "listId": 639275
-        },
-        {
-          "title": "월급",
-          "date": "2026-04-01",
-          "userMoney": 2500000,
-          "type": "income",
-          "category": "salary",
-          "listId": 110392
-        },
-        {
-          "title": "헬스장",
-          "date": "2026-03-30",
-          "userMoney": 80000,
-          "type": "pay",
-          "category": "health",
-          "listId": 908564,
-          "memo": "3개월 등록"
-        }
-      ],
-      "id": 4
     }
   ],
   "income-category": ["salary", "dividend", "interest"],
