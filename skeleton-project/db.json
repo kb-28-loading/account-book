@@ -289,7 +289,7 @@
       "id": 5
     }
   ],
-  "income-category": ["salary", "dividend", "interest"],
+  "income-category": ["급여", "배당금", "이자"],
   "outcome-category": [
     "식비",
     "문화/여가",
