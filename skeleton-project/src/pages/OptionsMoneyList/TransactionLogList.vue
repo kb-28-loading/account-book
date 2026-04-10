@@ -37,15 +37,16 @@ const emit = defineEmits(["latest"]);
 const allMoneyList = ref([]);
 const moneyList = ref([]);
 
-const deleteItem = async (listId) => {
-  moneyList.value = moneyList.value.filter((item) => item.listId !== listId);
-  allMoneyList.value = allMoneyList.value.filter(
-    (item) => item.listId !== listId,
-  );
-  await axios.patch(`/api/users/${loginStore.user.id}`, {
-    moneyList: allMoneyList.value,
-  });
-};
+// const deleteItem = async (listId) => {
+//   moneyList.value = moneyList.value.filter((item) => item.listId !== listId);
+//   allMoneyList.value = allMoneyList.value.filter(
+//     (item) => item.listId !== listId,
+//   );
+//   await axios.patch(`/api/users/${loginStore.user.id}`, {
+//     moneyList: allMoneyList.value,
+//   });
+// };
+// 어이 예찬씨 이건 아니죠? 이거 누르면 moneylist가 사라져요 ^^ 수정 부탁해요~!
 
 onMounted(async () => {
   const response = await axios.get(`/api/users/${loginStore.user.id}`); // 수정 전

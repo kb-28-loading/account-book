@@ -1,9 +1,8 @@
 <script setup>
 import AddTransactionModal from '@/components/AddTransactionModal.vue'; // 자식 가져오기
-
+import EditTransactionModal from '@/components/EditTransactionModal.vue'; // 자식 가져오기
 import { ref, onMounted, watch, onBeforeUpdate } from 'vue';
 import { useLoginStore } from '@/stores/login';
-
 import axios from 'axios';
 
 const loginStore = useLoginStore();
@@ -59,7 +58,7 @@ const isModaClose = () => {
   isModalOpen.value = false;
 };
 // ==========================================================
-
+// 삭제 기능
 const deleteList = async (targetid) => {
   console.log(targetid);
 
@@ -67,18 +66,42 @@ const deleteList = async (targetid) => {
 
   const userId = loginStore.user.id;
 
-  const res = await axios.get(`/api/users/${userId}`);
-  console.log("res", res);
+  try {
+    const res = await axios.get(`/api/users/${userId}`);
+    console.log('userId 값 가져오기', res);
 
-  const currentUser = res.data.moneyList;
+    const currentUser = res.data.moneyList;
+    console.log('currentUser에 res.data넣기', currentUser);
 
-  console.log("currentUser", currentUser);
+    const updatedMoneyList = currentUser.filter((item) => item.id !== Number(targetid));
+    console.log("updatedMoneyList", updatedMoneyList);
+    // 2. 기존의 moneyList 배열에 새로운 항목(newList)을 추가합니다
 
-  const updatedMoneyList = currentUser.filter((item) => { return item.listId !== Number(targetid)})
+    // 3. 서버에 PATCH 요청을 보냅니다.
+    await axios.patch(`/api/users/${userId}`, {
+      moneyList: updatedMoneyList,
+    });
+    console.log("삭제 성공 >_<");
 
-  console.log("updatedMoneyList", updatedMoneyList);
+    getMoneyList();
 
+  } catch {
+    console.log("삭제 실패 0_0..");
+
+  }
 }
+// =========================================================
+// 부모에서 자식에게 데이터 보내기
+
+// 추가: 수정할 데이터를 담을 바구니
+const editData = ref(null);
+
+// 수정 버튼 클릭 함수
+const editList = (item) => {
+  editData.value = item; // 클릭한 행의 데이터를 담고
+  isModalOpen.value = true; // 모달을 엽니다
+};
+
 </script>
 
 <template>
@@ -97,17 +120,18 @@ const deleteList = async (targetid) => {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="value in LatestList" :key="value.listId">
+        <tr v-for="value in LatestList" :key="value.id">
           <td>{{ value.title }}</td>
           <td>{{ value.category }}</td>
           <td>{{ value.userMoney }}</td>
           <td>{{ value.date }}</td>
-          <td><button>수정</button><button @click="deleteList">삭제</button></td>
+          <td><button @click="editList">수정</button><button @click="deleteList(value.id)">삭제</button></td>
         </tr>
       </tbody>
     </table>
     <!-- 목록 추가 버튼 -->
     <button @click="AddList">+</button>
     <AddTransactionModal v-if="isModalOpen === true" @post="getMoneyList" @close="isModaClose" />
+    <EditTransactionModal v-if="isModalOpen === true" @post="getMoneyList" @close="isModaClose" />
   </div>
 </template>
