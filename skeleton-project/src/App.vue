@@ -26,7 +26,7 @@ const router = useRouter();
 
 // login.js에서 회원정보 받아오기
 const loginStore = useLoginStore();
-
+ 
 // 첫 화면으로 로그인 화면 노출, 이때 회원정보가 존재한다면, 홈 화면으로 이동
 onMounted(() => {
   // console.log('마운트되었음');
