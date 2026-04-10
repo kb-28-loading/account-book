@@ -4,10 +4,14 @@
   <RouterLink :to="{ name: 'home' }">홈</RouterLink>
   <RouterLink :to="{ name: 'options' }">옵션</RouterLink>
   <RouterView
-    @login-success="goHome"
+    @login-success="goHomeLogin"
     @go-join="goJoin"
     @new-user="goLogin"
-    @user-logout="userLogout"
+    @user-logout="userLogout /* test */"
+    @go-home="goHome"
+    @go-options-transaction="goTransaction"
+    @go-options-budget="goBudget"
+    :optionsType="optionsRouterType"
   ></RouterView>
 </template>
 
@@ -16,7 +20,7 @@ import Practice from './pages/BudgetSetting/Practice.vue';
 import practice from './pages/BudgetSetting/Practice.vue';
 import { useRouter } from 'vue-router';
 import { useLoginStore } from './stores/login';
-import { onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 
 const router = useRouter();
 
@@ -37,7 +41,7 @@ onMounted(() => {
 });
 
 // 로그인 성공 시 보이는 화면을 '/home'으로 변경
-const goHome = () => {
+const goHomeLogin = () => {
   // console.log('함수 실행');
   // console.log(router);
 
@@ -60,6 +64,26 @@ const goLogin = () => {
 const userLogout = () => {
   loginStore.logout();
   router.replace('/login');
+};
+
+// navBar에서 홈 클릭시 홈으로 이동
+const goHome = () => {
+  router.push('/home');
+};
+
+// navBar에서 transaction 클릭 시 Options 컴포넌트로 이동 후 자동으로 Option에서 해당 라우터 출력
+const goTransaction = () => {
+  router.push('/options/transaction');
+};
+
+// navBar에서 transaction 클릭 시 Options 컴포넌트로 이동 후 자동으로 Option에서 해당 라우터 출력
+const goBudget = () => {
+  router.push('/options/budget');
+};
+
+// 이벤트 확인용 테스트
+const test = () => {
+  alert('test');
 };
 </script>
 
