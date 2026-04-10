@@ -1,0 +1,136 @@
+import { defineStore } from 'pinia';
+import { useLoginStore } from '@/stores/login';
+import { ref } from 'vue';
+import axios from 'axios';
+
+export const useReportStore = defineStore('report', () => {
+  // 로그인 한 사용자의 거래내역 정보를 받아오기
+  const loginStore = useLoginStore();
+  const moneyList = ref([]);
+
+  // 카테고리 별 금액 합산
+  const usedCategoryOutcome = ref([]); // 지출 카테고리만 저장
+  const categoryOutcomeMoney = ref({}); // 지출 각 카테고리 별 지출 금액 총합
+  const sortedOutcomeMoney = ref([]); // 카테고리 배열과 순서맞춰 금액 정렬
+  const totOutcome = ref(0); // 총 지출금액
+  const usedCategoryIncome = ref([]); // 수입 카테고리만 저장
+  const categoryIncomeMoney = ref({}); // 수입 각 카테고리 별 수입 금액 총합
+  const sortedIncomeMoney = ref([]); // 카테고리 배열 순서 맞춰 금액 정렬
+  const totIncome = ref(0); // 총 수입 금액
+
+  const userData = async () => {
+    const resp = await axios.get(`/api/users/${loginStore.user.id}`);
+    moneyList.value = resp.data.moneyList;
+
+    // 함수 실행 전 내부 변수 초기화
+    // 수입 관련
+    usedCategoryIncome.value = [];
+    categoryIncomeMoney.value = {};
+    sortedIncomeMoney.value = [];
+    totIncome.value = 0;
+
+    // 지출 관련
+    usedCategoryOutcome.value = [];
+    categoryOutcomeMoney.value = {};
+    sortedOutcomeMoney.value = [];
+    totOutcome.value = 0;
+
+    // 거래내역을 받아온 후 함수 호출
+    reportDate();
+    categoryCalc();
+    // 객체에 담긴 소비 총 금액을 퍼센트로 계산
+    calcPercent(categoryIncomeMoney, totIncome);
+    calcPercent(categoryOutcomeMoney, totOutcome);
+    sortingMoney(usedCategoryIncome, categoryIncomeMoney, sortedIncomeMoney);
+    sortingMoney(usedCategoryOutcome, categoryOutcomeMoney, sortedOutcomeMoney);
+  };
+
+  const date = new Date();
+  const month = ref(date.getMonth() + 1);
+  const year = ref(date.getFullYear());
+
+  // 정해진 달에 해당하는 거래내역을 필터링
+  const moneyListFiltered = ref([]);
+  const reportDate = () => {
+    let settingDate = '';
+
+    // 1-9월 앞에 0 붙이기
+    if (month.value.toString().length < 2) {
+      settingDate = `${year.value}-0${month.value}`;
+    } else {
+      settingDate = `${year.value}-${month.value}`;
+    }
+
+    // moneyList내 정해진 달의 거래내역 저장
+    for (let i = 0; i < moneyList.value.length; i++) {
+      if (moneyList.value[i].date.indexOf(settingDate) !== -1) {
+        moneyListFiltered.value.push(moneyList.value[i]);
+      }
+    }
+  };
+
+  const categoryCalc = () => {
+    // 수입 데이터와 지출 데이터를 구분지어서 이용된 카테고리를 각각 저장
+    for (let i = 0; i < moneyListFiltered.value.length; i++) {
+      if (moneyListFiltered.value[i].type === '수입') {
+        totIncome.value += moneyListFiltered.value[i].userMoney;
+        if (
+          usedCategoryIncome.value.filter(
+            (c) => c === moneyListFiltered.value[i].category,
+          ).length === 0
+        ) {
+          usedCategoryIncome.value.push(moneyListFiltered.value[i].category);
+          const category = moneyListFiltered.value[i].category;
+          const money = moneyListFiltered.value[i].userMoney;
+          categoryIncomeMoney.value[category] = money;
+        } else {
+          const category = moneyListFiltered.value[i].category;
+          const money = moneyListFiltered.value[i].userMoney;
+          categoryIncomeMoney.value[category] += money;
+        }
+      }
+      if (moneyListFiltered.value[i].type === '지출') {
+        totOutcome.value += moneyListFiltered.value[i].userMoney;
+        if (
+          usedCategoryOutcome.value.filter(
+            (c) => c === moneyListFiltered.value[i].category,
+          ).length === 0
+        ) {
+          usedCategoryOutcome.value.push(moneyListFiltered.value[i].category);
+          const category = moneyListFiltered.value[i].category;
+          const money = moneyListFiltered.value[i].userMoney;
+          categoryOutcomeMoney.value[category] = money;
+        } else {
+          const category = moneyListFiltered.value[i].category;
+          const money = moneyListFiltered.value[i].userMoney;
+          categoryOutcomeMoney.value[category] += money;
+        }
+      }
+    }
+  };
+
+  // 각 카테고리 별 합산 금액을 전체 금액의 퍼센트로 변환
+  const calcPercent = (obj, tot) => {
+    for (let key in obj.value) {
+      obj.value[key] = (obj.value[key] / tot.value) * 100;
+    }
+  };
+
+  // 카테고리 배열과 금액의 순서를 맞춰주는 함수
+  const sortingMoney = (arr, obj, result) => {
+    // console.log(arr.value);
+
+    for (let i = 0; i < arr.value.length; i++) {
+      result.value.push(obj.value[arr.value[i]]);
+    }
+    console.log(result.value);
+  };
+
+  return {
+    userData,
+    usedCategoryIncome,
+    usedCategoryOutcome,
+    sortedIncomeMoney,
+    sortedOutcomeMoney,
+  };
+});
