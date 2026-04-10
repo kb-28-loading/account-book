@@ -66,9 +66,9 @@
           "budgetTot": 900000,
           "budgetListId": 548291,
           "budgetCategory": {
-            "food": 300000,
-            "culture": 200000,
-            "transport": 100000
+            "식비": 300000,
+            "문화/여가": 200000,
+            "교통": 100000
           }
         },
         {
@@ -76,9 +76,9 @@
           "budgetTot": 950000,
           "budgetListId": 772104,
           "budgetCategory": {
-            "food": 350000,
-            "shopping": 200000,
-            "transport": 100000
+            "식비": 350000,
+            "쇼핑": 200000,
+            "교통": 100000
           }
         },
         {
@@ -86,9 +86,9 @@
           "budgetTot": 1000000,
           "budgetListId": 991245,
           "budgetCategory": {
-            "food": 300000,
-            "culture": 300000,
-            "shopping": 200000
+            "식비": 300000,
+            "문화/여가": 300000,
+            "쇼핑": 200000
           }
         }
       ],
@@ -160,9 +160,9 @@
           "budgetTot": 700000,
           "budgetListId": 183742,
           "budgetCategory": {
-            "food": 250000,
-            "culture": 150000,
-            "transport": 100000
+            "식비": 250000,
+            "문화/여가": 150000,
+            "교통": 100000
           }
         },
         {
@@ -170,8 +170,8 @@
           "budgetTot": 750000,
           "budgetListId": 672913,
           "budgetCategory": {
-            "food": 300000,
-            "shopping": 200000
+            "식비": 300000,
+            "쇼핑": 200000
           }
         },
         {
@@ -179,9 +179,9 @@
           "budgetTot": 800000,
           "budgetListId": 904321,
           "budgetCategory": {
-            "food": 250000,
-            "culture": 200000,
-            "shopping": 150000
+            "식비": 250000,
+            "문화/여가": 200000,
+            "쇼핑": 150000
           }
         }
       ],
@@ -253,8 +253,8 @@
           "budgetTot": 600000,
           "budgetListId": 512390,
           "budgetCategory": {
-            "food": 200000,
-            "culture": 150000
+            "식비": 200000,
+            "문화/여가": 150000
           }
         },
         {
@@ -262,8 +262,8 @@
           "budgetTot": 650000,
           "budgetListId": 845120,
           "budgetCategory": {
-            "food": 250000,
-            "transport": 100000
+            "식비": 250000,
+            "교통": 100000
           }
         },
         {
@@ -271,9 +271,9 @@
           "budgetTot": 700000,
           "budgetListId": 234981,
           "budgetCategory": {
-            "food": 200000,
-            "culture": 200000,
-            "shopping": 100000
+            "식비": 200000,
+            "문화/여가": 200000,
+            "쇼핑": 100000
           }
         }
       ],
