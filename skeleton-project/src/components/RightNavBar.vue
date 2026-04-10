@@ -11,17 +11,36 @@
           id="offcanvasNavbar"
           :class="navClass"
         >
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
-            <button type="button" class="btn-close" @click="navClose"></button>
+          <div class="offcanvas-header mt-5">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
+              Loding account book
+            </h5>
+            <button
+              type="button"
+              class="btn-close ms-5"
+              @click="navClose"
+            ></button>
           </div>
           <div class="offcanvas-body">
-            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <ul
+              class="navbar-nav justify-content-end flex-grow-1 pe-3 d-flex justify-content-center"
+            >
+              <li class="nav-item text-center" @click.stop="emit('go-home')">
+                홈
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+              <hr />
+              <li
+                class="nav-item text-center"
+                @click.stop="emit('go-options-transaction')"
+              >
+                거래내역 조회
+              </li>
+              <hr />
+              <li
+                class="nav-item text-center"
+                @click.stop="emit('go-options-budget')"
+              >
+                예산 확인
               </li>
             </ul>
           </div>
@@ -32,6 +51,12 @@
 </template>
 <script setup>
 import { reactive, computed } from 'vue';
+
+const emit = defineEmits([
+  'go-home',
+  'go-options/transaction',
+  'go-options/budget',
+]);
 
 const navClass = computed(
   () =>
