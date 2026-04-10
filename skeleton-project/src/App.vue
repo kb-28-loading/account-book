@@ -7,6 +7,7 @@
     @login-success="goHome"
     @go-join="goJoin"
     @new-user="goLogin"
+    @user-logout="userLogout"
   ></RouterView>
 </template>
 
@@ -52,6 +53,12 @@ const goJoin = () => {
 
 // 회원가입 완료 시 로그인 창으로 이동
 const goLogin = () => {
+  router.replace('/login');
+};
+
+// 로그아웃 클릭 시 login.js내 회원정보 비운 뒤, 로그인 화면으로 이동
+const userLogout = () => {
+  loginStore.logout();
   router.replace('/login');
 };
 </script>
