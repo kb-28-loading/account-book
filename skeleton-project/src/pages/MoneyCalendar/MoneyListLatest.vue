@@ -22,8 +22,6 @@ watch(
     if (newId) {
       getMoneyList(); // 3. 그때 데이터를 가져온다!
       console.log('데이터 가져왔슈');
-    } else {
-      setTimeout(() => {}, 1000);
     }
   },
 );
@@ -50,6 +48,17 @@ const clickedPlus = () => {
     isSorted.value = false;
   }
 };
+// ==========================================================
+// 팝업창 열고 닫기 부분
+const isModalOpen = ref(false); /* 팝업창의 열림/닫힘 상태를 저장할 변수 */
+const AddList = () => {
+  isModalOpen.value = true;
+};
+
+const isModaClose = () => {
+  isModalOpen.value = false;
+};
+// ==========================================================
 </script>
 
 <template>
@@ -75,7 +84,12 @@ const clickedPlus = () => {
         </tr>
       </tbody>
     </table>
+    <!-- 목록 추가 버튼 -->
     <button @click="AddList">+</button>
-    <AddTransactionModal />
+    <AddTransactionModal
+      v-if="isModalOpen === true"
+      @post="getMoneyList"
+      @close="isModaClose"
+    />
   </div>
 </template>

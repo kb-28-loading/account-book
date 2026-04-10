@@ -1,6 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import { useLoginStore } from '@/stores/login';
+
+const loginStore = useLoginStore();
+const emit = defineEmits(['post', 'close']);
 
 const inCategories = ref({ 'income-category': [] });
 const outCategories = ref({ 'outcome-category': [] });
@@ -26,14 +30,22 @@ const title = ref('');
 const selectedDate = ref('2026-04-10'); // 기본값 설정
 const userMoney = ref(0);
 const selectedCategory = ref('');
-const listId = ref(0);
 const memo = ref('');
-const selectedBank = ref('');
+const acountInfo = ref('');
+const info = ref('');
+const listId = ref(0);
 
-// 2. 저장 버튼 함수
 const saveBtn = async () => {
-  // 3. 변수들에 담긴 값들을 하나의 객체로 모으기
-  console.log('저장 버튼!');
+  if (!userMoney.value) {
+    alert('금액을 입력해주세요');
+    return;
+  }
+  if (!title.value) {
+    alert('거래명을 입력해주세요');
+    return;
+  }
+  // 1. 현재 로그인한 유저의 기존 정보를 먼저 가져옴
+  const userId = loginStore.user.id;
 
   const newList = {
     title: title.value,
@@ -41,14 +53,32 @@ const saveBtn = async () => {
     userMoney: userMoney.value,
     type: categoryOn.value ? 'pay' : 'income',
     category: selectedCategory.value,
-    listId: listId.value,
+    listId: Date.now(),
     memo: memo.value,
-    bank: selectedBank.value,
+    acountInfo: `${acountInfo.value}-${info.value}`,
   };
 
-  console.log(newList);
-};
+  try {
+    const res = await axios.get(`/api/users/${userId}`);
+    const currentUser = res.data;
+    console.log('userId 값 가져오기', res);
+    console.log('currentUser에 res.data넣기', currentUser);
 
+    // 2. 기존의 moneyList 배열에 새로운 항목(newList)을 추가합니다.
+    const updatedMoneyList = [...currentUser.moneyList, newList];
+
+    // 3. 서버에 "이 유저의 moneyList만 이걸로 바꿔줘!"라고 PATCH 요청을 보냅니다.
+    await axios.patch(`/api/users/${userId}`, {
+      moneyList: updatedMoneyList,
+    });
+
+    console.log('저장 성공 0_<');
+    emit('post');
+    emit('close');
+  } catch (err) {
+    console.log('저장 실패 0_0....', err);
+  }
+};
 // ==============================================================
 
 const categoryOn = ref('');
@@ -88,10 +118,11 @@ const onCome = () => {
       <input v-model="title" placeholder="거래명" />
 
       <div>결제수단</div>
-      <select v-model="selectedBank">
+      <select v-model="acountInfo">
         <option value="">은행 카테고리를 선택하세요</option>
         <option v-for="item in bankCategories" :key="item">{{ item }}</option>
       </select>
+      <input v-model="info" type="number" placeholder="계좌번호를 입력하세요" />
 
       <div>날짜</div>
       <input type="date" v-model="selectedDate" />
@@ -100,14 +131,14 @@ const onCome = () => {
       <textarea v-model="memo"></textarea>
 
       <button @click="saveBtn">저장</button>
-      <button>닫기</button>
+      <button @click="$emit('close')">닫기</button>
     </div>
   </div>
 </template>
 
 <style scoped>
 /* 팝업 전용 CSS (위에서 설명한 fixed 스타일) */
-/* .modal-overlay {
+.modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -124,5 +155,5 @@ const onCome = () => {
   padding: 2em;
   border-radius: 20px;
   border: 2px solid #d1c4e9;
-} */
+}
 </style>
