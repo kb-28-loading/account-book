@@ -95,7 +95,7 @@ const onCome = () => {
 <template>
   <div class="modal-overlay">
     <div class="modal-content">
-      <h3>거래명과 연동</h3>
+      <h3>거래명과 연동<button style="float: right;" @click="$emit('close')">X</button></h3>
 
       <input v-model="userMoney" type="number" placeholder="금액" />
 
@@ -135,7 +135,7 @@ const onCome = () => {
       <textarea v-model="memo"></textarea>
 
       <button @click="saveBtn">저장</button>
-      <button @click="$emit('close')">닫기</button>
+      
     </div>
   </div>
 </template>
@@ -160,4 +160,5 @@ const onCome = () => {
   border-radius: 20px;
   border: 2px solid #d1c4e9;
 }
+
 </style>
