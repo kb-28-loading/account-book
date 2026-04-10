@@ -33,7 +33,7 @@ const selectedCategory = ref('');
 const memo = ref('');
 const accountBank = ref('');
 const accountCode = ref('');
-const listId = ref(0);
+const id = ref(0);
 
 const saveBtn = async () => {
   if (!userMoney.value) {
@@ -53,7 +53,7 @@ const saveBtn = async () => {
     userMoney: userMoney.value,
     type: categoryOn.value ? 'pay' : 'income',
     category: selectedCategory.value,
-    listId: Date.now(),
+    id: Date.now(),
     memo: memo.value,
     accountInfo: `${accountBank.value}-${accountCode.value}`,
   };

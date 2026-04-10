@@ -67,18 +67,31 @@ const deleteList = async (targetid) => {
 
   const userId = loginStore.user.id;
 
-  const res = await axios.get(`/api/users/${userId}`);
-  console.log("res", res);
+  try {
+    const res = await axios.get(`/api/users/${userId}`);
+    console.log('userId 값 가져오기', res);
 
-  const currentUser = res.data.moneyList;
+    const currentUser = res.data.moneyList;
+    console.log('currentUser에 res.data넣기', currentUser);
 
-  console.log("currentUser", currentUser);
+    const updatedMoneyList = currentUser.filter((item) => item.id !== Number(targetid));
+    console.log("updatedMoneyList", updatedMoneyList);
+    // 2. 기존의 moneyList 배열에 새로운 항목(newList)을 추가합니다
 
-  const updatedMoneyList = currentUser.filter((item) => { return item.listId !== Number(targetid)})
-
-  console.log("updatedMoneyList", updatedMoneyList);
-
+    // 3. 서버에 PATCH 요청을 보냅니다.
+    await axios.patch(`/api/users/${userId}`, {
+      moneyList: updatedMoneyList,
+    });
+    console.log("삭제 성공 >_<");
+    
+    getMoneyList();
+    
+  }catch{
+    console.log("삭제 실패 0_0..");
+    
+  }
 }
+
 </script>
 
 <template>
@@ -97,12 +110,12 @@ const deleteList = async (targetid) => {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="value in LatestList" :key="value.listId">
+        <tr v-for="value in LatestList" :key="value.id">
           <td>{{ value.title }}</td>
           <td>{{ value.category }}</td>
           <td>{{ value.userMoney }}</td>
           <td>{{ value.date }}</td>
-          <td><button>수정</button><button @click="deleteList">삭제</button></td>
+          <td><button>수정</button><button @click="deleteList(value.id)">삭제</button></td>
         </tr>
       </tbody>
     </table>
