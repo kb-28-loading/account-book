@@ -12,6 +12,7 @@
       <router-view></router-view>
       <router-view name="right"></router-view>
     </div>
+    <Footer />
   </div>
 </template>
 <script setup>
@@ -19,6 +20,7 @@ import Calender from '@/components/Calender.vue';
 import Budget from './Budget.vue';
 import Header from './Header.vue';
 import MoneyList from './MoneyList.vue';
+import Footer from './Footer.vue';
 
 const emit = defineEmits([
   'user-logout',
