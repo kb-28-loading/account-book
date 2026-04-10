@@ -24,15 +24,20 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import axios from "axios";
 
 const categoryList = ref([]);
 const selected = ref("");
 const selectedType = ref("");
 
-onMounted(async () => {
-  const response = await axios.get("/api/outcome-category");
-  categoryList.value = response.data;
-});
+const onTypeChange = async () => {
+  if (selectedType.value === "수입") {
+    const response = await axios.get("/api/income-category");
+    categoryList.value = response.data;
+  } else if (selectedType.value === "지출") {
+    const response = await axios.get("/api/outcome-category");
+    categoryList.value = response.data;
+  }
+};
 </script>
