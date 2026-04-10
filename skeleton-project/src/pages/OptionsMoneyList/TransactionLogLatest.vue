@@ -5,9 +5,9 @@
       <hr />
     </div>
     <div>
-      <div @click="sortLatest"><button>최신순</button></div>
-      <div @click=""><button>주간</button></div>
-      <div @click=""><button>월간</button></div>
+      <div @click="sortLatest"><button>전체 내역</button></div>
+      <div @click="setWeekly"><button>주간</button></div>
+      <div @click="setMonthly"><button>월간</button></div>
 
       <!-- 날짜 표시 + 버튼 -->
       <div class="date-box">
@@ -39,21 +39,13 @@
 <script setup>
 import { ref } from "vue";
 import TransactionLogList from "./TransactionLogList.vue";
-const latestData = ref();
 
-const sortLatest = () => {
-  latestData.value.sort((a, b) => {
-    return new Date(b.date) - new Date(a.date);
-  });
-};
-
-const latest = (moneyList) => {
-  latestData.value = moneyList.value;
-  console.log(latestData.value);
-};
 const showCalendar = ref(false);
-const showList = ref(false);
+const showList = ref(true);
 const queryCount = ref(0);
+const startDate = ref("yyyy - MM - dd");
+const endDate = ref("yyyy - MM - dd");
+const latestData = ref();
 
 const inputData = () => {
   showList.value = true;
@@ -61,8 +53,59 @@ const inputData = () => {
   console.log(showList.value);
 };
 
-const startDate = ref("yyyy - MM - dd");
-const endDate = ref("yyyy - MM - dd");
+const latest = (moneyList) => {
+  latestData.value = moneyList.value;
+  console.log(latestData.value);
+};
 
+const sortLatest = () => {
+  startDate.value = "yyyy - MM - dd";
+  endDate.value = "yyyy - MM - dd";
+  inputData();
+};
+// formatDate() -> 한국 기준시간이 UTC+9인 관계로 toISOString 문법 사용 시 기간 설정 오류로 인해 직접 꺼내서 조합
+const formatDate = (date) => {
+  const ye = date.getFullYear();
+  const mo = String(date.getMonth() + 1).padStart(2, "0");
+  const da = String(date.getDate()).padStart(2, "0");
+  return `${ye}-${mo}-${da}`;
+};
+
+const setWeekly = () => {
+  const today = new Date();
+  const day = today.getDay();
+  // -> getday로
+  // 0 = 일요일
+  // 1 = 월요일
+  // 2 = 화요일
+  // 3 = 수요일
+  // 4 = 목요일
+  // 5 = 금요일
+  // 6 = 토요일
+  console.log(day);
+
+  const sunday = new Date(today);
+  sunday.setDate(today.getDate() - day);
+
+  const saturday = new Date(sunday);
+  saturday.setDate(sunday.getDate() + 6);
+
+  startDate.value = formatDate(sunday);
+  endDate.value = formatDate(saturday);
+  inputData();
+};
+
+const setMonthly = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth();
+
+  const monthFirst = new Date(year, month, 1);
+  const monthLast = new Date(year, month + 1, 0);
+
+  startDate.value = formatDate(monthFirst);
+  endDate.value = formatDate(monthLast);
+  inputData();
+};
 // ---------------------------------------------
 </script>

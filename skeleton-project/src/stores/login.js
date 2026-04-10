@@ -1,9 +1,9 @@
-import { ref, computed } from 'vue';
-import { defineStore } from 'pinia';
-import axios from 'axios';
-import { useRouter } from 'vue-router';
+import { ref, computed } from "vue";
+import { defineStore } from "pinia";
+import axios from "axios";
+import { useRouter } from "vue-router";
 
-export const useLoginStore = defineStore('login', () => {
+export const useLoginStore = defineStore("login", () => {
   // // login 구현 Part
   // // states
   // const user = ref({});
@@ -65,7 +65,7 @@ export const useLoginStore = defineStore('login', () => {
   // };
   // return { user, undeID, undePW, login, logout };
 
-  const user = ref({ id: 1, userID: 'hj4094', userName: '한혜지' });
+  const user = ref({ id: 1, userID: "hj4094", userName: "한혜지" });
   let undeID = ref(0);
   let undePW = ref(0);
   return { user, undeID, undePW };

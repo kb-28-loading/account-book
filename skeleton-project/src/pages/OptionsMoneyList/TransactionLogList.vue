@@ -18,25 +18,38 @@
           <td>{{ value.title }}</td>
           <td>{{ value.category }}</td>
           <td>{{ value.userMoney }}</td>
+          <td><button @click="deleteItem(value.listId)">삭제</button></td>
         </tr>
       </tbody>
     </table>
   </div>
 </template>
 <script setup>
-// import { useLoginStore } from "@/stores/login";
+import { useLoginStore } from "@/stores/login";
 import { ref, onMounted } from "vue";
 import axios from "axios";
+const loginStore = useLoginStore();
 const props = defineProps({
   startDate: String,
   endDate: String,
 });
 const emit = defineEmits(["latest"]);
+const allMoneyList = ref([]);
 const moneyList = ref([]);
 
+const deleteItem = async (listId) => {
+  moneyList.value = moneyList.value.filter((item) => item.listId !== listId);
+  allMoneyList.value = allMoneyList.value.filter(
+    (item) => item.listId !== listId,
+  );
+  await axios.patch(`/api/users/${loginStore.user.id}`, {
+    moneyList: allMoneyList.value,
+  });
+};
+
 onMounted(async () => {
-  const response = await axios.get("/api/users/2"); // 수정 전
-  console.log(response.data);
+  const response = await axios.get(`/api/users/${loginStore.user.id}`); // 수정 전
+  allMoneyList.value = response.data.moneyList;
   moneyList.value = response.data.moneyList;
 
   const isVaildDate = (dateStr) => !isNaN(new Date(dateStr));
@@ -55,7 +68,4 @@ onMounted(async () => {
   });
   emit("latest", moneyList);
 });
-// const loginStore = useLoginStore();
-// const moneyList = loginStore.user.moneyList;
-// console.log(moneyList);
 </script>
