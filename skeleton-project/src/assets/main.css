@@ -7,3 +7,11 @@ body {
 }
 /* font awsome 불러오기 */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+
+/* Options 컴포넌트 내부 라우터 제목 아래 구분선이 될 hr태그에 적용시킬 css */
+.title-underline {
+  height: 1px;
+  border: none;
+  border-top: 2px solid;
+  color: rgb(96, 52, 132);
+}
