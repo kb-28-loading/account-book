@@ -4,28 +4,17 @@
       <div>예산관리 <span>예산설정</span></div>
 
       <div>
-        <div></div>
         <span @click="prevMonth">←</span>
         <span>{{ month }}월</span>
         <span @click="nextMonth">→</span>
-        <div>전체예산 :</div>
 
-        <div></div>
-        <div>전체예산:</div>
+        <div>전체예산 : {{ totalBudget }}</div>
 
-        <div>
-          식비 : <input type="number" v-model="budget.food" /><br /><br />
-          주거/통신 :
-          <input type="number" v-model="budget.housing" /><br /><br />
-          생활 : <input type="number" v-model="budget.life" /><br /><br />
-          온라인쇼핑 :
-          <input type="number" v-model="budget.shopping" /><br /><br />
-          카페/간식 :
-          <input type="number" v-model="budget.cafe" /><br /><br />
-          교통 : <input type="number" v-model="budget.transport" />
+        <div v-for="item in categories" :key="item.key">
+          {{ item.label }} :
+          <input type="number" v-model.number="budget[item.key]" />
+          <br /><br />
         </div>
-
-        <div>문화/여가 : <input v-model="budget.culture" /></div>
       </div>
     </div>
 
@@ -36,11 +25,40 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from "vue";
 
-const month = ref(4);
+const month = ref(1);
+const selectedUser = ref("신송윤");
 
-const budget = ref({
+const userBudgetData = {
+  신송윤: {
+    1: { food: 250000, culture: 150000, transport: 100000 },
+    2: { food: 300000, shopping: 200000 },
+    3: { food: 250000, culture: 200000, shopping: 150000 },
+  },
+  한혜지: {
+    1: { food: 300000, transport: 100000, culture: 200000 },
+    2: { food: 350000, shopping: 200000, transport: 100000 },
+    3: { food: 300000, shopping: 200000, culture: 300000 },
+  },
+  장진서: {
+    1: { food: 200000, culture: 150000 },
+    2: { food: 250000, transport: 100000 },
+    3: { food: 200000, shopping: 100000, culture: 200000 },
+  },
+};
+
+const categories = [
+  { key: "food", label: "식비" },
+  { key: "housing", label: "주거/통신" },
+  { key: "life", label: "생활" },
+  { key: "shopping", label: "온라인쇼핑" },
+  { key: "cafe", label: "카페/간식" },
+  { key: "transport", label: "교통" },
+  { key: "culture", label: "문화/여가" },
+];
+
+const defaultBudget = {
   food: 0,
   housing: 0,
   life: 0,
@@ -48,7 +66,45 @@ const budget = ref({
   cafe: 0,
   transport: 0,
   culture: 0,
-});
+};
+
+const budget = ref({ ...defaultBudget });
+const totalBudget = ref(0);
+
+const calculateTotal = () => {
+  totalBudget.value =
+    (budget.value.food || 0) +
+    (budget.value.housing || 0) +
+    (budget.value.life || 0) +
+    (budget.value.shopping || 0) +
+    (budget.value.cafe || 0) +
+    (budget.value.transport || 0) +
+    (budget.value.culture || 0);
+};
+
+watch(
+  [month, selectedUser],
+  () => {
+    const userData = userBudgetData[selectedUser.value];
+    const monthData = userData?.[month.value];
+
+    budget.value = {
+      ...defaultBudget,
+      ...monthData,
+    };
+
+    calculateTotal();
+  },
+  { immediate: true },
+);
+
+watch(
+  budget,
+  () => {
+    calculateTotal();
+  },
+  { deep: true },
+);
 
 const prevMonth = () => {
   if (month.value > 1) month.value--;
@@ -59,6 +115,8 @@ const nextMonth = () => {
 };
 
 const setting = () => {
-  console.log(budget.value);
+  console.log("현재 유저:", selectedUser.value);
+  console.log("현재 월:", month.value);
+  console.log("예산:", budget.value);
 };
 </script>
