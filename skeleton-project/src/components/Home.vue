@@ -1,17 +1,19 @@
 <template>
-  <div>
-    <h1>가계부 기본 화면</h1>
+  <div class="outer">
     <Header
       @user-logout="emit('user-logout')"
       @go-home="emit('go-home')"
       @go-options-transaction="emit('go-options-transaction')"
       @go-options-budget="emit('go-options-budget')"
     />
-    <Budget />
-    <div>
-      <router-view></router-view>
-      <router-view name="right"></router-view>
+    <div class="main-monitor">
+      <Budget />
+      <div>
+        <router-view></router-view>
+        <router-view name="right"></router-view>
+      </div>
     </div>
+
     <Footer />
   </div>
 </template>
@@ -29,3 +31,18 @@ const emit = defineEmits([
   'go-options-budget',
 ]);
 </script>
+<style>
+.outer {
+  background-color: rgb(248, 244, 254);
+}
+.main-monitor {
+  /* 화면 디자인 */
+  margin: 50px 20px 0;
+  padding: 40px 40px 0;
+  background-color: white;
+  border-radius: 60px 60px 0 0;
+  border-top: 3px rgb(123, 76, 161) solid;
+  border-left: 3px rgb(123, 76, 161) solid;
+  border-right: 3px rgb(123, 76, 161) solid;
+}
+</style>
