@@ -26,16 +26,35 @@ watch(
 );
 
 onMounted(() => {
-  console.log('마운트 시작!');
+  // console.log('마운트 시작!');
   getMoneyList();
-  console.log('데이터 함수 작동!');
+  // console.log('데이터 함수 작동!');
 });
+
+// =========================================================================
+// 추가 버튼
+const isSorted = ref(true);
+
+const clickedPlus = () => {
+  if (!isSorted.value) {
+    LatestList.value.sort((a, b) => new Date(b.date) - new Date(a.date));
+    console.log('최신순정렬');
+
+    isSorted.value = true;
+  } else {
+    LatestList.value.sort((a, b) => new Date(a.date) - new Date(b.date));
+    console.log('과거순 정렬');
+    isSorted.value = false;
+  }
+};
 </script>
 
 <template>
   <div>
+    <button @click="clickedPlus">
+      {{ isSorted ? '과거순정렬' : '최신순정렬' }}
+    </button>
     <table class="table">
-      <p>{{ console.log('테이블 시작') }}</p>
       <thead>
         <tr>
           <th>거래명</th>
@@ -51,6 +70,5 @@ onMounted(() => {
         </tr>
       </tbody>
     </table>
-    <p>{{ console.log('테이블 끗') }}</p>
   </div>
 </template>
