@@ -4,8 +4,8 @@
     <Header />
     <Budget />
     <div>
-      <Calender />
-      <MoneyList />
+      <router-view></router-view>
+      <router-view name="right"></router-view>
     </div>
   </div>
 </template>
