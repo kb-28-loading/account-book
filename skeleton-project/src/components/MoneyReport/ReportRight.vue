@@ -21,6 +21,7 @@ import {
 const props = defineProps({
   category: Array,
   data: Array,
+  colorList: Array,
 });
 
 const render = ref(false);
@@ -32,7 +33,7 @@ const chartData = ref({
   labels: [],
   datasets: [
     {
-      backgroundColor: ['#41B883', '#61DAFB', '#DD0031', '#FF3E00'],
+      backgroundColor: props.colorList,
       data: [],
     },
   ],
@@ -52,7 +53,7 @@ watch(
       labels: props.category,
       datasets: [
         {
-          backgroundColor: ['#41B883', '#61DAFB', '#DD0031', '#FF3E00'],
+          backgroundColor: props.colorList,
           data: newData,
         },
       ],
