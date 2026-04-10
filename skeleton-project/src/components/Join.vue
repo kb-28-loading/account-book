@@ -107,6 +107,7 @@ const postNewUser = async () => {
   const balance2 = balance.value;
   newUser.account.push({ bank: bank2, info: info2, balance: balance2 });
   newUser.moneyList = [];
+  newUser.userBudget = [];
   // console.log(newUser);
 
   // 서버로 새로운 User에 대한 정보 진행
