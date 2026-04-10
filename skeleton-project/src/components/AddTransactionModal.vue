@@ -1,25 +1,21 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
-// 부모(메인화면)로부터 '닫기' 함수와 '유저정보' 등을 받음
-const props = defineProps(['userId']);
-const emit = defineEmits(['close', 'refresh']);
+const inCategories = ref({ 'income-category': [] });
+const outCategories = ref({ 'outcome-category': [] });
+onMounted(async () => {
+  // 카테고리 정보를 서버에서 가져옴
 
-const title = ref('');
-const amount = ref(0);
+  const res = await axios.get('/api/income-category');
+  const res2 = await axios.get('/api/outcome-category');
+  inCategories.value = res.data;
+  outCategories.value = res2.data;
 
-const addData = async () => {
-  const newItem = {
-    title: title.value,
-    amount: amount.value,
-    userId: props.userId,
-    date: '2026-04-10',
-  };
-  await axios.post('/api/moneyList', newItem);
-  emit('refresh'); // 데이터 새로고침하라고 부모에게 신호 보냄
-  emit('close'); // 팝업 닫으라고 부모에게 신호 보냄
-};
+  console.log('데이터 받아오기', inCategories);
+  console.log('데이터 받아오기', outCategories);
+});
+
 const categoryOn = ref('');
 const income = () => {
   categoryOn.value = false;
@@ -44,15 +40,17 @@ const onCome = () => {
       </span>
 
       <div>카테고리</div>
-      <select>
-        <option value="">카테고리를 선택하세요</option>
-        <option value="meal">식비</option>
-        <option value="transport">교통비</option>
-        <option value="mart">생필품</option>
+      <select v-if="!categoryOn">
+        <option value="">수입 카테고리를 선택하세요</option>
+        <option v-for="item in inCategories" ::key="item">{{ item }}</option>
+      </select>
+      <select v-if="categoryOn">
+        <option value="">지출 카테고리를 선택하세요</option>
+        <option v-for="item in outCategories" ::key="item">{{ item }}</option>
       </select>
 
       <div>거래명</div>
-      <input v-model="title" placeholder="거래명" />
+      <input placeholder="거래명" />
 
       <div>결제수단</div>
       <select>
@@ -68,8 +66,8 @@ const onCome = () => {
       <div>메모</div>
       <textarea name="" id=""></textarea>
 
-      <button @click="addData">저장</button>
-      <button @click="$emit('close')">닫기</button>
+      <button>저장</button>
+      <button>닫기</button>
     </div>
   </div>
 </template>
