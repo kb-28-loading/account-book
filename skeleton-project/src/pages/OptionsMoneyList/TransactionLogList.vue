@@ -22,20 +22,12 @@
         </tr>
       </tbody>
     </table>
-    <button @click="AddList">+</button>
-    <AddTransactionModal
-      v-if="isModalOpen === true"
-      @post="getMoneyList"
-      @close="isModaClose"
-    />
   </div>
 </template>
 <script setup>
 import { useLoginStore } from "@/stores/login";
 import { ref, onMounted } from "vue";
 import axios from "axios";
-import AddTransactionModal from "@/components/AddTransactionModal.vue";
-
 const loginStore = useLoginStore();
 const props = defineProps({
   startDate: String,
@@ -76,19 +68,4 @@ onMounted(async () => {
   });
   emit("latest", moneyList);
 });
-const isModalOpen = ref(false); /* 팝업창의 열림/닫힘 상태를 저장할 변수 */
-const AddList = () => {
-  isModalOpen.value = true;
-};
-
-const isModaClose = () => {
-  isModalOpen.value = false;
-};
-const LatestList = ref([]);
-
-const getMoneyList = async () => {
-  const res = await axios.get(`/api/users/${loginStore.user.id}`);
-  LatestList.value = res.data.moneyList;
-  console.log("데이터 로드 성공:", LatestList.value);
-};
 </script>
