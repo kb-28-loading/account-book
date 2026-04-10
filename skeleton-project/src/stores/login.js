@@ -59,7 +59,11 @@ export const useLoginStore = defineStore('login', () => {
   //     return 'rejected';
   //   }
   // };
-  // return { user, undeID, undePW, login };
+
+  // const logout = () => {
+  //   user.value = {};
+  // };
+  // return { user, undeID, undePW, login, logout };
 
   const user = ref({ id: 1, userID: 'hj4094', userName: '한혜지' });
   let undeID = ref(0);
