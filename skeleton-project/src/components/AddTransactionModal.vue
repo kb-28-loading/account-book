@@ -20,6 +20,34 @@ onMounted(async () => {
   console.log('결제수단 데이터 받아오기', outCategories);
 });
 
+// =======================================================
+// 1. 각각의 입력값을 담을 바구니(ref) 선언
+const amount = ref(0);
+const title = ref('');
+const selectedCategory = ref('');
+const selectedBank = ref('');
+const selectedDate = ref('2026-04-10'); // 기본값 설정
+const memo = ref('');
+
+// 2. 저장 버튼 함수
+const saveBtn = async () => {
+  // 3. 변수들에 담긴 값들을 하나의 객체로 모으기
+  console.log('저장 버튼!');
+
+  const newItem = {
+    amount: amount.value,
+    title: title.value,
+    category: selectedCategory.value,
+    bank: selectedBank.value,
+    date: selectedDate.value,
+    memo: memo.value,
+    userId: props.userId, // 부모에게 받은 ID
+    type: categoryOn.value ? '지출' : '수입',
+  };
+};
+
+// ==============================================================
+
 const categoryOn = ref('');
 const income = () => {
   categoryOn.value = false;
@@ -76,7 +104,7 @@ const onCome = () => {
 
 <style scoped>
 /* 팝업 전용 CSS (위에서 설명한 fixed 스타일) */
-.modal-overlay {
+/* .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -93,5 +121,5 @@ const onCome = () => {
   padding: 2em;
   border-radius: 20px;
   border: 2px solid #d1c4e9;
-}
+} */
 </style>
