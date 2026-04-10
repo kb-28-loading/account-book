@@ -35,7 +35,8 @@ const emit = defineEmits(["latest"]);
 const moneyList = ref([]);
 
 onMounted(async () => {
-  const response = await axios.get("/api/users/2");
+  const response = await axios.get("/api/users/2"); // 수정 전
+  console.log(response.data);
   moneyList.value = response.data.moneyList;
 
   const isVaildDate = (dateStr) => !isNaN(new Date(dateStr));
