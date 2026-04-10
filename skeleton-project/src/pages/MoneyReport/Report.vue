@@ -29,12 +29,12 @@ import ReportRight from '@/components/MoneyReport/ReportRight.vue';
 const reportStore = useReportStore();
 
 const colorList = [
-  '#F3F7FF',
-  '#F8F4FC',
   '#BFA5D4',
   '#CDBAE7',
   '#E1DAE5',
   '#FEF2FC',
+  '#F3F7FF',
+  '#F8F4FC',
 ];
 
 onMounted(async () => {
