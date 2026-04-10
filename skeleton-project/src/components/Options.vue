@@ -57,10 +57,13 @@ const emit = defineEmits(["user-logout"]);
 
   /* 구성요소 배치 */
   display: flex;
-  justify-content: space-between;
+}
+.left-side-menu {
+  justify-content: left;
+  width: 200px;
 }
 .router {
-  width: 1150px;
+  width: 1054px;
   padding-left: 60px;
   margin-bottom: 50px;
   border-left: 1px rgb(248, 244, 254) solid;
