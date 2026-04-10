@@ -22,28 +22,31 @@ onMounted(async () => {
 
 // =======================================================
 // 1. 각각의 입력값을 담을 바구니(ref) 선언
-const amount = ref(0);
 const title = ref('');
-const selectedCategory = ref('');
-const selectedBank = ref('');
 const selectedDate = ref('2026-04-10'); // 기본값 설정
+const userMoney = ref(0);
+const selectedCategory = ref('');
+const listId = ref(0);
 const memo = ref('');
+const selectedBank = ref('');
 
 // 2. 저장 버튼 함수
 const saveBtn = async () => {
   // 3. 변수들에 담긴 값들을 하나의 객체로 모으기
   console.log('저장 버튼!');
 
-  const newItem = {
-    amount: amount.value,
+  const newList = {
     title: title.value,
-    category: selectedCategory.value,
-    bank: selectedBank.value,
     date: selectedDate.value,
+    userMoney: userMoney.value,
+    type: categoryOn.value ? 'pay' : 'income',
+    category: selectedCategory.value,
+    listId: listId.value,
     memo: memo.value,
-    userId: props.userId, // 부모에게 받은 ID
-    type: categoryOn.value ? '지출' : '수입',
+    bank: selectedBank.value,
   };
+
+  console.log(newList);
 };
 
 // ==============================================================
@@ -64,7 +67,7 @@ const onCome = () => {
     <div class="modal-content">
       <h3>거래명과 연동</h3>
 
-      <input type="number" placeholder="금액" />
+      <input v-model="userMoney" type="number" placeholder="금액" />
 
       <span>
         <button @click="income">수입</button
@@ -72,29 +75,29 @@ const onCome = () => {
       </span>
 
       <div>카테고리</div>
-      <select v-if="!categoryOn">
+      <select v-if="!categoryOn" v-model="selectedCategory">
         <option value="">수입 카테고리를 선택하세요</option>
         <option v-for="item in inCategories" :key="item">{{ item }}</option>
       </select>
-      <select v-if="categoryOn">
+      <select v-if="categoryOn" v-model="selectedCategory">
         <option value="">지출 카테고리를 선택하세요</option>
         <option v-for="item in outCategories" :key="item">{{ item }}</option>
       </select>
 
       <div>거래명</div>
-      <input placeholder="거래명" />
+      <input v-model="title" placeholder="거래명" />
 
       <div>결제수단</div>
-      <select>
+      <select v-model="selectedBank">
         <option value="">은행 카테고리를 선택하세요</option>
         <option v-for="item in bankCategories" :key="item">{{ item }}</option>
       </select>
 
       <div>날짜</div>
-      <input type="date" />
+      <input type="date" v-model="selectedDate" />
 
       <div>메모</div>
-      <textarea name="" id=""></textarea>
+      <textarea v-model="memo"></textarea>
 
       <button @click="saveBtn">저장</button>
       <button>닫기</button>
