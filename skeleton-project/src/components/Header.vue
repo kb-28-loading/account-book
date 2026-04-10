@@ -40,7 +40,7 @@ const goBudget = () => {
   justify-content: space-between;
   align-items: center;
   background-color: white;
-  height: 60px;
+  height: 70px;
 }
 img {
   width: 113px;
