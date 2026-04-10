@@ -18,7 +18,8 @@
           "userMoney": 50000,
           "type": "pay",
           "category": "culture",
-          "listId": 834291
+          "listId": 834291,
+          "accountInfo": "KB-48550201280534"
         },
         {
           "title": "카페",
@@ -27,7 +28,8 @@
           "type": "pay",
           "category": "food",
           "listId": 192847,
-          "memo": "아이스 아메리카노"
+          "memo": "아이스 아메리카노",
+          "accountInfo": "KB-48550201280534"
         },
         {
           "title": "편의점",
@@ -35,7 +37,8 @@
           "userMoney": 8200,
           "type": "pay",
           "category": "food",
-          "listId": 563920
+          "listId": 563920,
+          "accountInfo": "KB-48550201280534"
         },
         {
           "title": "버스",
@@ -43,7 +46,8 @@
           "userMoney": 1500,
           "type": "pay",
           "category": "transport",
-          "listId": 774512
+          "listId": 774512,
+          "accountInfo": "KB-48550201280534"
         },
         {
           "title": "알바비",
@@ -52,7 +56,8 @@
           "type": "income",
           "category": "salary",
           "listId": 309485,
-          "memo": "주말 근무"
+          "memo": "주말 근무",
+          "accountInfo": "KB-48550201280534"
         }
       ],
       "userBudget": [
@@ -95,7 +100,7 @@
       "userName": "신송윤",
       "account": [
         {
-          "bank": "wow",
+          "bank": "우리",
           "info": "48550201280534",
           "balance": 150000
         }
@@ -107,7 +112,8 @@
           "userMoney": 9000,
           "type": "pay",
           "category": "food",
-          "listId": 681203
+          "listId": 681203,
+          "accountInfo": "우리-48550201280534"
         },
         {
           "title": "영화",
@@ -116,7 +122,8 @@
           "type": "pay",
           "category": "culture",
           "listId": 957124,
-          "memo": "팝콘 포함"
+          "memo": "팝콘 포함",
+          "accountInfo": "우리-48550201280534"
         },
         {
           "title": "택시",
@@ -124,7 +131,8 @@
           "userMoney": 12000,
           "type": "pay",
           "category": "transport",
-          "listId": 442198
+          "listId": 442198,
+          "accountInfo": "우리-48550201280534"
         },
         {
           "title": "쇼핑",
@@ -133,7 +141,8 @@
           "type": "pay",
           "category": "shopping",
           "listId": 713650,
-          "memo": "옷 구매"
+          "memo": "옷 구매",
+          "accountInfo": "우리-48550201280534"
         },
         {
           "title": "배당금",
@@ -141,7 +150,8 @@
           "userMoney": 50000,
           "type": "income",
           "category": "dividend",
-          "listId": 298471
+          "listId": 298471,
+          "accountInfo": "우리-48550201280534"
         }
       ],
       "userBudget": [
@@ -183,7 +193,7 @@
       "userName": "장진서",
       "account": [
         {
-          "bank": "SHinhan",
+          "bank": "신한",
           "info": "110499289321",
           "balance": 200000
         }
@@ -195,7 +205,8 @@
           "userMoney": 4500,
           "type": "pay",
           "category": "food",
-          "listId": 555902
+          "listId": 555902,
+          "accountInfo": "신한-110499289321"
         },
         {
           "title": "지하철",
@@ -203,7 +214,8 @@
           "userMoney": 1350,
           "type": "pay",
           "category": "transport",
-          "listId": 804331
+          "listId": 804331,
+          "accountInfo": "신한-110499289321"
         },
         {
           "title": "책 구매",
@@ -212,7 +224,8 @@
           "type": "pay",
           "category": "culture",
           "listId": 267194,
-          "memo": "전공 서적"
+          "memo": "전공 서적",
+          "accountInfo": "신한-110499289321"
         },
         {
           "title": "과외비",
@@ -220,7 +233,8 @@
           "userMoney": 200000,
           "type": "income",
           "category": "salary",
-          "listId": 990284
+          "listId": 990284,
+          "accountInfo": "신한-110499289321"
         },
         {
           "title": "저녁",
@@ -229,7 +243,8 @@
           "type": "pay",
           "category": "food",
           "listId": 134778,
-          "memo": "치킨"
+          "memo": "치킨",
+          "accountInfo": "신한-110499289321"
         }
       ],
       "userBudget": [
@@ -265,16 +280,16 @@
       "id": 3
     }
   ],
-  "income-category": ["급여", "배당금", "이자"],
+  "income-category": ["salary", "dividend", "interest"],
   "outcome-category": [
-    "식비",
-    "문화/여가",
-    "교통",
-    "쇼핑",
-    "월세",
-    "주거/관리비",
-    "생활용품",
-    "카페"
+    "food",
+    "culture",
+    "transport",
+    "shopping",
+    "rent",
+    "housing",
+    "life",
+    "cafe"
   ],
   "bank-category": [
     "KB",
