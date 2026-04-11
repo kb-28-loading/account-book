@@ -74,6 +74,22 @@ onMounted(async () => {
   console.log(totBudget.value, totOutcome.value, leftBudget.value);
   leftBudget.value = totBudget.value - totOutcome.value;
 });
+computed(async () => {
+  // 이번달에 해당하는 문자열 들고오기
+  settingDatefunc();
+
+  // 예산 데이터 불러오기
+  await budgetLoading();
+
+  // 총 예산을 report.js에서 계산한 후 받아오기
+  await reportStore.userData;
+  // 이번달 총 지출 들고오기
+  totOutcome.value = reportStore.totOutcome;
+
+  // 남은예산 계산
+  console.log(totBudget.value, totOutcome.value, leftBudget.value);
+  leftBudget.value = totBudget.value - totOutcome.value;
+});
 </script>
 <style>
 .block {

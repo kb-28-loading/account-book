@@ -4,40 +4,21 @@ import EditTransactionModal from '@/components/EditTransactionModal.vue'; // 자
 import { ref, watch, onMounted } from 'vue';
 import { useLoginStore } from '@/stores/login';
 import { useRoute, useRouter } from 'vue-router';
+import { useMoneyStore } from '@/stores/money';
 import axios from 'axios';
 
 const currentRoute = useRoute();
 const loginStore = useLoginStore();
+const moneyStore = useMoneyStore();
 
 // =======================================================
 // 주소 바뀌면 해당 주소에 맞는 값들 보여주기
-watch(
-  () => currentRoute.params.selectedDate,
-  // currentRoute : 현재 페이지 정보
-  // selectedDate : 캘린더에서 params값
-  // 해당 값이 변하면 작동
-  (newDate) => {
-    if (newDate) getFilteredList(newDate.toString());
-    // 새로운값(새로운 곳으로 이동) -> 새로운 주소를 문자열로 바꿔 getFilteredList함수로 보냄
-    // 새로운 주소와 login.js에서 일치하는 값 dailyList에 담기
-    console.log('변경 감지');
-  },
-);
-// watch함수
-// 1.
-// watch([a, b]),([newA, newB]) => { 함수 })
-// a,b둘다 감시 둘중하나라도 바뀌면 함수 실행
-// 2.
-// watch(변수, (newVal) => { 함수A })
-// 변수를 지켜보고 값이 바뀌면 함수A 작동
 
-const dailyList = ref([]);
-
-// 같은 날에 있는 값들 챙기기
-const getFilteredList = async (date) => {
-  const resp = await axios.get(`/api/users/${loginStore.user.id}`);
-  dailyList.value = resp.data.moneyList.filter((item) => item.date === date);
-};
+const dailyList = computed(() => {
+  return moneyStore.userMoneyList.filter(
+    (item) => item.date === currentRoute.params.selectedDate
+  );
+});
 // ========================================================
 // 처음 주소로 들어갔을 때 작동 할 상황을 대비해 페이지 첫 로드되면 목록 출력
 onMounted(() => {
@@ -158,8 +139,7 @@ const isModaClose = () => {
     </table>
     <!-- 목록 추가 버튼 -->
     <button @click="AddList">+</button>
-    <AddTransactionModal v-if="isModalOpen === true" @post="getFilteredList(currentRoute.params.selectedDate.toString())" @close="isModaClose" />
-    <EditTransactionModal v-if="editModalOpen === true" :editData="editData" @post="getFilteredList(currentRoute.params.selectedDate.toString())"
-      @close="isModaClose" />
+    <AddTransactionModal v-if="isModalOpen === true" @close="isModaClose" />
+    <EditTransactionModal v-if="editModalOpen === true" :editData="editData" @close="isModaClose" />
   </div>
 </template>
