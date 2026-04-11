@@ -5,13 +5,13 @@
     <div class="report-graph-group">
       <ReportLeft
         class="report-graph"
-        :category="usedCategoryIncome"
-        :data="sortedIncomeMoney"
+        :category="reportStore.usedCategoryIncome"
+        :data="reportStore.sortedIncomeMoney"
         :colorList="colorList"
       /><ReportRight
         class="report-graph graph-right"
-        :category="usedCategoryOutcome"
-        :data="sortedOutcomeMoney"
+        :category="reportStore.usedCategoryOutcome"
+        :data="reportStore.sortedOutcomeMoney"
         :colorList="colorList"
       />
     </div>
@@ -38,13 +38,8 @@ const colorList = [
 ];
 
 onMounted(async () => {
-  await reportStore.userData();
+  await reportStore.userData;
 });
-
-const usedCategoryIncome = ref(reportStore.usedCategoryIncome);
-const usedCategoryOutcome = ref(reportStore.usedCategoryOutcome);
-const sortedIncomeMoney = ref(reportStore.sortedIncomeMoney);
-const sortedOutcomeMoney = ref(reportStore.sortedOutcomeMoney);
 </script>
 <style scoped>
 .report-graph-group {
