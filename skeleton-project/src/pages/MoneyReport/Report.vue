@@ -2,6 +2,11 @@
   <div>
     <h1>이번달 소비 리포트</h1>
     <hr class="title-underline" />
+    <div>
+      <div><i class="fa-solid fa-arrow-left"></i></div>
+      <div>{{ reportStore.month }}</div>
+      <div><i class="fa-solid fa-arrow-right"></i></div>
+    </div>
     <div class="report-graph-group">
       <ReportLeft
         class="report-graph"

@@ -5,6 +5,7 @@
       @go-home="emit('go-home')"
       @go-options-transaction="emit('go-options-transaction')"
       @go-options-budget="emit('go-options-budget')"
+      @go-options-report="emit('go-options-report')"
     />
     <div class="main-monitor">
       <div class="left-side-menu">
@@ -34,12 +35,12 @@
   </div>
 </template>
 <script setup>
-import BudgetInOptions from "@/pages/BudgetSetting/BudgetInOptions.vue";
-import Report from "@/pages/MoneyReport/Report.vue";
-import Header from "./Header.vue";
-import Footer from "./Footer.vue";
+import BudgetInOptions from '@/pages/BudgetSetting/BudgetInOptions.vue';
+import Report from '@/pages/MoneyReport/Report.vue';
+import Header from './Header.vue';
+import Footer from './Footer.vue';
 
-const emit = defineEmits(["user-logout"]);
+const emit = defineEmits(['user-logout']);
 </script>
 <style scoped>
 .outer {

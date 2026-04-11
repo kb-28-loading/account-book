@@ -9,6 +9,7 @@
         @go-home="emit('go-home')"
         @go-options-transaction="goTransaction"
         @go-options-budget="goBudget"
+        @go-options-report="emit('go-options-report')"
       />
     </div>
   </div>
@@ -22,6 +23,7 @@ const emit = defineEmits([
   'go-home',
   'go-options-transaction',
   'go-options-budget',
+  'go-options-report',
 ]);
 
 // transaction으로 이동

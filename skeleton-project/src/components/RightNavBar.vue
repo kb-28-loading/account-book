@@ -42,6 +42,13 @@
               >
                 예산 확인
               </li>
+              <hr />
+              <li
+                class="nav-item text-center"
+                @click.stop="emit('go-options-report')"
+              >
+                월별 리포트
+              </li>
             </ul>
           </div>
         </div>
@@ -56,6 +63,7 @@ const emit = defineEmits([
   'go-home',
   'go-options/transaction',
   'go-options/budget',
+  'go-options-report',
 ]);
 
 const navClass = computed(
