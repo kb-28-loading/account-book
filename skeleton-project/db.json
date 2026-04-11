@@ -58,6 +58,16 @@
           "id": 309485,
           "memo": "주말 근무",
           "accountInfo": "KB-48550201280534"
+        },
+        {
+          "title": "택시",
+          "date": "2026-04-03",
+          "userMoney": 30000,
+          "type": "지출",
+          "category": "교통",
+          "id": 1775902802558,
+          "memo": "",
+          "accountInfo": "KB-48550201280534"
         }
       ],
       "userBudget": [
@@ -82,7 +92,7 @@
           }
         },
         {
-          "budgetYearMonth": "2026-04",
+          "budgetYearMonth": "2026-03",
           "budgetTot": 1000000,
           "id": 991245,
           "budgetCategory": {
@@ -280,7 +290,11 @@
       "id": 3
     }
   ],
-  "income-category": ["급여", "배당금", "이자"],
+  "income-category": [
+    "급여",
+    "배당금",
+    "이자"
+  ],
   "outcome-category": [
     "식비",
     "문화/여가",
