@@ -16,12 +16,14 @@
 </template>
 <script setup>
 import { useLoginStore } from '@/stores/login';
+import { useMoneyStore } from '@/stores/money';
 import { useReportStore } from '@/stores/report';
 import axios from 'axios';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 
 const loginStore = useLoginStore();
 const reportStore = useReportStore();
+const moneyStore = useMoneyStore();
 
 // 이번달에 맞는 문자열 설정
 const todaydate = new Date();
@@ -57,13 +59,12 @@ const budgetLoading = async () => {
   }
   console.log('totbudget', totBudget.value, settingDate);
 };
-
 onMounted(async () => {
   // 이번달에 해당하는 문자열 들고오기
   settingDatefunc();
 
   // 예산 데이터 불러오기
-  await budgetLoading();
+  await budgetLoading(moneyStore.reloading);
 
   // 총 예산을 report.js에서 계산한 후 받아오기
   await reportStore.userData;
@@ -74,22 +75,28 @@ onMounted(async () => {
   console.log(totBudget.value, totOutcome.value, leftBudget.value);
   leftBudget.value = totBudget.value - totOutcome.value;
 });
-computed(async () => {
-  // 이번달에 해당하는 문자열 들고오기
-  settingDatefunc();
 
-  // 예산 데이터 불러오기
-  await budgetLoading();
+watch(
+  () => moneyStore.reloading,
+  async () => {
+    console.log(moneyStore.reloading);
 
-  // 총 예산을 report.js에서 계산한 후 받아오기
-  await reportStore.userData;
-  // 이번달 총 지출 들고오기
-  totOutcome.value = reportStore.totOutcome;
+    // 이번달에 해당하는 문자열 들고오기
+    settingDatefunc();
 
-  // 남은예산 계산
-  console.log(totBudget.value, totOutcome.value, leftBudget.value);
-  leftBudget.value = totBudget.value - totOutcome.value;
-});
+    // 예산 데이터 불러오기
+    await budgetLoading();
+
+    // 총 예산을 report.js에서 계산한 후 받아오기
+    await reportStore.userData;
+    // 이번달 총 지출 들고오기
+    totOutcome.value = reportStore.totOutcome;
+
+    // 남은예산 계산
+    console.log(totBudget.value, totOutcome.value, leftBudget.value);
+    leftBudget.value = totBudget.value - totOutcome.value;
+  },
+);
 </script>
 <style>
 .block {
