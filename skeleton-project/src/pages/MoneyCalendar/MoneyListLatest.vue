@@ -75,7 +75,7 @@ const deleteList = async (targetid) => {
   }
 }
 // =========================================================
-// 부모에서 자식에게 데이터 보내기
+// 클릭 이벤트 데이터 보내기
 
 const editData = ref(null);/* 수정할 데이터를 담을 바구니 */
 const editModalOpen = ref(false);
