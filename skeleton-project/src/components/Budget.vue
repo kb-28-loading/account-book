@@ -51,11 +51,11 @@ const budgetLoading = async () => {
   for (let i = 0; i < budgetList.length; i++) {
     if (budgetList[i].budgetYearMonth.indexOf(settingDate) !== -1) {
       totBudget.value = budgetList[i].budgetTot;
-      // console.log('if문 들어옴', totBudget.value);
+      console.log('if문 들어옴', totBudget.value);
     }
-    // console.log('for문', budgetList[i].budgetYearMonth);
+    console.log('for문', budgetList[i].budgetYearMonth);
   }
-  // console.log('totbudget', totBudget.value, settingDate);
+  console.log('totbudget', totBudget.value, settingDate);
 };
 
 onMounted(async () => {
@@ -71,7 +71,7 @@ onMounted(async () => {
   totOutcome.value = reportStore.totOutcome;
 
   // 남은예산 계산
-  // console.log(totBudget.value, totOutcome.value, leftBudget.value);
+  console.log(totBudget.value, totOutcome.value, leftBudget.value);
   leftBudget.value = totBudget.value - totOutcome.value;
 });
 </script>

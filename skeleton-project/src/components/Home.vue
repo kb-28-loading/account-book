@@ -5,6 +5,7 @@
       @go-home="emit('go-home')"
       @go-options-transaction="emit('go-options-transaction')"
       @go-options-budget="emit('go-options-budget')"
+      @go-options-report="emit('go-options-report')"
     />
     <div class="main-monitor">
       <Budget />
@@ -29,6 +30,7 @@ const emit = defineEmits([
   'go-home',
   'go-options-transaction',
   'go-options-budget',
+  'go-options-report',
 ]);
 </script>
 <style>

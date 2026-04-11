@@ -134,5 +134,6 @@ export const useReportStore = defineStore('report', () => {
     sortedIncomeMoney,
     sortedOutcomeMoney,
     totOutcome,
+    month,
   };
 });

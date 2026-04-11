@@ -66,7 +66,6 @@ const saveBtn = async () => {
   // 1. 현재 로그인한 유저의 기존 정보를 먼저 가져옴
   const userId = loginStore.user.id;
 
-
   try {
     const res = await axios.get(`/api/users/${userId}`);
     const currentUser = res.data;
@@ -105,14 +104,19 @@ const onCome = () => {
 <template>
   <div class="modal-overlay">
     <div class="modal-content">
-      <h3>거래명과 연동<button style="float: right;" @click="$emit('close')">X</button></h3>
+      <h3>
+        거래명과 연동<button style="float: right" @click="$emit('close')">
+          X
+        </button>
+      </h3>
       <div>금액</div>
       <input v-model="userMoney" type="number" />
 
-      <br>
+      <br />
 
       <span>
-        <button @click="income">수입</button><button @click="onCome">지출</button>
+        <button @click="income">수입</button
+        ><button @click="onCome">지출</button>
       </span>
 
       <div>카테고리</div>
@@ -124,34 +128,36 @@ const onCome = () => {
         <option value="">지출 카테고리를 선택하세요</option>
         <option v-for="item in outCategories" :key="item">{{ item }}</option>
       </select>
-      <br>
+      <br />
       <div>거래명</div>
       <input v-model="title" placeholder="거래명" />
 
-      <br>
+      <br />
 
       <div>결제수단</div>
       <select v-model="accountBank">
         <option value="">은행 카테고리를 선택하세요</option>
         <option v-for="item in bankCategories" :key="item">{{ item }}</option>
       </select>
-      <input v-model="accountCode" type="number" placeholder="계좌번호를 입력하세요" />
+      <input
+        v-model="accountCode"
+        type="number"
+        placeholder="계좌번호를 입력하세요"
+      />
 
-      <br>
-
+      <br />
 
       <div>날짜</div>
       <input type="date" v-model="selectedDate" />
 
-      <br>
+      <br />
 
       <div>메모</div>
       <textarea v-model="memo"></textarea>
 
-      <br>
+      <br />
 
       <button @click="saveBtn">저장</button>
-
     </div>
   </div>
 </template>
