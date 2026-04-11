@@ -1,16 +1,16 @@
 <template>
-  <div>
-    <div>
-      <div>전체 예산</div>
-      <div>{{ totBudget }} 원</div>
+  <div class="row mx-4 mb-5">
+    <div class="col block">
+      <div class="budget-title tot-budget">전체 예산</div>
+      <div class="money">{{ totBudget }} 원</div>
     </div>
-    <div>
-      <div>총 지출</div>
-      <div>{{ totOutcome }} 원</div>
+    <div class="col mx-5 block">
+      <div class="budget-title tot-outcome">총 지출</div>
+      <div class="money">{{ totOutcome }} 원</div>
     </div>
-    <div>
-      <div>남은 예산</div>
-      <div>{{ leftBudget }} 원</div>
+    <div class="col block">
+      <div class="budget-title left-budget">남은 예산</div>
+      <div class="money">{{ leftBudget }} 원</div>
     </div>
   </div>
 </template>
@@ -51,7 +51,7 @@ const budgetLoading = async () => {
   for (let i = 0; i < budgetList.length; i++) {
     if (budgetList[i].budgetYearMonth.indexOf(settingDate) !== -1) {
       totBudget.value = budgetList[i].budgetTot;
-      // console.log('if문 들어옴');
+      // console.log('if문 들어옴', totBudget.value);
     }
     // console.log('for문', budgetList[i].budgetYearMonth);
   }
@@ -63,7 +63,7 @@ onMounted(async () => {
   settingDatefunc();
 
   // 예산 데이터 불러오기
-  budgetLoading();
+  await budgetLoading();
 
   // 총 예산을 report.js에서 계산한 후 받아오기
   await reportStore.userData;
@@ -71,6 +71,36 @@ onMounted(async () => {
   totOutcome.value = reportStore.totOutcome;
 
   // 남은예산 계산
+  // console.log(totBudget.value, totOutcome.value, leftBudget.value);
   leftBudget.value = totBudget.value - totOutcome.value;
 });
 </script>
+<style>
+.block {
+  border: 2px solid #bfa5d4;
+  border-radius: 10px;
+  height: 130px;
+}
+.budget-title {
+  margin-top: 15px;
+  margin-left: 15px;
+  margin-bottom: 0;
+
+  font-size: 20px;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.money {
+  text-align: center;
+  font-size: 50px;
+}
+.tot-budget {
+  color: #7b4ca1;
+}
+.tot-outcome {
+  color: red;
+}
+.left-budget {
+  color: #bfa5d4;
+}
+</style>
