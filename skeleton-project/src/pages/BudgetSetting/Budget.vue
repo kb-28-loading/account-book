@@ -1,6 +1,6 @@
 <template>
   <div class="budget-box">
-    <div class="title">예산관리 <span class="sub">예산확인</span></div>
+    <div class="title">예산관리 <span class="sub">예산설정</span></div>
 
     <div class="month-box">
       <span class="arrow" @click="prevMonth">←</span>
@@ -64,10 +64,10 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch } from 'vue';
 
 const month = ref(1);
-const selectedUser = ref("신송윤");
+const selectedUser = ref('신송윤');
 
 const userData = {
   신송윤: {
@@ -294,13 +294,13 @@ const budgetData = ref({ ...defaultBudgetData });
 const spendData = ref({ ...defaultSpendData });
 
 const categories = [
-  { key: "food", label: "식비" },
-  { key: "housing", label: "주거/통신" },
-  { key: "life", label: "생활" },
-  { key: "shopping", label: "온라인쇼핑" },
-  { key: "cafe", label: "카페/간식" },
-  { key: "transport", label: "교통" },
-  { key: "culture", label: "문화/여가" },
+  { key: 'food', label: '식비' },
+  { key: 'housing', label: '주거/통신' },
+  { key: 'life', label: '생활' },
+  { key: 'shopping', label: '온라인쇼핑' },
+  { key: 'cafe', label: '카페/간식' },
+  { key: 'transport', label: '교통' },
+  { key: 'culture', label: '문화/여가' },
 ];
 
 watch(
