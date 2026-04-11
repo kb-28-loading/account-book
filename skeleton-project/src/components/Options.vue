@@ -66,7 +66,7 @@ const emit = defineEmits(['user-logout']);
 .router {
   width: 1054px;
   padding-left: 60px;
-  margin-bottom: 50px;
+  padding-bottom: 50px;
   border-left: 1px rgb(248, 244, 254) solid;
 }
 </style>
