@@ -90,7 +90,6 @@ const saveBtn = async () => {
     await moneyStore.loadData();
     emit('close');
     alert("저장완료");
-
   } catch (err) {
     console.log('저장 실패 0_0....', err);
     alert("저장실패");
