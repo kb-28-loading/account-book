@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { useLoginStore } from '@/stores/login';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import axios from 'axios';
 
 export const useReportStore = defineStore('report', () => {
@@ -18,7 +18,7 @@ export const useReportStore = defineStore('report', () => {
   const sortedIncomeMoney = ref([]); // 카테고리 배열 순서 맞춰 금액 정렬
   const totIncome = ref(0); // 총 수입 금액
 
-  const userData = async () => {
+  const userData = computed(async () => {
     const resp = await axios.get(`/api/users/${loginStore.user.id}`);
     moneyList.value = resp.data.moneyList;
 
@@ -44,7 +44,7 @@ export const useReportStore = defineStore('report', () => {
     // 배열에 담긴 카테고리 순서대로 금액 퍼센트를 정렬
     sortingMoney(usedCategoryIncome, categoryIncomeMoney, sortedIncomeMoney);
     sortingMoney(usedCategoryOutcome, categoryOutcomeMoney, sortedOutcomeMoney);
-  };
+  });
 
   const date = new Date();
   const month = ref(date.getMonth() + 1);
@@ -133,5 +133,6 @@ export const useReportStore = defineStore('report', () => {
     usedCategoryOutcome,
     sortedIncomeMoney,
     sortedOutcomeMoney,
+    totOutcome,
   };
 });
