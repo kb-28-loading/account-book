@@ -5,6 +5,8 @@ import { ref, onMounted, watch, onBeforeUpdate } from 'vue';
 import { useLoginStore } from '@/stores/login';
 import axios from 'axios';
 
+// ============================================================
+// db.json에서 데이터 가져오기
 const loginStore = useLoginStore();
 const LatestList = ref([]);
 
@@ -13,13 +15,14 @@ const getMoneyList = async () => {
   LatestList.value = res.data.moneyList;
   console.log('데이터 로드 성공:', LatestList.value);
 };
-
+// =============================================================
+// 화면에 변화 or 처음 들어올때 데이터를 가져오도록 함
 watch(
-  () => loginStore.user?.id, // 1. 유저 ID라는 데이터의 변화를 지켜본다
+  () => loginStore.user?.id, // 1. 유저 ID라는 데이터의 변화를 지켜봄
   (newId) => {
     // 2. 변화가 감지되면 (undefined -> 실제 ID)
     if (newId) {
-      getMoneyList(); // 3. 그때 데이터를 가져온다!
+      getMoneyList(); // 3. 그때 데이터를 가져옴
       console.log('데이터 가져왔슈');
     }
   },
@@ -31,7 +34,7 @@ onMounted(() => {
   // console.log('데이터 함수 작동!');
 });
 
-// =========================================================================
+// =============================================================
 // 정렬 버튼
 const isSorted = ref(true);
 
@@ -56,6 +59,7 @@ const AddList = () => {
 
 const isModaClose = () => {
   isModalOpen.value = false;
+  editModalOpen.value = false;
 };
 // ==========================================================
 // 삭제 기능
@@ -75,7 +79,6 @@ const deleteList = async (targetid) => {
 
     const updatedMoneyList = currentUser.filter((item) => item.id !== Number(targetid));
     console.log("updatedMoneyList", updatedMoneyList);
-    // 2. 기존의 moneyList 배열에 새로운 항목(newList)을 추가합니다
 
     // 3. 서버에 PATCH 요청을 보냅니다.
     await axios.patch(`/api/users/${userId}`, {
@@ -93,15 +96,17 @@ const deleteList = async (targetid) => {
 // =========================================================
 // 부모에서 자식에게 데이터 보내기
 
-// 추가: 수정할 데이터를 담을 바구니
-const editData = ref(null);
+const editData = ref(null);/* 수정할 데이터를 담을 바구니 */
+const editModalOpen = ref(false);
 
 // 수정 버튼 클릭 함수
 const editList = (item) => {
   editData.value = item; // 클릭한 행의 데이터를 담고
-  isModalOpen.value = true; // 모달을 엽니다
+  console.log("수정 할 데이터 기존 값",item);
+  
+  editModalOpen.value = true; // 모달을 엽니다
 };
-
+// ========================================================
 </script>
 
 <template>
@@ -125,13 +130,13 @@ const editList = (item) => {
           <td>{{ value.category }}</td>
           <td>{{ value.userMoney }}</td>
           <td>{{ value.date }}</td>
-          <td><button @click="editList">수정</button><button @click="deleteList(value.id)">삭제</button></td>
+          <td><button @click="editList(value)">수정</button><button @click="deleteList(value.id)">삭제</button></td>
         </tr>
       </tbody>
     </table>
     <!-- 목록 추가 버튼 -->
     <button @click="AddList">+</button>
     <AddTransactionModal v-if="isModalOpen === true" @post="getMoneyList" @close="isModaClose" />
-    <EditTransactionModal v-if="isModalOpen === true" @post="getMoneyList" @close="isModaClose" />
+    <EditTransactionModal v-if="editModalOpen === true" :editData="editData" @post="getMoneyList" @close="isModaClose" />
   </div>
 </template>
