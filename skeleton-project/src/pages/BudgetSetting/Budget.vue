@@ -1,70 +1,93 @@
 <template>
-  <div class="budget-box">
-    <div class="title">예산관리 <span class="sub">예산확인</span></div>
+  <div style="padding: 24px">
+    <div class="budget-box">
+      <div class="title">예산관리 <span class="sub">예산확인</span></div>
 
-    <div class="month-box">
-      <span class="arrow" @click="prevMonth">←</span>
-      <span class="month-text">{{ month }}월</span>
-      <span class="arrow" @click="nextMonth">→</span>
-    </div>
-
-    <br />
-
-    <div>
-      전체예산 : {{ totalBudget.toLocaleString() }}원 &nbsp;&nbsp; 지출 :
-      {{ totalSpend.toLocaleString() }}원 &nbsp;&nbsp; 남은예산 :
-      {{ remainBudget.toLocaleString() }}원
-    </div>
-
-    <br />
-
-    <div
-      class="progress"
-      role="progressbar"
-      :aria-valuenow="totalProgress"
-      aria-valuemin="0"
-      aria-valuemax="100"
-      style="height: 28px; border-radius: 16px"
-    >
-      <div
-        class="progress-bar"
-        :style="{
-          width: totalProgress + '%',
-          backgroundColor: '#b79ad2',
-          transition: 'width 0.5s ease',
-          borderRadius: '16px',
-        }"
-      ></div>
-    </div>
-
-    <br />
-
-    <div v-for="item in categories" :key="item.key">
-      <div>
-        {{ item.label }} : {{ spendData[item.key]?.toLocaleString() || 0 }} /
-        {{ budgetData[item.key]?.toLocaleString() || 0 }}원
+      <div class="month-box">
+        <span class="arrow" @click="prevMonth">←</span>
+        <span class="month-text">{{ month }}월</span>
+        <span class="arrow" @click="nextMonth">→</span>
       </div>
+
+      <br />
+
+      <div>
+        전체예산 : {{ totalBudget.toLocaleString() }}원 &nbsp;&nbsp; 지출 :
+        {{ totalSpend.toLocaleString() }}원 &nbsp;&nbsp; 남은예산 :
+        {{ remainBudget.toLocaleString() }}원
+      </div>
+
+      <br />
 
       <div
         class="progress"
         role="progressbar"
-        :aria-valuenow="getCategoryProgress(item.key)"
+        :aria-valuenow="totalProgress"
         aria-valuemin="0"
         aria-valuemax="100"
-        style="height: 18px; border-radius: 12px"
+        style="height: 28px; border-radius: 16px"
       >
         <div
           class="progress-bar"
           :style="{
-            width: getCategoryProgress(item.key) + '%',
+            width: totalProgress + '%',
             backgroundColor: '#c4addd',
             transition: 'width 0.5s ease',
-            borderRadius: '12px',
+            borderRadius: '16px',
           }"
         ></div>
       </div>
 
       <br />
+
+      <div v-for="item in categories" :key="item.key">
+        <div>
+          {{ item.label }} : {{ spendData[item.key]?.toLocaleString() || 0 }} /
+          {{ budgetData[item.key]?.toLocaleString() || 0 }}원
+        </div>
+
+        <div
+          class="progress"
+          role="progressbar"
+          :aria-valuenow="getCategoryProgress(item.key)"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          style="height: 18px; border-radius: 12px"
+        >
+          <div
+            class="progress-bar"
+            :style="{
+              width: getCategoryProgress(item.key) + '%',
+              backgroundColor: '#c4addd',
+              transition: 'width 0.5s ease',
+              borderRadius: '12px',
+            }"
+          ></div>
+        </div>
+
+        <br />
+      </div>
+    </div>
+
+    <div
+      style="
+        margin-top: 48px;
+        width: 900px;
+        display: flex;
+        justify-content: flex-end;
+      "
+    >
+      <button
+        @click="setting"
+        style="
+          padding: 10px 18px;
+          font-size: 18px;
+          font-weight: 600;
+          cursor: pointer;
+        "
+      >
+        설정완료
+      </button>
     </div>
   </div>
 </template>
@@ -73,8 +96,6 @@
 import { ref, computed, watch } from "vue";
 
 const month = ref(1);
-
-// 로그인 성공 시 저장한 사용자 이름을 가져오는 방식
 const selectedUser = ref(localStorage.getItem("loginUserName") || "신송윤");
 
 const userData = {
@@ -356,5 +377,12 @@ const prevMonth = () => {
 
 const nextMonth = () => {
   if (month.value < 12) month.value++;
+};
+
+const setting = () => {
+  console.log("현재 사용자:", selectedUser.value);
+  console.log("현재 월:", month.value);
+  console.log("예산 데이터:", budgetData.value);
+  console.log("지출 데이터:", spendData.value);
 };
 </script>

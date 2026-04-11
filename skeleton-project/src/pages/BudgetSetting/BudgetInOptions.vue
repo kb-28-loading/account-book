@@ -1,25 +1,82 @@
 <template>
-  <div>
+  <div style="padding: 24px">
     <div>
-      <div>예산관리 <span>예산설정</span></div>
+      <div style="font-size: 28px; font-weight: 700; margin-bottom: 20px">
+        예산관리 <span>예산설정</span>
+      </div>
 
       <div>
-        <span @click="prevMonth">←</span>
-        <span>{{ month }}월</span>
-        <span @click="nextMonth">→</span>
+        <div style="font-size: 24px; font-weight: 600; margin-bottom: 16px">
+          <span @click="prevMonth" style="cursor: pointer">←</span>
+          <span style="margin: 0 12px">{{ month }}월</span>
+          <span @click="nextMonth" style="cursor: pointer">→</span>
+        </div>
 
-        <div>전체예산 : {{ totalBudget }}</div>
+        <div style="font-size: 22px; font-weight: 700; margin-bottom: 24px">
+          전체예산 : {{ totalBudget.toLocaleString() }}
+        </div>
 
-        <div v-for="item in categories" :key="item.key">
-          {{ item.label }} :
-          <input type="number" v-model.number="budget[item.key]" />
-          <br /><br />
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 48px;
+            row-gap: 20px;
+            max-width: 900px;
+          "
+        >
+          <div
+            v-for="item in categories"
+            :key="item.key"
+            style="display: flex; align-items: center; gap: 12px"
+          >
+            <div
+              style="
+                width: 120px;
+                text-align: right;
+                font-size: 18px;
+                font-weight: 600;
+                flex-shrink: 0;
+              "
+            >
+              {{ item.label }} :
+            </div>
+
+            <input
+              type="number"
+              v-model.number="budget[item.key]"
+              style="
+                width: 220px;
+                height: 40px;
+                padding: 0 12px;
+                font-size: 18px;
+                box-sizing: border-box;
+              "
+            />
+          </div>
         </div>
       </div>
     </div>
 
-    <div>
-      <button @click="setting">설정완료</button>
+    <div
+      style="
+        margin-top: 48px;
+        width: 900px;
+        display: flex;
+        justify-content: flex-end;
+      "
+    >
+      <button
+        @click="setting"
+        style="
+          padding: 10px 18px;
+          font-size: 18px;
+          font-weight: 600;
+          cursor: pointer;
+        "
+      >
+        설정완료
+      </button>
     </div>
   </div>
 </template>
