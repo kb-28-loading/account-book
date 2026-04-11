@@ -102,8 +102,8 @@ const editModalOpen = ref(false);
 // 수정 버튼 클릭 함수
 const editList = (item) => {
   editData.value = item; // 클릭한 행의 데이터를 담고
-  console.log("수정 할 데이터 기존 값",item);
-  
+  console.log("수정 할 데이터 기존 값", item);
+
   editModalOpen.value = true; // 모달을 엽니다
 };
 // ========================================================
@@ -119,15 +119,17 @@ const editList = (item) => {
         <tr>
           <th>거래명</th>
           <th>카테고리</th>
+          <th>타입</th>
           <th>금액</th>
           <th>날짜</th>
-          <th>-</th>
+          <th>기능</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="value in LatestList" :key="value.id">
           <td>{{ value.title }}</td>
           <td>{{ value.category }}</td>
+          <td>{{ value.type }}</td>
           <td>{{ value.userMoney }}</td>
           <td>{{ value.date }}</td>
           <td><button @click="editList(value)">수정</button><button @click="deleteList(value.id)">삭제</button></td>
@@ -137,6 +139,7 @@ const editList = (item) => {
     <!-- 목록 추가 버튼 -->
     <button @click="AddList">+</button>
     <AddTransactionModal v-if="isModalOpen === true" @post="getMoneyList" @close="isModaClose" />
-    <EditTransactionModal v-if="editModalOpen === true" :editData="editData" @post="getMoneyList" @close="isModaClose" />
+    <EditTransactionModal v-if="editModalOpen === true" :editData="editData" @post="getMoneyList"
+      @close="isModaClose" />
   </div>
 </template>
