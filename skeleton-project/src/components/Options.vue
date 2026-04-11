@@ -9,23 +9,39 @@
     />
     <div class="main-monitor">
       <div class="left-side-menu">
-        <RouterLink :to="{ name: 'options/transactionDate' }"
+        <div
+          class="side-menu-title"
+          @click="router.push({ name: 'options/transactionDate' })"
+        >
+          거래내역 상세조회
+        </div>
+        <RouterLink
+          :to="{ name: 'options/transactionDate' }"
+          class="router-link"
           >날짜별 거래내역</RouterLink
         >
-        <br />
-        <RouterLink :to="{ name: 'options/transactionCategory' }"
+        <RouterLink
+          :to="{ name: 'options/transactionCategory' }"
+          class="router-link"
           >카테고리별 거래내역</RouterLink
         >
         <br />
-        <RouterLink :to="{ name: 'options/budget-setting' }"
+        <div
+          class="side-menu-title"
+          @click="router.push({ name: 'options/budget' })"
+        >
+          예산 확인
+        </div>
+        <RouterLink :to="{ name: 'options/budget' }" class="router-link"
+          >예산 - 예산 확인</RouterLink
+        >
+        <RouterLink :to="{ name: 'options/budget-setting' }" class="router-link"
           >예산 - 예산 설정</RouterLink
         >
         <br />
-        <RouterLink :to="{ name: 'options/budget' }"
-          >예산 - 예산 확인</RouterLink
-        >
-        <br />
-        <RouterLink :to="{ name: 'options/moneyreport' }"
+        <RouterLink
+          :to="{ name: 'options/moneyreport' }"
+          class="side-menu-title"
           >월별 리포트</RouterLink
         >
       </div>
@@ -39,8 +55,11 @@ import BudgetInOptions from '@/pages/BudgetSetting/BudgetInOptions.vue';
 import Report from '@/pages/MoneyReport/Report.vue';
 import Header from './Header.vue';
 import Footer from './Footer.vue';
+import { useRouter } from 'vue-router';
 
 const emit = defineEmits(['user-logout']);
+
+const router = useRouter();
 </script>
 <style scoped>
 .outer {
@@ -60,9 +79,29 @@ const emit = defineEmits(['user-logout']);
   display: flex;
 }
 .left-side-menu {
-  justify-content: left;
+  display: flex;
+  flex-direction: column;
+  text-align: end;
   width: 200px;
+  padding-right: 20px;
+  padding-bottom: 100px;
 }
+
+.side-menu-title {
+  text-decoration: none;
+  color: black;
+  text-align: end;
+  margin-top: 10px;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.router-link {
+  text-decoration: none;
+  color: #828282;
+  margin-top: 3px;
+}
+
 .router {
   width: 1054px;
   padding-left: 60px;
