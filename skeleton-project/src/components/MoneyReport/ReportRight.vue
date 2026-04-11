@@ -30,11 +30,11 @@ const render = ref(false);
 ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
 
 const chartData = ref({
-  labels: [],
+  labels: props.category,
   datasets: [
     {
       backgroundColor: props.colorList,
-      data: [],
+      data: props.data,
     },
   ],
 });
@@ -43,7 +43,24 @@ const chartData = ref({
 watch(
   () => props.data,
   async (newData) => {
-    if (!newData?.length) return;
+    // 데이터가 없는 경우 회색으로 된 그래프 출력
+    if (!newData?.length) {
+      render.value = false; // 컴포넌트 강제로 끄기
+
+      await nextTick(); // 화면 랜더링 기다리기
+
+      chartData.value = {
+        labels: ['none'],
+        datasets: [
+          {
+            backgroundColor: ['#D9D9D9'],
+            data: [100],
+          },
+        ],
+      };
+      render.value = true;
+      return;
+    }
 
     render.value = false; // 컴포넌트 강제로 끄기
 
@@ -72,6 +89,4 @@ const chartOptions = {
     },
   },
 };
-
-console.log(props.data, '222');
 </script>
