@@ -15,10 +15,10 @@ const bankCategories = ref({ 'bank-category': [] });
 onMounted(async () => {
   const income = await axios.get('/api/income-category');
   const outcome = await axios.get('/api/outcome-category');
-  const bank = await axios.get('/api/bank-category');
+  const res = await axios.get(`/api/users/${loginStore.user.id}`);
   inCategories.value = income.data;
   outCategories.value = outcome.data;
-  bankCategories.value = bank.data;
+  account.value = res.data.account;
 
   console.log('수입데이터 받아오기', inCategories);
   console.log('지출데이터 받아오기', outCategories);
@@ -60,18 +60,6 @@ const saveBtn = async () => {
   }
   if (!title.value) {
     alert('거래명을 입력해주세요');
-    return;
-  }
-  if (!accountBank.value) {
-    alert('은행을 선택하세요');
-    return;
-  }
-  if (!accountCode.value) {
-    alert('계좌번호를 입력하세요');
-    return;
-  }
-  if (accountCode.value.length > 10) {
-    alert('계좌번호를 확인해주세요');
     return;
   }
 

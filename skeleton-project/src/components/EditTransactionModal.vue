@@ -12,16 +12,19 @@ console.log("editData", props.editData);
 // 담을 곳 생성
 const inCategories = ref({ 'income-category': [] });
 const outCategories = ref({ 'outcome-category': [] });
-const bankCategories = ref({ 'bank-category': [] });
+const account = ref({ 'account': [] });
 
 onMounted(async () => {
   // 카테고리 별 정보담기
   const income = await axios.get('/api/income-category');
   const outcome = await axios.get('/api/outcome-category');
-  const bank = await axios.get('/api/bank-category');
+  const res = await axios.get(`/api/users/${loginStore.user.id}`);
   inCategories.value = income.data;
   outCategories.value = outcome.data;
-  bankCategories.value = bank.data;
+  account.value = res.data.account;
+
+  console.log("res", res);
+  console.log("userAccount", userAccount);
 
   // 수정 버튼 누른 곳에 원래 있던 값 가져오기
   if (props.editData) {
@@ -74,18 +77,6 @@ const EditBtn = async () => {
   }
   if (!title.value) {
     alert('거래명을 입력해주세요');
-    return;
-  }
-  if (!accountBank.value) {
-    alert('은행을 선택하세요');
-    return;
-  }
-  if (!accountCode.value) {
-    alert('계좌번호를 입력하세요');
-    return;
-  }
-  if (accountCode.value.length > 10) {
-    alert('계좌번호를 확인해주세요');
     return;
   }
 
@@ -162,11 +153,10 @@ const onCome = () => {
       <br>
 
       <div>결제수단</div>
-      <select v-model="accountBank">
+      <select>
         <option value="">은행 카테고리를 선택하세요</option>
-        <option v-for="item in bankCategories" :key="item">{{ item }}</option>
+        <option v-for="item in account" :key="item"> {{ item.bank }}-{{ item.info }} </option>
       </select>
-      <input v-model="accountCode" type="number" placeholder="계좌번호를 입력하세요" />
 
       <br>
 
