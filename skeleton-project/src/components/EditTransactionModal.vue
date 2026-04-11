@@ -12,7 +12,7 @@ console.log("editData", props.editData);
 // 담을 곳 생성
 const inCategories = ref({ 'income-category': [] });
 const outCategories = ref({ 'outcome-category': [] });
-const account = ref({ 'account': [] });
+const account = ref([]);
 
 onMounted(async () => {
   // 카테고리 별 정보담기
@@ -24,7 +24,7 @@ onMounted(async () => {
   account.value = res.data.account;
 
   console.log("res", res);
-  console.log("userAccount", userAccount);
+  console.log("account", account);
 
   // 수정 버튼 누른 곳에 원래 있던 값 가져오기
   if (props.editData) {
@@ -36,6 +36,10 @@ onMounted(async () => {
     accountInfo.value = props.editData.accountInfo
     id.value = props.editData.id;
     memo.value = props.editData.memo
+
+    // 나중에 이해
+    categoryOn.value = props.editData.type === '지출';
+    selectedCategory.value = props.editData.category;
   }
 });
 // =======================================================
@@ -46,8 +50,6 @@ const selectedDate = ref('2026-04-10'); // 기본값 설정
 const userMoney = ref(0);
 const selectedCategory = ref('');
 const memo = ref('');
-const accountBank = ref('');
-const accountCode = ref('');
 const id = ref(0);
 const accountInfo = ref('');
 
@@ -64,7 +66,7 @@ const EditBtn = async () => {
     category: selectedCategory.value,
     id: id.value,
     memo: memo.value,
-    accountInfo: `${accountBank.value}-${accountCode.value}`,
+    accountInfo: accountInfo.value,
   };
 
   if (!userMoney.value) {
@@ -77,6 +79,10 @@ const EditBtn = async () => {
   }
   if (!title.value) {
     alert('거래명을 입력해주세요');
+    return;
+  }
+  if (!accountInfo.value) {
+    alert('결제수단을 선택해주세요')
     return;
   }
 
@@ -153,9 +159,11 @@ const onCome = () => {
       <br>
 
       <div>결제수단</div>
-      <select>
-        <option value="">은행 카테고리를 선택하세요</option>
-        <option v-for="item in account" :key="item"> {{ item.bank }}-{{ item.info }} </option>
+      <select v-model="accountInfo" v-if="account.length > 0">
+        <option value="">결제 수단을 선택하세요</option>
+        <option v-for="item in account" :key="item.info" :value="`${item.bank}-${item.info}`"> {{ item.bank }}-{{
+          item.info }}
+        </option>
       </select>
 
       <br>
