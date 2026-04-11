@@ -16,7 +16,7 @@
           "title": "티켓팅",
           "date": "2026-04-07",
           "userMoney": 50000,
-          "type": "pay",
+          "type": "소비",
           "category": "문화/여가",
           "id": 834291,
           "accountInfo": "KB-48550201280534"
@@ -57,6 +57,16 @@
           "category": "급여",
           "id": 309485,
           "memo": "주말 근무",
+          "accountInfo": "KB-48550201280534"
+        },
+        {
+          "title": "택시",
+          "date": "2026-04-03",
+          "userMoney": 30000,
+          "type": "소비",
+          "category": "교통",
+          "id": 1775902802558,
+          "memo": "",
           "accountInfo": "KB-48550201280534"
         }
       ],

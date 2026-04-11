@@ -1,50 +1,58 @@
-<template>
-  <div>
-    <h1>{{ year }}년 {{ month + 1 }}월</h1>
-    <!-- JS에서는 getMonth()는 0~11만 반환 -> 함수 진행에는 문제 없지만 출력에는
-    1적게 출력되므로 +1 -->
-    <table border="1">
-      <!-- 표에 선 만들기 -->
-      <tbody>
-        <tr>
-          <th v-for="value in daysOfWeek" :key="value">{{ value }}</th>
-          <!-- 요일 배열 가져다가 넣기 -->
-        </tr>
-
-        <tr v-for="(week, index) in dates" :key="index">
-          <!-- tr : 행 만들기 dates배열의 week 수만큼 반복(키는 index) -->
-
-          <td v-for="(day, dIdx) in week" :key="dIdx">
-            <!-- 
-            (day, dIdx) in week : week 배열에서 값(day)뿐만 아니라 해당 요소의 순서 번호인
-            인덱스(dIdx)를 꺼냄. 
-            -->
-            <router-link
-              v-if="day"
-              :to="{
-                // 만들어 질때 to에 해당하는 곳으로 링크 만들어둠 -> 누르면 이동
-                name: 'moneyListDaily',
-                // index.js에 있는 moneyListDaily사용
-                params: { selectedDate: getFormattedDate(day) },
-                // 동기 방식 : 날짜 클릭시 getFormattedDate()함수에서
-                //            눌린 날 정보를 return함
-              }"
-            >
-              {{ day }}
-              <div>+312,323</div>
-              <div>-12,323</div>
-            </router-link>
-
-            <span v-else></span>
-            <!-- 만약 day가 ''이라면 -->
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <router-view></router-view>
-</template>
 <script setup>
+import { ref, onMounted, computed } from 'vue'
+import { useLoginStore } from '@/stores/login'
+import axios from 'axios';
+
+const loginStore = useLoginStore();
+const userMoneyList = ref([]);
+
+// ==================================================================
+// db.json 값 가져오기(pinia)
+onMounted(async () => {
+
+  if (loginStore.user.id) {
+    try {
+      const res = await axios.get(`/api/users/${loginStore.user.id}`);
+      userMoneyList.value = res.data.moneyList;
+      console.log('가계부 로드 성공!')
+    } catch (err) {
+      console.log("데이터 로드 실패", err);
+    }
+  }
+})
+// ================================================================
+// 데이터를 날짜별로 묶어서 수입 지출의 합계를 계산
+
+const dailyMoney = computed(() => {
+  const summary = {};
+
+  // userMoneyList의 개수만큼 i를 0부터 1씩 늘리면서 반복
+  for (let i = 0; i < userMoneyList.value.length; i++) {
+
+    const item = userMoneyList.value[i];
+    // console.log(i, "번째 item값", item);
+    console.log("asdasd", item.date);
+
+
+    // 1. 장부에 해당 날짜 칸이 없으면 새로 만듦
+    if (!summary[item.date]) {
+      summary[item.date] = { income: 0, outcome: 0 };
+    }
+    // summary는 객체임! 대괄호를 사용한건 key값이 date이기 때문에!
+    // -> 이름에 '-'이 들어가면 '.'을 사용해서 가져올수 없음!
+    // 때문에 summary = { k : {} } 이 형태의 k:v값이 반복임
+
+    // 2. 수입/지출에 따라 금액 더하기
+    if (item.type === "수입") {
+      summary[item.date].income += item.userMoney;
+    } else {
+      summary[item.date].outcome += item.userMoney;
+    }
+  }
+
+  return summary;
+});
+
 // =====================================================================
 // 1. 오늘 날짜의 데이터를 담기
 const today = new Date();
@@ -81,12 +89,12 @@ const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 // 요일 배열
 
 let dates = [];
-// 전체 달력 (주 단위 배열들을 모아놓은 2차원 배열) ㅁ
+// 전체 달력 (주 단위 배열들을 모아놓은 2차원 배열) 
 
 let week = [];
-// 한 주 (7개의 칸을 담는 1차원 배열) ㅡ
+// 한 주 (7개의 칸을 담는 1차원 배열) 
 
-// 2-1. 1일 이전 채우기
+// 2-1. 1일 이전을 빈칸으로 채우기
 for (let i = 0; i < firstDay; i++) {
   week.push('');
 }
@@ -123,7 +131,6 @@ if (week.length > 0) {
 // 3. Router 연결하기(index.js)
 // Router_Link로 연결될 to들을 어디로 연결할지 정하는 함수
 
-// 2026-4-1을 2026-04-01로 으로 사용하기 위한 함수
 
 const getFormattedDate = (day) => {
   if (!day) return '';
@@ -132,6 +139,7 @@ const getFormattedDate = (day) => {
   const fyear = String(year);
   // String(value) : 숫자인 월을 문자로 변환
 
+
   const fMonth = String(month + 1).padStart(2, '0');
   // String(value) : 숫자인 월을 문자로 변환
   // padStart(2, "0") : 문자열의 길이를 2자로 만듬, 빈칸은 "0"으로 채움
@@ -139,11 +147,54 @@ const getFormattedDate = (day) => {
   const fDay = String(day).padStart(2, '0');
   // String(value) : 숫자인 일을 문자로 변환
   // padStart(2, "0") : 문자열의 길이를 2자로 만듬, 빈칸은 "0"으로 채움
-  console.log(`${fyear}-${fMonth}-${fDay}`);
+  // console.log(`${fyear}-${fMonth}-${fDay}`);
 
   return `${fyear}-${fMonth}-${fDay}`;
 };
 </script>
+<template>
+  <div>
+    <h1>{{ year }}년 {{ month + 1 }}월</h1>
+    <!-- JS에서는 getMonth()는 0~11만 반환 -> 함수 진행에는 문제 없지만 출력에는
+    1적게 출력되므로 +1 -->
+    <table border="1">
+      <!-- 표에 선 만들기 -->
+      <tbody>
+        <tr>
+          <th v-for="value in daysOfWeek" :key="value">{{ value }}</th>
+          <!-- 요일 배열 가져다가 넣기 -->
+        </tr>
+
+        <tr v-for="(week, index) in dates" :key="index">
+          <!-- tr : 행 만들기 dates배열의 week 수만큼 반복(키는 index) -->
+
+          <td v-for="(day, dayIndex) in week" :key="dayIndex">
+            <router-link v-if="day" :to="{
+              name: 'moneyListDaily',
+              params: { selectedDate: getFormattedDate(day) },
+            }">
+              <div style="font-weight: bold;">{{ day }}</div>
+
+              <div v-if="dailyMoney[getFormattedDate(day)]">
+                <div v-if="dailyMoney[getFormattedDate(day)].income > 0" style="color: blue; font-size: 11px;">
+                  +{{ dailyMoney[getFormattedDate(day)].income.toLocaleString() }}
+                  <!-- 숫자 뒤에 .toLocaleString() 사용시 123123 -> 123,123 -->
+                </div>
+                <div v-if="dailyMoney[getFormattedDate(day)].outcome > 0" style="color: red; font-size: 11px;">
+                  -{{ dailyMoney[getFormattedDate(day)].outcome.toLocaleString() }}
+                </div>
+              </div>
+            </router-link>
+
+            <span v-else></span>
+            <!-- 만약 day가 ''이라면 -->
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <router-view></router-view>
+</template>
 <style scoped>
 table {
   width: 60%;

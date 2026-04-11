@@ -43,7 +43,7 @@ const saveBtn = async () => {
     title: title.value,
     date: selectedDate.value,
     userMoney: userMoney.value,
-    type: categoryOn.value ? 'pay' : 'income',
+    type: categoryOn.value ? '지출' : '수입',
     category: selectedCategory.value,
     id: Date.now(),
     memo: memo.value,
