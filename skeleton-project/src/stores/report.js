@@ -2,10 +2,12 @@ import { defineStore } from 'pinia';
 import { useLoginStore } from '@/stores/login';
 import { ref, computed } from 'vue';
 import axios from 'axios';
+import { useMoneyStore } from './money';
 
 export const useReportStore = defineStore('report', () => {
   // 로그인 한 사용자의 거래내역 정보를 받아오기
   const loginStore = useLoginStore();
+  const moneyStore = useMoneyStore();
   const moneyList = ref([]);
 
   // 카테고리 별 금액 합산
@@ -25,6 +27,7 @@ export const useReportStore = defineStore('report', () => {
   const userData = computed(async () => {
     month.value;
     year.value;
+    moneyStore.reloading;
     const resp = await axios.get(`/api/users/${loginStore.user.id}`);
     moneyList.value = resp.data.moneyList;
     console.log('reportStore userData 함수 실행');
@@ -42,8 +45,8 @@ export const useReportStore = defineStore('report', () => {
     totOutcome.value = 0;
 
     // 거래내역을 받아온 후 함수 호출
-    reportDate(month, year);
-    categoryCalc(month, year);
+    reportDate(month, year, moneyStore.reloading);
+    categoryCalc(month, year, moneyStore.reloading);
     // 객체에 담긴 소비 총 금액을 퍼센트로 계산
     calcPercent(categoryIncomeMoney, totIncome, month, year);
     calcPercent(categoryOutcomeMoney, totOutcome, month, year);
