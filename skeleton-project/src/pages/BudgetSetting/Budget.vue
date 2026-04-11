@@ -1,7 +1,10 @@
 <template>
   <div style="padding: 24px">
     <div class="budget-box">
-      <div class="title">예산관리 <span class="sub">예산확인</span></div>
+      <div style="font-size: 28px; font-weight: 700; margin-bottom: 20px">
+        예산관리 <span>예산확인</span>
+      </div>
+      <hr class="title-underline" />
 
       <div class="month-box">
         <span class="arrow" @click="prevMonth">←</span>
