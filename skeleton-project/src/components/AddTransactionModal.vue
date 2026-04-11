@@ -10,19 +10,19 @@ const emit = defineEmits(['post', 'close']);
 
 const inCategories = ref({ 'income-category': [] });
 const outCategories = ref({ 'outcome-category': [] });
-const bankCategories = ref({ 'bank-category': [] });
+const account = ref([]);
 
 onMounted(async () => {
   const income = await axios.get('/api/income-category');
   const outcome = await axios.get('/api/outcome-category');
-  const bank = await axios.get('/api/bank-category');
+  const res = await axios.get(`/api/users/${loginStore.user.id}`);
   inCategories.value = income.data;
   outCategories.value = outcome.data;
-  bankCategories.value = bank.data;
+  account.value = res.data.account;
 
   console.log('수입데이터 받아오기', inCategories);
   console.log('지출데이터 받아오기', outCategories);
-  console.log('결제수단 데이터 받아오기', bankCategories);
+  console.log('결제수단 데이터 받아오기', account);
 });
 
 // =======================================================
@@ -34,8 +34,7 @@ const selectedDate = ref('2026-04-10'); // 기본값 설정
 const userMoney = ref(0);
 const selectedCategory = ref('');
 const memo = ref('');
-const accountBank = ref('');
-const accountCode = ref('');
+const accountInfo = ref('');
 const id = ref(0);
 
 const saveBtn = async () => {
@@ -47,7 +46,7 @@ const saveBtn = async () => {
     category: selectedCategory.value,
     id: Date.now(),
     memo: memo.value,
-    accountInfo: `${accountBank.value}-${accountCode.value}`,
+    accountInfo: accountInfo.value,
   };
 
   if (!userMoney.value) {
@@ -62,16 +61,8 @@ const saveBtn = async () => {
     alert('거래명을 입력해주세요');
     return;
   }
-  if (!accountBank.value) {
-    alert('은행을 선택하세요');
-    return;
-  }
-  if (!accountCode.value) {
-    alert('계좌번호를 입력하세요');
-    return;
-  }
-  if (accountCode.value.length > 10) {
-    alert('계좌번호를 확인해주세요');
+  if (!accountInfo.value) {
+    alert('결제수단을 선택해주세요')
     return;
   }
 
@@ -127,8 +118,7 @@ const onCome = () => {
       <br />
 
       <span>
-        <button @click="income">수입</button
-        ><button @click="onCome">지출</button>
+        <button @click="income">수입</button><button @click="onCome">지출</button>
       </span>
 
       <div>카테고리</div>
@@ -147,15 +137,12 @@ const onCome = () => {
       <br />
 
       <div>결제수단</div>
-      <select v-model="accountBank">
+      <select v-model="accountInfo">
         <option value="">은행 카테고리를 선택하세요</option>
-        <option v-for="item in bankCategories" :key="item">{{ item }}</option>
+        <option v-for="item in account" :key="item.info" :value="`${item.bank}-${item.info}`"> {{ item.bank }}-{{
+          item.info }}
+        </option>
       </select>
-      <input
-        v-model="accountCode"
-        type="number"
-        placeholder="계좌번호를 입력하세요"
-      />
 
       <br />
 
