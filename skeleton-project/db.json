@@ -18,7 +18,7 @@
           "userMoney": 50000,
           "type": "지출",
           "category": "문화/여가",
-          "listId": 834291,
+          "id": 834291,
           "accountInfo": "KB-48550201280534"
         },
         {
@@ -27,7 +27,7 @@
           "userMoney": 5500,
           "type": "지출",
           "category": "식비",
-          "listId": 192847,
+          "id": 192847,
           "memo": "아이스 아메리카노",
           "accountInfo": "KB-48550201280534"
         },
@@ -37,7 +37,7 @@
           "userMoney": 8200,
           "type": "지출",
           "category": "식비",
-          "listId": 563920,
+          "id": 563920,
           "accountInfo": "KB-48550201280534"
         },
         {
@@ -46,7 +46,7 @@
           "userMoney": 1500,
           "type": "지출",
           "category": "교통",
-          "listId": 774512,
+          "id": 774512,
           "accountInfo": "KB-48550201280534"
         },
         {
@@ -55,8 +55,18 @@
           "userMoney": 120000,
           "type": "수입",
           "category": "급여",
-          "listId": 309485,
+          "id": 309485,
           "memo": "주말 근무",
+          "accountInfo": "KB-48550201280534"
+        },
+        {
+          "title": "택시",
+          "date": "2026-04-03",
+          "userMoney": 30000,
+          "type": "지출",
+          "category": "교통",
+          "id": 1775902802558,
+          "memo": "",
           "accountInfo": "KB-48550201280534"
         }
       ],
@@ -64,7 +74,7 @@
         {
           "budgetYearMonth": "2026-01",
           "budgetTot": 900000,
-          "budgetListId": 548291,
+          "id": 548291,
           "budgetCategory": {
             "식비": 300000,
             "문화/여가": 200000,
@@ -74,7 +84,7 @@
         {
           "budgetYearMonth": "2026-02",
           "budgetTot": 950000,
-          "budgetListId": 772104,
+          "id": 772104,
           "budgetCategory": {
             "식비": 350000,
             "쇼핑": 200000,
@@ -84,7 +94,7 @@
         {
           "budgetYearMonth": "2026-03",
           "budgetTot": 1000000,
-          "budgetListId": 991245,
+          "id": 991245,
           "budgetCategory": {
             "식비": 300000,
             "문화/여가": 300000,
@@ -112,7 +122,7 @@
           "userMoney": 9000,
           "type": "지출",
           "category": "식비",
-          "listId": 681203,
+          "id": 681203,
           "accountInfo": "우리-48550201280534"
         },
         {
@@ -121,7 +131,7 @@
           "userMoney": 14000,
           "type": "지출",
           "category": "문화/여가",
-          "listId": 957124,
+          "id": 957124,
           "memo": "팝콘 포함",
           "accountInfo": "우리-48550201280534"
         },
@@ -131,7 +141,7 @@
           "userMoney": 12000,
           "type": "지출",
           "category": "교통",
-          "listId": 442198,
+          "id": 442198,
           "accountInfo": "우리-48550201280534"
         },
         {
@@ -140,7 +150,7 @@
           "userMoney": 67000,
           "type": "지출",
           "category": "쇼핑",
-          "listId": 713650,
+          "id": 713650,
           "memo": "옷 구매",
           "accountInfo": "우리-48550201280534"
         },
@@ -150,7 +160,7 @@
           "userMoney": 50000,
           "type": "수입",
           "category": "배당금",
-          "listId": 298471,
+          "id": 298471,
           "accountInfo": "우리-48550201280534"
         }
       ],
@@ -158,7 +168,7 @@
         {
           "budgetYearMonth": "2026-01",
           "budgetTot": 700000,
-          "budgetListId": 183742,
+          "id": 183742,
           "budgetCategory": {
             "식비": 250000,
             "문화/여가": 150000,
@@ -168,7 +178,7 @@
         {
           "budgetYearMonth": "2026-02",
           "budgetTot": 750000,
-          "budgetListId": 672913,
+          "id": 672913,
           "budgetCategory": {
             "식비": 300000,
             "쇼핑": 200000
@@ -177,7 +187,7 @@
         {
           "budgetYearMonth": "2026-03",
           "budgetTot": 800000,
-          "budgetListId": 904321,
+          "id": 904321,
           "budgetCategory": {
             "식비": 250000,
             "문화/여가": 200000,
@@ -205,7 +215,7 @@
           "userMoney": 4500,
           "type": "지출",
           "category": "식비",
-          "listId": 555902,
+          "id": 555902,
           "accountInfo": "신한-110499289321"
         },
         {
@@ -214,7 +224,7 @@
           "userMoney": 1350,
           "type": "지출",
           "category": "교통",
-          "listId": 804331,
+          "id": 804331,
           "accountInfo": "신한-110499289321"
         },
         {
@@ -223,7 +233,7 @@
           "userMoney": 22000,
           "type": "지출",
           "category": "문화/여가",
-          "listId": 267194,
+          "id": 267194,
           "memo": "전공 서적",
           "accountInfo": "신한-110499289321"
         },
@@ -233,7 +243,7 @@
           "userMoney": 200000,
           "type": "수입",
           "category": "급여",
-          "listId": 990284,
+          "id": 990284,
           "accountInfo": "신한-110499289321"
         },
         {
@@ -242,7 +252,7 @@
           "userMoney": 11000,
           "type": "지출",
           "category": "식비",
-          "listId": 134778,
+          "id": 134778,
           "memo": "치킨",
           "accountInfo": "신한-110499289321"
         }
@@ -251,7 +261,7 @@
         {
           "budgetYearMonth": "2026-01",
           "budgetTot": 600000,
-          "budgetListId": 512390,
+          "id": 512390,
           "budgetCategory": {
             "식비": 200000,
             "문화/여가": 150000
@@ -260,7 +270,7 @@
         {
           "budgetYearMonth": "2026-02",
           "budgetTot": 650000,
-          "budgetListId": 845120,
+          "id": 845120,
           "budgetCategory": {
             "식비": 250000,
             "교통": 100000
@@ -269,7 +279,7 @@
         {
           "budgetYearMonth": "2026-03",
           "budgetTot": 700000,
-          "budgetListId": 234981,
+          "id": 234981,
           "budgetCategory": {
             "식비": 200000,
             "문화/여가": 200000,
@@ -280,7 +290,11 @@
       "id": 3
     }
   ],
-  "income-category": ["급여", "배당금", "이자"],
+  "income-category": [
+    "급여",
+    "배당금",
+    "이자"
+  ],
   "outcome-category": [
     "식비",
     "문화/여가",

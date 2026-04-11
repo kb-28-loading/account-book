@@ -1,6 +1,60 @@
 <template>
   <div>
-    <h1>소비 리포트 관련 화면</h1>
+    <h1>이번달 소비 리포트</h1>
+    <hr class="title-underline" />
+    <div>
+      <div><i class="fa-solid fa-arrow-left"></i></div>
+      <div>{{ reportStore.month }}</div>
+      <div><i class="fa-solid fa-arrow-right"></i></div>
+    </div>
+    <div class="report-graph-group">
+      <ReportLeft
+        class="report-graph"
+        :category="reportStore.usedCategoryIncome"
+        :data="reportStore.sortedIncomeMoney"
+        :colorList="colorList"
+      /><ReportRight
+        class="report-graph graph-right"
+        :category="reportStore.usedCategoryOutcome"
+        :data="reportStore.sortedOutcomeMoney"
+        :colorList="colorList"
+      />
+    </div>
   </div>
 </template>
-<script setup></script>
+<script setup>
+import axios from 'axios';
+import { useReportStore } from '@/stores/report';
+import { onMounted } from 'vue';
+import { ref } from 'vue';
+
+import ReportLeft from '@/components/MoneyReport/ReportLeft.vue';
+import ReportRight from '@/components/MoneyReport/ReportRight.vue';
+
+const reportStore = useReportStore();
+
+const colorList = [
+  '#BFA5D4',
+  '#CDBAE7',
+  '#E1DAE5',
+  '#FEF2FC',
+  '#F3F7FF',
+  '#F8F4FC',
+];
+
+onMounted(async () => {
+  await reportStore.userData;
+});
+</script>
+<style scoped>
+.report-graph-group {
+  display: flex;
+}
+.report-graph {
+  width: 500px;
+}
+.graph-right {
+  padding-left: 60px;
+  border-left: 2px solid rgb(248, 244, 254);
+}
+</style>

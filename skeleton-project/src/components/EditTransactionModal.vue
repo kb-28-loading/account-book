@@ -5,14 +5,17 @@ import { useLoginStore } from '@/stores/login';
 
 const loginStore = useLoginStore();
 const emit = defineEmits(['post', 'close']);
-// ====================================================
-// 카테고리 별 정보담기
+const props = defineProps(['editData']); /* 부모가 준 데이터 받기 MoneyListLatest의 editData */
+console.log("editData", props.editData);
 
+// ====================================================
+// 담을 곳 생성
 const inCategories = ref({ 'income-category': [] });
 const outCategories = ref({ 'outcome-category': [] });
 const account = ref([]);
 
 onMounted(async () => {
+  // 카테고리 별 정보담기
   const income = await axios.get('/api/income-category');
   const outcome = await axios.get('/api/outcome-category');
   const res = await axios.get(`/api/users/${loginStore.user.id}`);
@@ -20,31 +23,48 @@ onMounted(async () => {
   outCategories.value = outcome.data;
   account.value = res.data.account;
 
-  console.log('수입데이터 받아오기', inCategories);
-  console.log('지출데이터 받아오기', outCategories);
-  console.log('결제수단 데이터 받아오기', account);
+  console.log("res", res);
+  console.log("account", account);
+
+  // 수정 버튼 누른 곳에 원래 있던 값 가져오기
+  if (props.editData) {
+    console.log("수정할 데이터 받기 성공");
+
+    userMoney.value = props.editData.userMoney;
+    title.value = props.editData.title;
+    selectedDate.value = props.editData.date;
+    accountInfo.value = props.editData.accountInfo
+    id.value = props.editData.id;
+    memo.value = props.editData.memo
+
+    // 나중에 이해
+    categoryOn.value = props.editData.type === '지출';
+    selectedCategory.value = props.editData.category;
+  }
 });
-
 // =======================================================
-// 입력되는 값 받아서 db.json에 보내기
+// 각각의 입력값을 담을 바구니(ref) 선언
 
-// 1. 각각의 입력값을 담을 바구니(ref) 선언
 const title = ref('');
 const selectedDate = ref('2026-04-10'); // 기본값 설정
 const userMoney = ref(0);
 const selectedCategory = ref('');
 const memo = ref('');
-const accountInfo = ref('');
 const id = ref(0);
+const accountInfo = ref('');
 
-const saveBtn = async () => {
-  const newList = {
+// ===============================================
+// 수정 버튼 누를시 입력된 값들 db.json에 보내기
+
+const EditBtn = async () => {
+
+  const editList = {
     title: title.value,
     date: selectedDate.value,
     userMoney: userMoney.value,
     type: categoryOn.value ? '지출' : '수입',
     category: selectedCategory.value,
-    id: Date.now(),
+    id: id.value,
     memo: memo.value,
     accountInfo: accountInfo.value,
   };
@@ -71,12 +91,12 @@ const saveBtn = async () => {
 
   try {
     const res = await axios.get(`/api/users/${userId}`);
-    const currentUser = res.data;
     console.log('userId 값 가져오기', res);
+    const currentUser = res.data;
     console.log('currentUser에 res.data넣기', currentUser);
 
-    // 2. 기존의 moneyList 배열에 새로운 항목(newList)을 추가합니다.
-    const updatedMoneyList = [...currentUser.moneyList, newList];
+    // map을 사용하여 해당 ID만 교체
+    const updatedMoneyList = currentUser.moneyList.map(item => item.id === props.editData.id ? editList : item)
 
     // 3. 서버에 "이 유저의 moneyList만 이걸로 바꿔줘!"라고 PATCH 요청을 보냅니다.
     await axios.patch(`/api/users/${userId}`, {
@@ -84,15 +104,17 @@ const saveBtn = async () => {
     });
     // patch('위치', {K : V}) : 위치에 k 위치에 v값으로 바꿈
 
-    console.log('저장 성공 0_<');
+    console.log('수정 성공 0_<');
     emit('post');
     emit('close');
+    alert("수정완료")
   } catch (err) {
-    console.log('저장 실패 0_0....', err);
+    console.log('수정 실패 0_0....', err);
+    alert("수정 실패")
   }
 };
 // ==============================================================
-// 버튼 누으면 카테고리 바뀌기
+// 버튼 누르면 카테고리 바뀌기
 const categoryOn = ref('');
 const income = () => {
   categoryOn.value = false;
@@ -102,25 +124,23 @@ const onCome = () => {
   categoryOn.value = true;
   console.log('지출');
 };
+// ============================================================
+
+
 </script>
 
 <template>
   <div class="modal-overlay">
     <div class="modal-content">
-      <h3>
-        거래명과 연동<button style="float: right" @click="$emit('close')">
-          X
-        </button>
-      </h3>
+      <h3>거래명과 연동<button style="float: right;" @click="$emit('close')">X</button></h3>
       <div>금액</div>
       <input v-model="userMoney" type="number" />
 
-      <br />
+      <br>
 
       <span>
         <button @click="income">수입</button><button @click="onCome">지출</button>
       </span>
-
       <div>카테고리</div>
       <select v-if="!categoryOn" v-model="selectedCategory">
         <option value="">수입 카테고리를 선택하세요</option>
@@ -130,33 +150,37 @@ const onCome = () => {
         <option value="">지출 카테고리를 선택하세요</option>
         <option v-for="item in outCategories" :key="item">{{ item }}</option>
       </select>
-      <br />
+
+      <br>
+
       <div>거래명</div>
       <input v-model="title" placeholder="거래명" />
 
-      <br />
+      <br>
 
       <div>결제수단</div>
-      <select v-model="accountInfo">
-        <option value="">은행 카테고리를 선택하세요</option>
+      <select v-model="accountInfo" v-if="account.length > 0">
+        <option value="">결제 수단을 선택하세요</option>
         <option v-for="item in account" :key="item.info" :value="`${item.bank}-${item.info}`"> {{ item.bank }}-{{
           item.info }}
         </option>
       </select>
 
-      <br />
+      <br>
+
 
       <div>날짜</div>
       <input type="date" v-model="selectedDate" />
 
-      <br />
+      <br>
 
       <div>메모</div>
       <textarea v-model="memo"></textarea>
 
-      <br />
+      <br>
 
-      <button @click="saveBtn">저장</button>
+      <button @click="EditBtn">수정</button>
+
     </div>
   </div>
 </template>

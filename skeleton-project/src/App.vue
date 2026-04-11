@@ -11,16 +11,16 @@
     @go-home="goHome"
     @go-options-transaction="goTransaction"
     @go-options-budget="goBudget"
-    :optionsType="optionsRouterType"
+    @go-options-report="goReport"
   ></RouterView>
 </template>
 
 <script setup>
-import Practice from "./pages/BudgetSetting/Practice.vue";
-import practice from "./pages/BudgetSetting/Practice.vue";
-import { useRouter } from "vue-router";
-import { useLoginStore } from "./stores/login";
-import { ref, onMounted } from "vue";
+import Practice from './pages/BudgetSetting/Practice.vue';
+import practice from './pages/BudgetSetting/Practice.vue';
+import { useRouter } from 'vue-router';
+import { useLoginStore } from './stores/login';
+import { ref, onMounted } from 'vue';
 
 const router = useRouter();
 
@@ -33,10 +33,10 @@ onMounted(() => {
 
   if (Object.keys(loginStore.user).length !== 0) {
     // console.log(1);
-    router.replace("/home");
+    router.replace('/home');
   } else {
     // console.log(2);
-    router.push("/login");
+    router.push('/login');
   }
 });
 
@@ -46,44 +46,48 @@ const goHomeLogin = () => {
   // console.log(router);
 
   // router.replace의 경우 이전화면 접근 불가. 뒤로가기를 통한 이동 제어
-  router.replace("/home");
+  router.replace('/home');
 };
 
 // 회원가입 페이지로 이동
 const goJoin = () => {
   // 강제로 '/join'라우터로 이동
-  router.push("/join");
+  router.push('/join');
 };
 
 // 회원가입 완료 시 로그인 창으로 이동
 const goLogin = () => {
-  router.replace("/login");
+  router.replace('/login');
 };
 
 // 로그아웃 클릭 시 login.js내 회원정보 비운 뒤, 로그인 화면으로 이동
 const userLogout = () => {
   loginStore.logout();
-  router.replace("/login");
+  router.replace('/login');
 };
 
 // navBar에서 홈 클릭시 홈으로 이동
 const goHome = () => {
-  router.push("/home");
+  router.push('/home');
 };
 
 // navBar에서 transaction 클릭 시 Options 컴포넌트로 이동 후 자동으로 Option에서 해당 라우터 출력
 const goTransaction = () => {
-  router.push("/options/transactionDate");
+  router.push('/options/transactionDate');
 };
 
 // navBar에서 transaction 클릭 시 Options 컴포넌트로 이동 후 자동으로 Option에서 해당 라우터 출력
 const goBudget = () => {
-  router.push("/options/budget");
+  router.push('/options/budget');
+};
+
+const goReport = () => {
+  router.push('/options/moneyreport');
 };
 
 // 이벤트 확인용 테스트
 const test = () => {
-  alert("test");
+  alert('test');
 };
 </script>
 
