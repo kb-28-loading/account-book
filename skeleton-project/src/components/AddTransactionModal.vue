@@ -5,26 +5,29 @@ import { useLoginStore } from '@/stores/login';
 
 const loginStore = useLoginStore();
 const emit = defineEmits(['post', 'close']);
+// ====================================================
+// 카테고리 별 정보담기
 
 const inCategories = ref({ 'income-category': [] });
 const outCategories = ref({ 'outcome-category': [] });
 const bankCategories = ref({ 'bank-category': [] });
-onMounted(async () => {
-  // 카테고리 정보를 서버에서 가져옴
 
-  const res = await axios.get('/api/income-category');
-  const res2 = await axios.get('/api/outcome-category');
-  const res3 = await axios.get('/api/bank-category');
-  inCategories.value = res.data;
-  outCategories.value = res2.data;
-  bankCategories.value = res3.data;
+onMounted(async () => {
+  const income = await axios.get('/api/income-category');
+  const outcome = await axios.get('/api/outcome-category');
+  const bank = await axios.get('/api/bank-category');
+  inCategories.value = income.data;
+  outCategories.value = outcome.data;
+  bankCategories.value = bank.data;
 
   console.log('수입데이터 받아오기', inCategories);
   console.log('지출데이터 받아오기', outCategories);
-  console.log('결제수단 데이터 받아오기', outCategories);
+  console.log('결제수단 데이터 받아오기', bankCategories);
 });
 
 // =======================================================
+// 입력되는 값 받아서 db.json에 보내기
+
 // 1. 각각의 입력값을 담을 바구니(ref) 선언
 const title = ref('');
 const selectedDate = ref('2026-04-10'); // 기본값 설정
@@ -36,27 +39,45 @@ const accountCode = ref('');
 const id = ref(0);
 
 const saveBtn = async () => {
+  const newList = {
+    title: title.value,
+    date: selectedDate.value,
+    userMoney: userMoney.value,
+    type: categoryOn.value ? '지출' : '수입',
+    category: selectedCategory.value,
+    id: Date.now(),
+    memo: memo.value,
+    accountInfo: `${accountBank.value}-${accountCode.value}`,
+  };
+
   if (!userMoney.value) {
     alert('금액을 입력해주세요');
+    return;
+  }
+  if (!selectedCategory.value) {
+    alert('카테고리를 입력해주세요');
     return;
   }
   if (!title.value) {
     alert('거래명을 입력해주세요');
     return;
   }
+  if (!accountBank.value) {
+    alert('은행을 선택하세요');
+    return;
+  }
+  if (!accountCode.value) {
+    alert('계좌번호를 입력하세요');
+    return;
+  }
+  if (accountCode.value.length > 10) {
+    alert('계좌번호를 확인해주세요');
+    return;
+  }
+
   // 1. 현재 로그인한 유저의 기존 정보를 먼저 가져옴
   const userId = loginStore.user.id;
 
-  const newList = {
-    title: title.value,
-    date: selectedDate.value,
-    userMoney: userMoney.value,
-    type: categoryOn.value ? 'pay' : 'income',
-    category: selectedCategory.value,
-    id: Date.now(),
-    memo: memo.value,
-    accountInfo: `${accountBank.value}-${accountCode.value}`,
-  };
 
   try {
     const res = await axios.get(`/api/users/${userId}`);
@@ -71,6 +92,7 @@ const saveBtn = async () => {
     await axios.patch(`/api/users/${userId}`, {
       moneyList: updatedMoneyList,
     });
+    // patch('위치', {K : V}) : 위치에 k 위치에 v값으로 바꿈
 
     console.log('저장 성공 0_<');
     emit('post');
@@ -80,7 +102,7 @@ const saveBtn = async () => {
   }
 };
 // ==============================================================
-
+// 버튼 누으면 카테고리 바뀌기
 const categoryOn = ref('');
 const income = () => {
   categoryOn.value = false;
@@ -95,17 +117,22 @@ const onCome = () => {
 <template>
   <div class="modal-overlay">
     <div class="modal-content">
+<<<<<<< HEAD
       <h3>
         거래명과 연동<button style="float: right" @click="$emit('close')">
           X
         </button>
       </h3>
+=======
+      <h3>거래명과 연동<button style="float: right;" @click="$emit('close')">X</button></h3>
+      <div>금액</div>
+      <input v-model="userMoney" type="number" />
+>>>>>>> fdfa1f524dfbcfc03e59deb9bf7933d233f9af3d
 
-      <input v-model="userMoney" type="number" placeholder="금액" />
+      <br>
 
       <span>
-        <button @click="income">수입</button
-        ><button @click="onCome">지출</button>
+        <button @click="income">수입</button><button @click="onCome">지출</button>
       </span>
 
       <div>카테고리</div>
@@ -117,28 +144,37 @@ const onCome = () => {
         <option value="">지출 카테고리를 선택하세요</option>
         <option v-for="item in outCategories" :key="item">{{ item }}</option>
       </select>
-
+      <br>
       <div>거래명</div>
       <input v-model="title" placeholder="거래명" />
+
+      <br>
 
       <div>결제수단</div>
       <select v-model="accountBank">
         <option value="">은행 카테고리를 선택하세요</option>
         <option v-for="item in bankCategories" :key="item">{{ item }}</option>
       </select>
-      <input
-        v-model="accountCode"
-        type="number"
-        placeholder="계좌번호를 입력하세요"
-      />
+      <input v-model="accountCode" type="number" placeholder="계좌번호를 입력하세요" />
+
+      <br>
+
 
       <div>날짜</div>
       <input type="date" v-model="selectedDate" />
 
+      <br>
+
       <div>메모</div>
       <textarea v-model="memo"></textarea>
 
+      <br>
+
       <button @click="saveBtn">저장</button>
+<<<<<<< HEAD
+=======
+
+>>>>>>> fdfa1f524dfbcfc03e59deb9bf7933d233f9af3d
     </div>
   </div>
 </template>
@@ -157,6 +193,7 @@ const onCome = () => {
   align-items: center;
   z-index: 1000;
 }
+
 .modal-content {
   background: white;
   padding: 2em;
