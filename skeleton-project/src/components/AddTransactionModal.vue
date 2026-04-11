@@ -65,16 +65,16 @@ const saveBtn = async () => {
   if (!accountBank.value) {
     alert('은행을 선택하세요');
     return;
-  } 
+  }
   if (!accountCode.value) {
     alert('계좌번호를 입력하세요');
     return;
   }
-    if (accountCode.value.length > 10) {
+  if (accountCode.value.length > 10) {
     alert('계좌번호를 확인해주세요');
     return;
   }
-  
+
   // 1. 현재 로그인한 유저의 기존 정보를 먼저 가져옴
   const userId = loginStore.user.id;
 
@@ -127,21 +127,16 @@ const onCome = () => {
         <button @click="income">수입</button><button @click="onCome">지출</button>
       </span>
 
-      <br>
-
       <div>카테고리</div>
       <select v-if="!categoryOn" v-model="selectedCategory">
         <option value="">수입 카테고리를 선택하세요</option>
         <option v-for="item in inCategories" :key="item">{{ item }}</option>
       </select>
-
-      <br>
-
       <select v-if="categoryOn" v-model="selectedCategory">
         <option value="">지출 카테고리를 선택하세요</option>
         <option v-for="item in outCategories" :key="item">{{ item }}</option>
       </select>
-
+      <br>
       <div>거래명</div>
       <input v-model="title" placeholder="거래명" />
 

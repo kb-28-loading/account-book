@@ -158,8 +158,8 @@ const isModaClose = () => {
     </table>
     <!-- 목록 추가 버튼 -->
     <button @click="AddList">+</button>
-    <AddTransactionModal v-if="isModalOpen === true" @post="getMoneyList" @close="isModaClose" />
-    <EditTransactionModal v-if="editModalOpen === true" :editData="editData" @post="getMoneyList"
+    <AddTransactionModal v-if="isModalOpen === true" @post="getFilteredList(currentRoute.params.selectedDate.toString())" @close="isModaClose" />
+    <EditTransactionModal v-if="editModalOpen === true" :editData="editData" @post="getFilteredList(currentRoute.params.selectedDate.toString())"
       @close="isModaClose" />
   </div>
 </template>

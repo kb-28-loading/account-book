@@ -91,7 +91,7 @@ const EditBtn = async () => {
 
   // 1. 현재 로그인한 유저의 기존 정보를 먼저 가져옴
   const userId = loginStore.user.id;
-  
+
   try {
     const res = await axios.get(`/api/users/${userId}`);
     console.log('userId 값 가져오기', res);
@@ -108,16 +108,16 @@ const EditBtn = async () => {
     // patch('위치', {K : V}) : 위치에 k 위치에 v값으로 바꿈
 
     console.log('수정 성공 0_<');
-    alert("수정완료")
     emit('post');
     emit('close');
+    alert("수정완료")
   } catch (err) {
     console.log('수정 실패 0_0....', err);
     alert("수정 실패")
   }
 };
 // ==============================================================
-// 버튼 누으면 카테고리 바뀌기
+// 버튼 누르면 카테고리 바뀌기
 const categoryOn = ref('');
 const income = () => {
   categoryOn.value = false;
