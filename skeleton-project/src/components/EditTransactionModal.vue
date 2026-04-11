@@ -132,80 +132,105 @@ const onCome = () => {
 </script>
 
 <template>
-  <div class="modal-overlay">
-    <div class="modal-content">
-      <h3>거래명과 연동<button style="float: right;" @click="$emit('close')">X</button></h3>
-      <div>금액</div>
-      <input v-model="userMoney" type="number" />
+  <div class="modal-overlay" @click.self="$emit('close')">
+    <div class="modal-card shadow-lg">
+      
+      <div class="modal-header">
+        <span class="header-title">거래 내역 수정</span>
+        <button class="close-btn" @click="$emit('close')">X</button>
+      </div>
 
-      <br>
+      <div class="amount-section">
+        <input v-model="userMoney" type="number" class="amount-input" />
+        <span class="currency">원</span>
+      </div>
 
-      <span>
-        <button @click="income">수입</button><button @click="onCome">지출</button>
-      </span>
-      <div>카테고리</div>
-      <select v-if="!categoryOn" v-model="selectedCategory">
-        <option value="">수입 카테고리를 선택하세요</option>
-        <option v-for="item in inCategories" :key="item">{{ item }}</option>
-      </select>
-      <select v-if="categoryOn" v-model="selectedCategory">
-        <option value="">지출 카테고리를 선택하세요</option>
-        <option v-for="item in outCategories" :key="item">{{ item }}</option>
-      </select>
+      <div class="type-tab-group">
+        <button :class="['type-tab', { active: !categoryOn }]" @click="income">수입</button>
+        <button :class="['type-tab', { active: categoryOn }]" @click="onCome">지출</button>
+      </div>
 
-      <br>
+      <div class="input-form-group">
+        <div class="form-row">
+          <label>카테고리</label>
+          <select v-if="!categoryOn" v-model="selectedCategory" class="form-select">
+            <option value="">수입 카테고리 선택</option>
+            <option v-for="item in inCategories" :key="item">{{ item }}</option>
+          </select>
+          <select v-if="categoryOn" v-model="selectedCategory" class="form-select">
+            <option value="">지출 카테고리 선택</option>
+            <option v-for="item in outCategories" :key="item">{{ item }}</option>
+          </select>
+        </div>
 
-      <div>거래명</div>
-      <input v-model="title" placeholder="거래명" />
+        <div class="form-row">
+          <label>거래명</label>
+          <input v-model="title" class="form-input" placeholder="거래명 입력" />
+        </div>
 
-      <br>
+        <div class="form-row">
+          <label>결제수단</label>
+          <select v-model="accountInfo" class="form-select">
+            <option value="">결제 수단 선택</option>
+            <option v-for="item in account" :key="item.info" :value="`${item.bank}-${item.info}`">
+              {{ item.bank }}-{{ item.info }}
+            </option>
+          </select>
+        </div>
 
-      <div>결제수단</div>
-      <select v-model="accountInfo" v-if="account.length > 0">
-        <option value="">결제 수단을 선택하세요</option>
-        <option v-for="item in account" :key="item.info" :value="`${item.bank}-${item.info}`"> {{ item.bank }}-{{
-          item.info }}
-        </option>
-      </select>
+        <div class="form-row">
+          <label>날짜</label>
+          <input type="date" v-model="selectedDate" class="form-input" />
+        </div>
 
-      <br>
+        <div class="form-row">
+          <label>메모</label>
+          <textarea v-model="memo" class="form-textarea" placeholder="메모 입력"></textarea>
+        </div>
+      </div>
 
-
-      <div>날짜</div>
-      <input type="date" v-model="selectedDate" />
-
-      <br>
-
-      <div>메모</div>
-      <textarea v-model="memo"></textarea>
-
-      <br>
-
-      <button @click="EditBtn">수정</button>
-
+      <button class="edit-footer-btn" @click="EditBtn">수정 완료</button>
     </div>
   </div>
 </template>
 
 <style scoped>
-/* 팝업 전용 CSS (위에서 설명한 fixed 스타일) */
 .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+  display: flex; justify-content: center; align-items: center; z-index: 2000;
 }
 
-.modal-content {
-  background: white;
-  padding: 2em;
-  border-radius: 20px;
-  border: 2px solid #d1c4e9;
+.modal-card {
+  background: white; width: 450px; border-radius: 30px;
+  padding: 25px; border: 2px solid #BFA5D4; position: relative;
 }
+
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.header-title { color: #888; font-size: 14px; }
+.close-btn { background: none; border: none; font-size: 20px; color: #BFA5D4; cursor: pointer; }
+
+/* 금액 부분 */
+.amount-section { display: flex; align-items: baseline; border-bottom: 2px solid #BFA5D4; margin-bottom: 20px; padding: 5px 0; }
+.amount-input { border: none; font-size: 32px; font-weight: bold; width: 100%; outline: none; }
+.currency { font-size: 24px; font-weight: bold; margin-left: 5px; }
+
+/* 탭 */
+.type-tab-group { display: flex; gap: 10px; margin-bottom: 25px; }
+.type-tab { padding: 8px 20px; border-radius: 10px; border: none; background: #f5f5f5; color: #888; cursor: pointer; }
+.type-tab.active { background: #FEF2FC; color: #7b4ca1; font-weight: bold; }
+
+/* 폼 */
+.input-form-group { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
+.form-row { display: flex; align-items: center; border-bottom: 1px solid #eee; padding: 8px 0; }
+.form-row label { width: 80px; color: #888; font-size: 14px; }
+.form-input, .form-select, .form-textarea { border: none; outline: none; flex: 1; font-size: 15px; font-weight: bold; }
+.form-textarea { height: 60px; resize: none; }
+
+/* 버튼 */
+.edit-footer-btn {
+  width: 100%; padding: 15px; border-radius: 15px; border: none;
+  background: #BFA5D4; color: white; font-size: 16px; font-weight: bold; cursor: pointer;
+}
+.edit-footer-btn:hover { background: #7b4ca1; }
 </style>

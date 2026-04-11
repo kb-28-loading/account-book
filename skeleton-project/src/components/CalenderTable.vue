@@ -135,72 +135,113 @@ const getFormattedDate = (day) => {
 };
 </script>
 <template>
-  <div>
-    <h1>{{ year }}년 {{ month + 1 }}월
-      <div class="month-select row">
-        <div class="col">
-          <i class="fa-solid fa-arrow-left left-arrow" @click="changeMonth(-1)"></i>
+  <div class="card shadow-sm calendar-card mx-auto custom-border h-100">
+
+    <div class="card-header border-bottom-0 calendar-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="arrow-btn" @click="changeMonth(-1)">
+          <i class="fa-solid fa-arrow-left fa-xl"></i>
         </div>
-        <div class="col selected-month"></div>
-        <div class="col">
-          <i class="fa-solid fa-arrow-right right-arrow" @click="changeMonth(+1)"></i>
+        <h3 class="fw-bold m-0 header-title">{{ year }}년 {{ month + 1 }}월</h3>
+        <div class="arrow-btn" @click="changeMonth(1)">
+          <i class="fa-solid fa-arrow-right fa-xl"></i>
         </div>
       </div>
-    </h1>
-    <!-- JS에서는 getMonth()는 0~11만 반환 -> 함수 진행에는 문제 없지만 출력에는
-    1적게 출력되므로 +1 -->
+    </div>
 
-    <table border="1">
-      <!-- 표에 선 만들기 -->
-      <tbody>
-        <tr>
-          <th v-for="value in daysOfWeek" :key="value">{{ value }}</th>
-          <!-- 요일 배열 가져다가 넣기 -->
-        </tr>
+    <div class="card-body p-0 d-flex flex-column">
+      <div class="row g-0 text-center border-bottom days-bg fw-bold days-header">
+        <div v-for="value in ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']" :key="value"
+          class="col py-2 text-purple">
+          {{ value }}
+        </div>
+      </div>
 
-        <tr v-for="(week, index) in calenderData" :key="index">
-          <!-- tr : 행 만들기 dates배열의 week 수만큼 반복(키는 index) -->
+      <div class="calendar-grid flex-grow-1">
+        <div v-for="(week, index) in calenderData" :key="index" class="row g-0 text-center border-bottom cell-row h-20">
+          <div v-for="(day, dayIndex) in week" :key="dayIndex" class="col day-cell p-1 border-end">
 
-          <td v-for="(day, dayIndex) in week" :key="dayIndex">
             <router-link v-if="day" :to="{
               name: 'moneyListDaily',
               params: { selectedDate: getFormattedDate(day) },
-            }">
-              <div style="font-weight: bold;">{{ day }}</div>
+            }" class="text-decoration-none text-dark d-block h-100 p-1 rounded day-link">
 
-              <div v-if="dailyMoney[getFormattedDate(day)]">
-                <div v-if="dailyMoney[getFormattedDate(day)].income > 0" style="color: blue; font-size: 11px;">
+              <div class="fw-bold day-num">{{ day }}</div>
+
+              <div v-if="dailyMoney[getFormattedDate(day)]" class="money-box">
+                <div v-if="dailyMoney[getFormattedDate(day)].income > 0" class="text-income big-money">
                   +{{ dailyMoney[getFormattedDate(day)].income.toLocaleString() }}
-                  <!-- 숫자 뒤에 .toLocaleString() 사용시 123123 -> 123,123 -->
                 </div>
-                <div v-if="dailyMoney[getFormattedDate(day)].outcome > 0" style="color: red; font-size: 11px;">
+                <div v-if="dailyMoney[getFormattedDate(day)].outcome > 0" class="text-outcome big-money">
                   -{{ dailyMoney[getFormattedDate(day)].outcome.toLocaleString() }}
                 </div>
               </div>
             </router-link>
-
-            <span v-else></span>
-            <!-- 만약 day가 ''이라면 -->
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            <div v-else class="h-100 bg-empty"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <router-view></router-view>
 </template>
+
 <style scoped>
-table {
-  width: 60%;
-  border-collapse: collapse;
-  /* 테두리 사이 간격 제거 */
+/* 메인 테두리 및 높이 */
+.custom-border {
+  border: 2px solid #BFA5D4 !important;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-th,
-td {
-  border: 1px solid black;
-  /* 명확한 검은색 줄 추가 */
-  padding: 10px;
-  text-align: center;
-  vertical-align: top;
+.calendar-header {
+  background-color: #BFA5D4 !important;
+  padding: 1.2rem !important;
 }
+
+.header-title { color: #F3F7FF !important; }
+.arrow-btn { cursor: pointer; color: #F3F7FF; transition: all 0.2s; }
+.days-bg { background-color: #FEF2FC; }
+.text-purple { color: #7b4ca1; }
+
+/* 그리드 및 셀 설정 */
+.calendar-grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.cell-row {
+  flex: 1; /* 5주든 6주든 남은 높이를 동일하게 나눠 가짐 */
+  border-bottom: 1px solid #E1DAE5 !important;
+}
+
+.day-cell {
+  border-right: 1px solid #E1DAE5 !important;
+  position: relative;
+}
+
+.day-cell:last-child { border-right: none !important; }
+
+/* 5. 👇 글자 크기 대폭 수정 */
+.day-num {
+  font-size: 1.3rem; /* 날짜 숫자 크게 (기존보다 약 1.3배) */
+  color: #333;
+  margin-bottom: 2px;
+}
+
+.big-money {
+  font-size: 13px; /* 수입/지출 글자 크게 (기존 10px -> 13px) */
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.text-income { color: #0d6efd; }
+.text-outcome { color: #dc3545; }
+
+.day-link:hover { background-color: #FEF2FC; }
+.bg-empty { background-color: #fafafa; }
+
+/* 주차별 높이 비율 (6주 대비) */
+.h-20 { min-height: 16.66%; } 
 </style>
