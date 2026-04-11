@@ -2,7 +2,9 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useLoginStore } from '@/stores/login';
+import { useMoneyStore } from '@/stores/money';
 
+const moneyStore = useMoneyStore();
 const loginStore = useLoginStore();
 const emit = defineEmits(['post', 'close']);
 // ====================================================
@@ -85,10 +87,13 @@ const saveBtn = async () => {
     // patch('위치', {K : V}) : 위치에 k 위치에 v값으로 바꿈
 
     console.log('저장 성공 0_<');
-    emit('post');
+    await moneyStore.loadData();
     emit('close');
+    alert("저장완료");
+
   } catch (err) {
     console.log('저장 실패 0_0....', err);
+    alert("저장실패");
   }
 };
 // ==============================================================

@@ -1,25 +1,14 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-import { useLoginStore } from '@/stores/login'
-import axios from 'axios';
+import { onMounted, computed } from 'vue'
+import { useMoneyStore } from '@/stores/money';
 
-const loginStore = useLoginStore();
-const userMoneyList = ref([]);
-
+const moneyStore = useMoneyStore();
 // ==================================================================
 // db.json 값 가져오기(pinia)
-onMounted(async () => {
+onMounted(() => {
+  moneyStore.loadData();
+});
 
-  if (loginStore.user.id) {
-    try {
-      const res = await axios.get(`/api/users/${loginStore.user.id}`);
-      userMoneyList.value = res.data.moneyList;
-      console.log('가계부 로드 성공!')
-    } catch (err) {
-      console.log("데이터 로드 실패", err);
-    }
-  }
-})
 // ================================================================
 // 데이터를 날짜별로 묶어서 수입 지출의 합계를 계산
 
@@ -27,9 +16,10 @@ const dailyMoney = computed(() => {
   const summary = {};
 
   // userMoneyList의 개수만큼 i를 0부터 1씩 늘리면서 반복
-  for (let i = 0; i < userMoneyList.value.length; i++) {
+  for (let i = 0; i < moneyStore.userMoneyList.length; i++) {
 
-    const item = userMoneyList.value[i];
+    const item = moneyStore.userMoneyList[i];
+
     // console.log(i, "번째 item값", item);
     console.log("asdasd", item.date);
 
@@ -193,7 +183,7 @@ const getFormattedDate = (day) => {
       </tbody>
     </table>
   </div>
-  <router-view></router-view>
+  <router-view @post="loadData"></router-view>
 </template>
 <style scoped>
 table {

@@ -1,55 +1,36 @@
 <script setup>
 import AddTransactionModal from '@/components/AddTransactionModal.vue'; // 자식 가져오기
 import EditTransactionModal from '@/components/EditTransactionModal.vue'; // 자식 가져오기
-import { ref, onMounted, watch, onBeforeUpdate } from 'vue';
+import { ref, onMounted, computed, watch, onBeforeUpdate } from 'vue';
 import { useLoginStore } from '@/stores/login';
+import { useMoneyStore } from '@/stores/money';
 import axios from 'axios';
 
 const loginStore = useLoginStore();
+const moneyStore = useMoneyStore();
+
 // ============================================================
 // db.json에서 데이터 가져오기
-const LatestList = ref([]);
+const LatestList = computed(() => {
+  // 창고 데이터를 복사해서 사용합니다 (원본 보호)
+  const list = [...moneyStore.userMoneyList];
 
-const getMoneyList = async () => {
-  const res = await axios.get(`/api/users/${loginStore.user.id}`);
-  LatestList.value = res.data.moneyList;
-  console.log('데이터 로드 성공:', LatestList.value);
-};
-// =============================================================
-// 화면에 변화 or 처음 들어올때 데이터를 가져오도록 함
-watch(
-  () => loginStore.user?.id, // 1. 유저 ID라는 데이터의 변화를 지켜봄
-  (newId) => {
-    // 2. 변화가 감지되면 (undefined -> 실제 ID)
-    if (newId) {
-      getMoneyList(); // 3. 그때 데이터를 가져옴
-      console.log('데이터 가져왔슈');
-    }
-  },
-);
-
-onMounted(() => {
-  // console.log('마운트 시작!');
-  getMoneyList();
-  // console.log('데이터 함수 작동!');
+  if (isSorted.value) {
+    return list.sort((a, b) => new Date(b.date) - new Date(a.date)); // 최신순
+  } else {
+    return list.sort((a, b) => new Date(a.date) - new Date(b.date)); // 과거순
+  }
 });
+
+// 정렬 버튼 함수 (데이터를 직접 건드리지 않고, 스위치만 껐다 켭니다)
+const clickedPlus = () => {
+  isSorted.value = !isSorted.value;
+};
 
 // =============================================================
 // 정렬 버튼
 const isSorted = ref(true);
 
-const clickedPlus = () => {
-  if (!isSorted.value) {
-    LatestList.value.sort((a, b) => new Date(b.date) - new Date(a.date));
-    console.log('최신순정렬');
-
-    isSorted.value = true;
-  } else {
-    LatestList.value.sort((a, b) => new Date(a.date) - new Date(b.date));
-    console.log('과거순 정렬');
-    isSorted.value = false;
-  }
-};
 // ==========================================================
 // 팝업창 열고 닫기 부분
 const isModalOpen = ref(false); /* 팝업창의 열림/닫힘 상태를 저장할 변수 */
@@ -86,7 +67,7 @@ const deleteList = async (targetid) => {
     });
     console.log("삭제 성공 >_<");
 
-    getMoneyList();
+    await moneyStore.loadData();
 
   } catch {
     console.log("삭제 실패 0_0..");
@@ -138,8 +119,7 @@ const editList = (item) => {
     </table>
     <!-- 목록 추가 버튼 -->
     <button @click="AddList">+</button>
-    <AddTransactionModal v-if="isModalOpen === true" @post="getMoneyList" @close="isModaClose" />
-    <EditTransactionModal v-if="editModalOpen === true" :editData="editData" @post="getMoneyList"
-      @close="isModaClose" />
+    <AddTransactionModal v-if="isModalOpen === true" @close="isModaClose" />
+    <EditTransactionModal v-if="editModalOpen === true" :editData="editData" @close="isModaClose" />
   </div>
 </template>
