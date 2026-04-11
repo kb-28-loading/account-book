@@ -5,9 +5,9 @@ import { ref, onMounted, watch, onBeforeUpdate } from 'vue';
 import { useLoginStore } from '@/stores/login';
 import axios from 'axios';
 
+const loginStore = useLoginStore();
 // ============================================================
 // db.json에서 데이터 가져오기
-const loginStore = useLoginStore();
 const LatestList = ref([]);
 
 const getMoneyList = async () => {

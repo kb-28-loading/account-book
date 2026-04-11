@@ -7,18 +7,8 @@ import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 
 const currentRoute = useRoute();
-
-// 저장되어있는 사용자의 거래내역 중 해당 날짜인 객체 추출 후 배열로 저장
 const loginStore = useLoginStore();
-// ============================================================
-// db.json에서 데이터 가져오기
-const LatestList = ref([]);
 
-const getMoneyList = async () => {
-  const res = await axios.get(`/api/users/${loginStore.user.id}`);
-  LatestList.value = res.data.moneyList;
-  console.log('데이터 로드 성공:', LatestList.value);
-};
 // =======================================================
 // 주소 바뀌면 해당 주소에 맞는 값들 보여주기
 watch(
@@ -101,7 +91,7 @@ const deleteList = async (targetid) => {
     });
     console.log("삭제 성공 >_<");
 
-    getMoneyList();
+    getFilteredList();
 
   } catch {
     console.log("삭제 실패 0_0..");
