@@ -200,7 +200,7 @@ const checkFullForm = () => {
   console.log(checkedForm);
 };
 </script>
-<style>
+<style scoped>
 .main-monitor {
   /* 화면 디자인 */
   margin: 50px 20px 0;
@@ -210,6 +210,6 @@ const checkFullForm = () => {
   border-top: 3px rgb(123, 76, 161) solid;
   border-left: 3px rgb(123, 76, 161) solid;
   border-right: 3px rgb(123, 76, 161) solid;
-  height: 600px;
+  /* height: 600px; */
 }
 </style>
