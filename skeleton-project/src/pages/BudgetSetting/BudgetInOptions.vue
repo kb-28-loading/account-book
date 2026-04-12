@@ -1,14 +1,32 @@
 <template>
-  <div class="budget-management-page mb-5">
+  <div class="budget-management-page">
     <header class="header">
-      <h2 class="title">예산관리 <span class="sub-title">예산설정</span></h2>
+      <h1>
+        예산관리 <span class="title-sub">예산설정-{{ budgetStore.year }}</span>
+      </h1>
       <hr class="title-underline" />
     </header>
 
-    <div class="month-selector">
+    <!-- <div class="month-selector">
       <button @click="changeMonth(-1)" class="nav-btn">&larr;</button>
       <span class="current-month">{{ budgetStore.month }}월</span>
       <button @click="changeMonth(1)" class="nav-btn">&rarr;</button>
+    </div> -->
+
+    <div class="month-select row">
+      <div class="col">
+        <i
+          class="fa-solid fa-arrow-left left-arrow"
+          @click.stop="changeMonth(-1)"
+        ></i>
+      </div>
+      <div class="col selected-month">{{ budgetStore.month }}</div>
+      <div class="col">
+        <i
+          class="fa-solid fa-arrow-right right-arrow"
+          @click.stop="changeMonth(1)"
+        ></i>
+      </div>
     </div>
 
     <div class="options-main-container">
@@ -25,7 +43,7 @@
 
       <hr class="inner-line" />
 
-      <div class="category-grid">
+      <div class="category-grid mt-4">
         <div
           v-for="catName in allCategories"
           :key="catName"
@@ -122,7 +140,7 @@ const fetchData = async () => {
     console.error('데이터 로드 실패', err);
   }
 };
-const budget = {};
+let budget = {};
 const saveBudget = () => {
   const tempTotal = currentTotalDisplay.value;
   if (tempTotal > savedTotalAmount.value) {
@@ -156,8 +174,8 @@ onMounted(fetchData);
 <style scoped>
 .budget-management-page {
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+  /* margin: 0 auto; */
+  /* padding: 20px; */
   color: #333;
 }
 
@@ -165,8 +183,9 @@ onMounted(fetchData);
   font-weight: bold;
   margin-bottom: 5px;
 }
-.sub-title {
-  font-size: 0.7em;
+.title-sub {
+  font-size: 16px;
+  color: #bfa5d4;
 }
 
 .month-selector {
@@ -179,16 +198,37 @@ onMounted(fetchData);
   font-weight: bold;
 }
 
+.month-select {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.left-arrow {
+  font-size: 28px;
+  cursor: pointer;
+}
+.selected-month {
+  font-size: 35px;
+  text-align: center;
+  cursor: default;
+}
+.right-arrow {
+  font-size: 28px;
+  cursor: pointer;
+  display: flex;
+  justify-content: end;
+}
+
 .nav-btn {
   border-radius: 5px;
   padding: 5px 15px;
   cursor: pointer;
 }
-
+/* 
 .options-main-container {
   border-radius: 20px;
   padding: 70px;
-}
+} */
 
 .total-budget-row {
   font-size: 22px;
@@ -197,13 +237,15 @@ onMounted(fetchData);
 }
 .total-input {
   border: none;
-  border-bottom: 2px solid #eee;
+  border-bottom: 2px solid #f8f4fe;
   width: 200px;
   text-align: center;
   outline: none;
   font-size: 20px;
 }
-
+.inner-line {
+  color: #bfa5d4;
+}
 .category-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -213,9 +255,12 @@ onMounted(fetchData);
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  border-bottom: #bfa5d4 1px solid;
 }
 .cat-label {
   font-weight: bold;
+  cursor: default;
 }
 .cat-input {
   border: none;
@@ -230,7 +275,7 @@ onMounted(fetchData);
   margin-top: 40px;
 }
 .complete-btn {
-  background-color: #b39ddb;
+  background-color: #bfa5d4;
   color: white;
   border: none;
   padding: 12px 40px;
@@ -238,6 +283,9 @@ onMounted(fetchData);
   cursor: pointer;
   font-size: 18px;
   font-weight: bold;
+}
+.complete-btn:hover {
+  background-color: #a98bc4;
 }
 .status-info {
   margin-top: 15px;

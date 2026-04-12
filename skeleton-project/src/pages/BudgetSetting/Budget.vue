@@ -2,10 +2,10 @@
   <div class="budget-wrap">
     <!-- 헤더 -->
     <div class="header">
-      <h1>예산관리</h1>
+      <h1 class="mb-0">예산관리</h1>
       <span class="title-sub">예산확인-{{ budgetStore.year }}</span>
     </div>
-    <hr class="divider" />
+    <hr class="title-underline" />
 
     <!-- 월 이동 -->
     <!-- <div class="month-nav">
@@ -196,10 +196,6 @@ onMounted(loadData);
 </script>
 
 <style scoped>
-.budget-wrap {
-  /* padding: 20px; */
-}
-
 /* 헤더 */
 .header {
   display: flex;
@@ -340,7 +336,7 @@ onMounted(loadData);
 }
 
 .edit-btn {
-  background: #ce93d8;
+  background: #bfa5d4;
   color: #fff;
   border: none;
   border-radius: 20px;
@@ -350,7 +346,7 @@ onMounted(loadData);
 }
 
 .edit-btn:hover {
-  background: #ba68c8;
+  background: #a98bc4;
 }
 </style>
 

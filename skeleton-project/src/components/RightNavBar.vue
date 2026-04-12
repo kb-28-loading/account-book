@@ -67,8 +67,8 @@ import { reactive, computed } from 'vue';
 
 const emit = defineEmits([
   'go-home',
-  'go-options/transaction',
-  'go-options/budget',
+  'go-options-transaction',
+  'go-options-budget',
   'go-options-report',
 ]);
 
