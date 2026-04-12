@@ -26,17 +26,15 @@
       </div>
     </div>
     <div>
-      <TransactionLogList
-        v-if="showList"
-        :startDate="startDate"
-        :endDate="endDate"
-        @latest="latest"
-        :key="queryCount"
-      />
+      <TransactionLogList v-if="showList" :startDate="startDate" :endDate="endDate" @latest="latest"
+        :key="queryCount" />
     </div>
+    <button @click="AddList">+</button>
+    <AddTransactionModal v-if="isModalOpen === true" @close="isModaClose" />
   </div>
 </template>
 <script setup>
+import AddTransactionModal from '@/components/AddTransactionModal.vue'; // 자식 가져오기
 import { ref } from "vue";
 import TransactionLogList from "./TransactionLogList.vue";
 
@@ -107,5 +105,31 @@ const setMonthly = () => {
   endDate.value = formatDate(monthLast);
   inputData();
 };
+// ==========================================================
+// 팝업창 열고 닫기 부분
+const isModalOpen = ref(false); /* 팝업창의 열림/닫힘 상태를 저장할 변수 */
+const AddList = () => {
+  isModalOpen.value = true;
+};
+
+const isModaClose = () => {
+  isModalOpen.value = false;
+  editModalOpen.value = false;
+};
+// ==========================================================
+// 클릭 이벤트 데이터 보내기
+
+const editData = ref(null);/* 수정할 데이터를 담을 바구니 */
+const editModalOpen = ref(false);
+
+// 수정 버튼 클릭 함수
+const editList = (item) => {
+  editData.value = item; // 클릭한 행의 데이터를 담고
+  console.log("수정 할 데이터 기존 값", item);
+
+  editModalOpen.value = true; // 모달 열기
+};
+// ========================================================
+
 // ---------------------------------------------
 </script>

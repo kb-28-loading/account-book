@@ -75,7 +75,7 @@ const deleteList = async (targetid) => {
   }
 }
 // =========================================================
-// 부모에서 자식에게 데이터 보내기
+// 클릭 이벤트 데이터 보내기
 
 const editData = ref(null);/* 수정할 데이터를 담을 바구니 */
 const editModalOpen = ref(false);
@@ -91,35 +91,98 @@ const editList = (item) => {
 </script>
 
 <template>
-  <div>
-    <button @click="clickedPlus">
-      {{ isSorted ? '과거순정렬' : '최신순정렬' }}
+  <div class="card shadow-sm rounded-4 p-3 position-relative list-container custom-border">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="fw-bold m-0 text-purple">전체 거래내역</h5>
+      <button class="btn btn-outline-purple btn-sm" @click="clickedPlus">
+        {{ isSorted ? '과거순정렬' : '최신순정렬' }}
+      </button>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-hover align-middle text-center custom-table">
+        <thead>
+          <tr>
+            <th>거래명</th>
+            <th>카테고리</th>
+            <th>타입</th>
+            <th>금액</th>
+            <th>날짜</th>
+            <th>기능</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="value in LatestList" :key="value.id">
+            <td class="text-start ps-3 fw-bold">{{ value.title }}</td>
+            <td><span class="badge bg-light text-dark">{{ value.category }}</span></td>
+            <td>{{ value.type }}</td>
+            <td :class="value.type === '수입' ? 'text-primary' : 'text-danger'" class="fw-bold">
+              {{ value.userMoney.toLocaleString() }}
+            </td>
+            <td class="text-muted small">{{ value.date }}</td>
+            <td>
+              <div class="btn-group gap-1">
+                <button class="btn btn-xs btn-outline-secondary" @click="editList(value)">수정</button>
+                <button class="btn btn-xs btn-outline-danger" @click="deleteList(value.id)">삭제</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button class="btn btn-purple rounded-circle shadow-lg position-absolute add-btn" @click="AddList">
+      <i class="fa-solid fa-plus"></i>
     </button>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>거래명</th>
-          <th>카테고리</th>
-          <th>타입</th>
-          <th>금액</th>
-          <th>날짜</th>
-          <th>기능</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="value in LatestList" :key="value.id">
-          <td>{{ value.title }}</td>
-          <td>{{ value.category }}</td>
-          <td>{{ value.type }}</td>
-          <td>{{ value.userMoney }}</td>
-          <td>{{ value.date }}</td>
-          <td><button @click="editList(value)">수정</button><button @click="deleteList(value.id)">삭제</button></td>
-        </tr>
-      </tbody>
-    </table>
-    <!-- 목록 추가 버튼 -->
-    <button @click="AddList">+</button>
-    <AddTransactionModal v-if="isModalOpen === true" @close="isModaClose" />
-    <EditTransactionModal v-if="editModalOpen === true" :editData="editData" @close="isModaClose" />
+
+    <AddTransactionModal v-if="isModalOpen" @close="isModaClose" />
+    <EditTransactionModal v-if="editModalOpen" :editData="editData" @close="isModaClose" />
   </div>
 </template>
+<style scoped>
+/* 보라색 테마 설정 */
+.text-purple { color: #7b4ca1; }
+.btn-purple { background-color: #7b4ca1; color: white; border: none; }
+.btn-purple:hover { background-color: #6a3d8f; color: white; }
+.btn-outline-purple { color: #7b4ca1; border-color: #7b4ca1; }
+
+/* 1. 👇 테두리 설정 (달력과 동일하게 #BFA5D4, 2px) */
+.custom-border { 
+  border: 2px solid #BFA5D4 !important; 
+}
+
+/* 2. 👇 목록 컨테이너 높이 맞추기 */
+.list-container {
+  height: 100%;       /* 부모 col 높이에 꽉 차게 */
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+}
+
+/* 3. 👇 테이블 영역이 남은 높이를 다 쓰도록 설정 */
+.table-responsive {
+  flex: 1;            /* 헤더 제외 남은 공간 다 차지 */
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+/* 플러스 버튼 위치 조정 */
+.add-btn {
+  width: 50px;        /* 칸이 좁아졌으므로 크기 살짝 조절 */
+  height: 50px;
+  right: 20px;
+  bottom: 20px;
+  font-size: 20px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-table { font-size: 0.85rem; }
+.btn-xs { padding: 0.1rem 0.4rem; font-size: 0.75rem; }
+
+/* 스크롤바 디자인 */
+.table-responsive::-webkit-scrollbar { width: 5px; }
+.table-responsive::-webkit-scrollbar-thumb { background: #dbd0e6; border-radius: 10px; }
+</style>

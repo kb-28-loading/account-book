@@ -12,7 +12,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="value in moneyList" :key="value.id">
+        <tr v-for="value in moneyList" :key="value.listId"> 
+        <!-- <tr v-for="value in filteredList" :key="value.listId"> 내가 좀 건들여봤는데 다 못했으.. 모르겠으면 그냥 주석 지워  -->
           <td>{{ value.date }}</td>
           <td>{{ value.type }}</td>
           <td>{{ value.title }}</td>
@@ -26,8 +27,11 @@
 </template>
 <script setup>
 import { useLoginStore } from "@/stores/login";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import axios from "axios";
+// import { useMoneyStore } from "@/stores/money";
+
+// const moneyStore = useMoneyStore();
 const loginStore = useLoginStore();
 const props = defineProps({
   startDate: String,
@@ -67,4 +71,34 @@ onMounted(async () => {
   });
   emit("latest", moneyList);
 });
+// ==================================================
+// 반응이 있을때마다 목록을 로드해서 띄움 (이 코드도 모르겠으면 그냥 이 아래 다 지우면 됨)
+// const filteredList = computed(() => {
+
+//   // 창고 데이터가 없으면 빈 배열(창고데이터는 pinia에 있는것 -> money.js)
+//   if (!moneyStore.userMoneyList) return [];
+
+//   let list = [...moneyStore.userMoneyList];
+
+//   // 날짜 유효성 검사 함수(이건 내가 뭔지 몰라서 ai가 가져와줌)
+//   const isValidDate = (dateStr) => !isNaN(new Date(dateStr)) && dateStr.includes('-');
+
+//   // 날짜 필터링 (부모가 준 startDate, endDate가 있을 때만)
+//   if (isValidDate(props.startDate) && isValidDate(props.endDate)) {
+//     list = list.filter((item) => {
+
+//       // 날짜 조건에 해당하는 값 담기
+//       return item.date >= props.startDate && item.date <= props.endDate;
+//     });
+//     // 최신순 정렬
+//     list.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+//     return list;
+//   }
+// });
+// // 부모에게 최신 데이터를 알려주는 역할 (필요할 때만 감시)
+// import { watch } from 'vue';
+// watch(filteredList, (newList) => {
+//   emit("latest", { value: newList });
+// }, { immediate: true });
 </script>
