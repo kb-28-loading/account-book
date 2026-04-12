@@ -176,6 +176,12 @@ const getFormattedDate = (day) => {
                 </div>
                 <div v-if="dailyMoney[getFormattedDate(day)].outcome > 0" class="text-outcome big-money">
                   -{{ dailyMoney[getFormattedDate(day)].outcome.toLocaleString() }}
+                  <!-- 
+                  날짜를 클릭 -> getFormattedDate()에서 '2026-04-20'이런식으로 해당값 반환
+                  -> dailyMoney에 2026-04-20에 해당하는 value값 중 outcome, income에 해당하는 데이터를 줌
+                  
+                  toLocaleString() : 50000 -> 50,000으로 변환
+                  -->
                 </div>
               </div>
             </router-link>

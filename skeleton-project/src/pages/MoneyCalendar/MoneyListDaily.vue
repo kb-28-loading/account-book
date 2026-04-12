@@ -12,7 +12,7 @@ const loginStore = useLoginStore();
 const moneyStore = useMoneyStore();
 
 // =======================================================
-// 주소 바뀌면 해당 주소에 맞는 값들 보여주기
+// 주소 바뀌면 해당 주소에 맞는 값들 보여주기(날짜에 맞는 값 띄우기)
 
 const dailyList = computed(() => {
   return moneyStore.userMoneyList.filter(
