@@ -2,13 +2,13 @@
   <div class="budget-wrap">
     <!-- 헤더 -->
     <div class="header">
-      <span class="title-main">예산관리</span>
-      <span class="title-sub">예산확인 {{ budgetStore.year }}</span>
+      <h1 class="mb-0">예산관리</h1>
+      <span class="title-sub">예산확인-{{ budgetStore.year }}</span>
     </div>
-    <hr class="divider" />
+    <hr class="title-underline" />
 
     <!-- 월 이동 -->
-    <div class="month-nav">
+    <!-- <div class="month-nav">
       <span class="nav-btn" @click="prevMonth"
         ><i class="fa-solid fa-arrow-left left-arrow"></i
       ></span>
@@ -16,6 +16,22 @@
       <span class="nav-btn" @click="nextMonth"
         ><i class="fa-solid fa-arrow-right right-arrow"></i
       ></span>
+    </div> -->
+
+    <div class="month-select row">
+      <div class="col">
+        <i
+          class="fa-solid fa-arrow-left left-arrow"
+          @click.stop="prevMonth"
+        ></i>
+      </div>
+      <div class="col selected-month">{{ budgetStore.month }}</div>
+      <div class="col">
+        <i
+          class="fa-solid fa-arrow-right right-arrow"
+          @click.stop="nextMonth"
+        ></i>
+      </div>
     </div>
 
     <!-- 예산 데이터가 있는 경우 -->
@@ -67,7 +83,9 @@
 
     <!-- 예산 데이터가 없는 경우 -->
     <div v-else class="no-budget">
-      <p>{{ displayYearMonth }}에 설정된 예산이 없습니다.</p>
+      <p class="cursor-default">
+        {{ displayYearMonth }}월에 설정된 예산이 없습니다.
+      </p>
     </div>
 
     <!-- 예산수정 버튼 -->
@@ -178,10 +196,6 @@ onMounted(loadData);
 </script>
 
 <style scoped>
-.budget-wrap {
-  padding: 20px;
-}
-
 /* 헤더 */
 .header {
   display: flex;
@@ -222,7 +236,11 @@ onMounted(loadData);
   color: #bfa5d4;
   user-select: none;
 }
-
+.month-select {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
 .left-arrow {
   font-size: 28px;
   cursor: pointer;
@@ -230,7 +248,7 @@ onMounted(loadData);
 .selected-month {
   font-size: 35px;
   text-align: center;
-  min-width: 60px;
+  cursor: default;
 }
 .right-arrow {
   font-size: 28px;
@@ -318,7 +336,7 @@ onMounted(loadData);
 }
 
 .edit-btn {
-  background: #ce93d8;
+  background: #bfa5d4;
   color: #fff;
   border: none;
   border-radius: 20px;
@@ -328,7 +346,7 @@ onMounted(loadData);
 }
 
 .edit-btn:hover {
-  background: #ba68c8;
+  background: #a98bc4;
 }
 </style>
 

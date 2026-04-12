@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="title">
-      <h1>이번달 소비 리포트</h1>
-      <h4>{{ reportStore.year }}</h4>
+      <h1 class="mb-0">이번달 소비 리포트</h1>
+      <h4 class="mb-0">{{ reportStore.year }}</h4>
     </div>
 
     <hr class="title-underline" />
@@ -97,6 +97,7 @@ const beforeMonth = async () => {
   display: flex;
   align-items: end;
   gap: 10px;
+  margin-bottom: 0;
 }
 .month-select {
   display: flex;
@@ -110,6 +111,7 @@ const beforeMonth = async () => {
 .selected-month {
   font-size: 35px;
   text-align: center;
+  cursor: default;
 }
 .right-arrow {
   font-size: 28px;

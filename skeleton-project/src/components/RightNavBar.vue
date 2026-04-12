@@ -13,7 +13,7 @@
         >
           <div class="offcanvas-header mt-5">
             <h4
-              class="offcanvas-title cursor-defalut"
+              class="offcanvas-title cursor-default"
               id="offcanvasNavbarLabel"
             >
               Loding account book
@@ -67,8 +67,8 @@ import { reactive, computed } from 'vue';
 
 const emit = defineEmits([
   'go-home',
-  'go-options/transaction',
-  'go-options/budget',
+  'go-options-transaction',
+  'go-options-budget',
   'go-options-report',
 ]);
 
