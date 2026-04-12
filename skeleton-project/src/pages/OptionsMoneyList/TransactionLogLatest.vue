@@ -11,7 +11,7 @@
 
       <!-- 날짜 표시 + 버튼 -->
       <div class="date-box">
-        {{ startDate }} - {{ endDate }}
+        {{ startDate && endDate ? `${startDate} ~ ${endDate}` : "전체 기간" }}
         <button @click="showCalendar = !showCalendar">📅</button>
         <button @click="inputData()">조회</button>
       </div>
@@ -40,15 +40,15 @@
   </div>
 </template>
 <script setup>
-import AddTransactionModal from '@/components/AddTransactionModal.vue'; // 자식 가져오기
-import { ref } from 'vue';
-import TransactionLogList from './TransactionLogList.vue';
+import AddTransactionModal from "@/components/AddTransactionModal.vue"; // 자식 가져오기
+import { ref } from "vue";
+import TransactionLogList from "./TransactionLogList.vue";
 
 const showCalendar = ref(false);
 const showList = ref(true);
 const queryCount = ref(0);
-const startDate = ref('yyyy - MM - dd');
-const endDate = ref('yyyy - MM - dd');
+const startDate = ref("");
+const endDate = ref("");
 const showModal = ref(false);
 
 const inputData = () => {
@@ -58,15 +58,15 @@ const inputData = () => {
 };
 
 const sortLatest = () => {
-  startDate.value = 'yyyy - MM - dd';
-  endDate.value = 'yyyy - MM - dd';
+  startDate.value = "";
+  endDate.value = "";
   inputData();
 };
 // formatDate() -> 한국 기준시간이 UTC+9인 관계로 toISOString 문법 사용 시 기간 설정 오류로 인해 직접 꺼내서 조합
 const formatDate = (date) => {
   const ye = date.getFullYear();
-  const mo = String(date.getMonth() + 1).padStart(2, '0');
-  const da = String(date.getDate()).padStart(2, '0');
+  const mo = String(date.getMonth() + 1).padStart(2, "0");
+  const da = String(date.getDate()).padStart(2, "0");
   return `${ye}-${mo}-${da}`;
 };
 
