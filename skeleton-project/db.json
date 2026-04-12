@@ -13,25 +13,6 @@
       ],
       "moneyList": [
         {
-          "title": "티켓팅",
-          "date": "2026-04-07",
-          "userMoney": 50000,
-          "type": "지출",
-          "category": "문화/여가",
-          "id": 834291,
-          "accountInfo": "KB-48550201280534"
-        },
-        {
-          "title": "카페",
-          "date": "2026-04-06",
-          "userMoney": 5500,
-          "type": "지출",
-          "category": "식비",
-          "id": 192847,
-          "memo": "아이스 아메리카노",
-          "accountInfo": "KB-48550201280534"
-        },
-        {
           "title": "편의점",
           "date": "2026-04-05",
           "userMoney": 8200,
@@ -290,11 +271,7 @@
       "id": 3
     }
   ],
-  "income-category": [
-    "급여",
-    "배당금",
-    "이자"
-  ],
+  "income-category": ["급여", "배당금", "이자"],
   "outcome-category": [
     "식비",
     "문화/여가",
