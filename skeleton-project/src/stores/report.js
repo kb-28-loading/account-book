@@ -1,10 +1,10 @@
-import { defineStore } from 'pinia';
-import { useLoginStore } from '@/stores/login';
-import { ref, computed } from 'vue';
-import axios from 'axios';
-import { useMoneyStore } from './money';
+import { defineStore } from "pinia";
+import { useLoginStore } from "@/stores/login";
+import { ref, computed } from "vue";
+import axios from "axios";
+import { useMoneyStore } from "./money";
 
-export const useReportStore = defineStore('report', () => {
+export const useReportStore = defineStore("report", () => {
   // 로그인 한 사용자의 거래내역 정보를 받아오기
   const loginStore = useLoginStore();
   const moneyStore = useMoneyStore();
@@ -30,7 +30,7 @@ export const useReportStore = defineStore('report', () => {
     moneyStore.reloading;
     const resp = await axios.get(`/api/users/${loginStore.user.id}`);
     moneyList.value = resp.data.moneyList;
-    console.log('reportStore userData 함수 실행');
+    console.log("reportStore userData 함수 실행");
     // 함수 실행 전 내부 변수 초기화
     // 수입 관련
     usedCategoryIncome.value = [];
@@ -70,7 +70,7 @@ export const useReportStore = defineStore('report', () => {
   // 정해진 달에 해당하는 거래내역을 필터링
   const moneyListFiltered = ref([]);
   const reportDate = (month, year) => {
-    let settingDate = '';
+    let settingDate = "";
     // 필터링 거래내역 초기화
     moneyListFiltered.value = [];
     // 1-9월 앞에 0 붙이기
@@ -86,7 +86,7 @@ export const useReportStore = defineStore('report', () => {
         moneyListFiltered.value.push(moneyList.value[i]);
       }
     }
-    console.log('settingDate', settingDate);
+    console.log("settingDate", settingDate);
   };
 
   const categoryCalc = () => {
@@ -102,7 +102,7 @@ export const useReportStore = defineStore('report', () => {
 
     // 수입 데이터와 지출 데이터를 구분지어서 이용된 카테고리를 각각 저장
     for (let i = 0; i < moneyListFiltered.value.length; i++) {
-      if (moneyListFiltered.value[i].type === '수입') {
+      if (moneyListFiltered.value[i].type === "수입") {
         totIncome.value += moneyListFiltered.value[i].userMoney;
         if (
           usedCategoryIncome.value.filter(
@@ -119,7 +119,7 @@ export const useReportStore = defineStore('report', () => {
           categoryIncomeMoney.value[category] += money;
         }
       }
-      if (moneyListFiltered.value[i].type === '지출') {
+      if (moneyListFiltered.value[i].type === "지출") {
         totOutcome.value += moneyListFiltered.value[i].userMoney;
         if (
           usedCategoryOutcome.value.filter(
@@ -137,7 +137,7 @@ export const useReportStore = defineStore('report', () => {
         }
       }
     }
-    console.log('category 입력받기');
+    console.log("category 입력받기");
   };
 
   // 각 카테고리 별 합산 금액을 전체 금액의 퍼센트로 변환
@@ -145,7 +145,7 @@ export const useReportStore = defineStore('report', () => {
     for (let key in obj.value) {
       obj.value[key] = (obj.value[key] / tot.value) * 100;
     }
-    console.log('퍼센트 계산');
+    console.log("퍼센트 계산");
   };
 
   // 카테고리 배열과 금액의 순서를 맞춰주는 함수
@@ -158,7 +158,7 @@ export const useReportStore = defineStore('report', () => {
     for (let i = 0; i < arr.value.length; i++) {
       result.value.push(obj.value[arr.value[i]]);
     }
-    console.log('배열정렬', result.value);
+    console.log("배열정렬", result.value);
   };
 
   return {
