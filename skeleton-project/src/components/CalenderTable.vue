@@ -9,7 +9,7 @@ onMounted(() => {
   moneyStore.loadData();
 });
 // =====================================================================
-// 1. 오늘 날짜의 데이터를 담기
+// 1-1. 오늘 날짜의 년, 월을 담기
 const today = new Date();
 
 console.log(today);
@@ -21,17 +21,19 @@ console.log(year); /* 2026 */
 // 오늘에 대한 데이터에서 년에 대한 데이터 반환
 
 const month = ref(today.getMonth());
-console.log(month); /* 3 */
+console.log(month); /* 3(4월) */
 // 오늘에 대한 데이터에서 월에 대한 데이터 반환
 // -> 하지만 JS에서는 getMonth를 사용할경우(0~11)으로 반환 (0=1월)~(11=12월)
 
 // ===============================================================================
-// 1. 달력 만들기 (변경 사항 있을때마다 로드)
+// 1-2. 달력 만들기 (변경 사항 있을때마다 로드)
 
+// 요일 배열
 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
 const calenderData = computed(() => {
   // ===============================================================================
-  // 1-1. 이번달 시작점과 끝지점 구하기
+  // 1-3. 이번달 시작점과 끝지점 구하기
   const firstDay = new Date(year.value, month.value, 1).getDay();
   // 이번 달의 첫날 요일 (0: 일요일, 1: 월요일...)
   // new Date(2026, 3, 1).getDay()   4월 1일은 무슨 요일인가?   3(수요일)
@@ -40,14 +42,14 @@ const calenderData = computed(() => {
   const lastDate = new Date(year.value, month.value + 1, 0).getDate();
   // 이번 달의 마지막 날짜
   // new Date(2026, 4, 0).getDate()   4월의 마지막 날짜는 며칠인가?   30(30일)
+  // +1달을 하는 이유 -> 해당 달의 언제가 마지막인지 다달라서 다음달의 0일로 출력
   // **getDate()**는 날짜(1~31)를 숫자로 가져옵니다.
 
   // ================================================================================
   // 2. 달력 만들기
-  // 요일 배열
 
   let dates = [];
-  // 전체 달력 (주 단위 배열들을 모아놓은 2차원 배열) 
+  // 전체 달력 (주 단위 배열들을 모아놓을 2차원 배열) 
 
   let week = [];
   // 한 주 (7개의 칸을 담는 1차원 배열) 
@@ -57,7 +59,7 @@ const calenderData = computed(() => {
     week.push('');
   }
 
-  // 2-2. 달력 채우기
+  // 2-2. 달력배열(dates[]) 채우기
   for (let i = 1; i <= lastDate; i++) {
     // 1일부터 당월을 다 채울 때까지 진행
 
@@ -76,7 +78,7 @@ const calenderData = computed(() => {
 
   // 2-3. 막주 채우기
   if (week.length > 0) {
-    // 당월을 다 채우고 나왔는데 마지막 주가 7칸을 다 채우지 못하고 '남아' 있을 경우
+    // 당월을 다 채우고 나왔는데 마지막 주가 7칸을 다 채우지 못하고 남아 있을 경우
 
     while (week.length < 7) week.push('');
     // 남은 칸 만큼 빈칸 넣기 반복
@@ -98,16 +100,16 @@ const dailyMoney = computed(() => {
     const item = moneyStore.userMoneyList[i];
 
     // console.log(i, "번째 item값", item);
-    console.log("asdasd", item.date);
+    // console.log("번째 item값", item.date);
 
 
     // 1. 장부에 해당 날짜 칸이 없으면 새로 만듦
     if (!summary[item.date]) {
       summary[item.date] = { income: 0, outcome: 0 };
     }
-    // summary는 객체임! 대괄호를 사용한건 key값이 date이기 때문에!
-    // -> 이름에 '-'이 들어가면 '.'을 사용해서 가져올수 없음!
-    // 때문에 summary = { k : {} } 이 형태의 k:v값이 반복임
+    // summary는 객체임! 대괄호를 사용한건 key값이 date이기 때문에! date 예)2026-04-11
+    //     // -> 이름에 '-'이 들어가면 '.'을 사용해서 가져올수 없음!
+    // summary = { k : {} } 이 형태의 k:v값이 반복임
 
     // 2. 수입/지출에 따라 금액 더하기
     if (item.type === "수입") {
@@ -151,7 +153,7 @@ const getFormattedDate = (day) => {
 
     <div class="card-body p-0 d-flex flex-column">
       <div class="row g-0 text-center border-bottom days-bg fw-bold days-header">
-        <div v-for="value in ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']" :key="value"
+        <div v-for="value in daysOfWeek" :key="value"
           class="col py-2 text-purple">
           {{ value }}
         </div>
