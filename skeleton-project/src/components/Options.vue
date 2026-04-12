@@ -62,9 +62,6 @@ const emit = defineEmits(['user-logout']);
 const router = useRouter();
 </script>
 <style scoped>
-.outer {
-  background-color: rgb(248, 244, 254);
-}
 .main-monitor {
   /* 화면 디자인 */
   margin: 50px 20px 0;

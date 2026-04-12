@@ -5,6 +5,9 @@
 body {
   font-family: 'MyFont', sans-serif;
 }
+.outer {
+  background-color: rgb(248, 244, 254);
+}
 /* Options 컴포넌트 내부 라우터 제목 아래 구분선이 될 hr태그에 적용시킬 css */
 .title-underline {
   height: 1px;
