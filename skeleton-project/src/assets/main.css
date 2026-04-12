@@ -1,9 +1,9 @@
 @font-face {
-  font-family: "MyFont";
-  src: url("@/assets/fonts/HoonSaemaulundongR.ttf") format("truetype");
+  font-family: 'MyFont';
+  src: url('@/assets/fonts/HoonSaemaulundongR.ttf') format('truetype');
 }
 body {
-  font-family: "MyFont", sans-serif;
+  font-family: 'MyFont', sans-serif;
 }
 .outer {
   background-color: rgb(248, 244, 254);
@@ -20,4 +20,16 @@ body {
   border-radius: 30px 30px 0 0;
   padding: 30px 30px 0px;
   height: 90%;
+}
+.text-select:hover {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.cursor-defalut {
+  cursor: default;
+}
+.cursor-pointer {
+  cursor: pointer;
 }

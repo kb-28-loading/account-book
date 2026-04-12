@@ -1,5 +1,5 @@
 <template>
-  <div class="row mx-4 mb-5">
+  <div class="row mx-4 mb-5 cursor-defalut">
     <div class="col block">
       <div class="budget-title tot-budget">전체 예산</div>
       <div class="money">{{ totBudget.toLocaleString() }} 원</div>

@@ -12,9 +12,12 @@
           :class="navClass"
         >
           <div class="offcanvas-header mt-5">
-            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
+            <h4
+              class="offcanvas-title cursor-defalut"
+              id="offcanvasNavbarLabel"
+            >
               Loding account book
-            </h5>
+            </h4>
             <button
               type="button"
               class="btn-close ms-5"
@@ -25,26 +28,29 @@
             <ul
               class="navbar-nav justify-content-end flex-grow-1 pe-3 d-flex justify-content-center"
             >
-              <li class="nav-item text-center" @click.stop="emit('go-home')">
+              <li
+                class="nav-item text-center text-select"
+                @click.stop="emit('go-home')"
+              >
                 홈
               </li>
               <hr />
               <li
-                class="nav-item text-center"
+                class="nav-item text-center text-select"
                 @click.stop="emit('go-options-transaction')"
               >
                 거래내역 조회
               </li>
               <hr />
               <li
-                class="nav-item text-center"
+                class="nav-item text-center text-select"
                 @click.stop="emit('go-options-budget')"
               >
                 예산 확인
               </li>
               <hr />
               <li
-                class="nav-item text-center"
+                class="nav-item text-center text-select"
                 @click.stop="emit('go-options-report')"
               >
                 월별 리포트
