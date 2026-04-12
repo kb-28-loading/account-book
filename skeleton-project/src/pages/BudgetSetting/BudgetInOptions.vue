@@ -7,24 +7,18 @@
       <hr class="title-underline" />
     </header>
 
-    <!-- <div class="month-selector">
-      <button @click="changeMonth(-1)" class="nav-btn">&larr;</button>
-      <span class="current-month">{{ budgetStore.month }}월</span>
-      <button @click="changeMonth(1)" class="nav-btn">&rarr;</button>
-    </div> -->
-
     <div class="month-select row">
       <div class="col">
         <i
           class="fa-solid fa-arrow-left left-arrow"
-          @click.stop="changeMonth(-1)"
+          @click="changeMonth(-1)"
         ></i>
       </div>
       <div class="col selected-month">{{ budgetStore.month }}</div>
       <div class="col">
         <i
           class="fa-solid fa-arrow-right right-arrow"
-          @click.stop="changeMonth(1)"
+          @click="changeMonth(1)"
         ></i>
       </div>
     </div>
@@ -71,10 +65,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue';
-import axios from 'axios';
-import { useLoginStore } from '@/stores/login';
-import { useBudgetStore } from '@/stores/budget';
+import { ref, onMounted, computed, watch } from "vue";
+import axios from "axios";
+import { useLoginStore } from "@/stores/login";
+import { useBudgetStore } from "@/stores/budget";
 
 const loginStore = useLoginStore();
 const budgetStore = useBudgetStore();
@@ -84,31 +78,47 @@ const budgetInputs = ref({});
 const savedTotalAmount = ref(0);
 const allBudgets = ref([]);
 
-// 월 변경 로직
+/**
+ * 월 변경 로직
+ */
 const changeMonth = (delta) => {
-  budgetStore.month += delta;
-  if (budgetStore.month < 1) {
-    budgetStore.month = 12;
-    budgetStore.year -= 1;
-  } else if (budgetStore.month > 12) {
-    budgetStore.month = 1;
-    budgetStore.year += 1;
+  let newMonth = budgetStore.month + delta;
+  let newYear = budgetStore.year;
+
+  if (newMonth < 1) {
+    newMonth = 12;
+    newYear -= 1;
+  } else if (newMonth > 12) {
+    newMonth = 1;
+    newYear += 1;
   }
+
+  // 스토어 값 업데이트
+  budgetStore.month = newMonth;
+  budgetStore.year = newYear;
 };
 
-// 현재 선택된 월에 맞는 예산 데이터를 매칭
+/**
+ * 현재 선택된 월에 맞는 예산 데이터를 화면에 매칭
+ */
 const updateBudgetDisplay = () => {
-  const targetDate = `${budgetStore.year}-${budgetStore.month.toString().padStart(2, '0')}`;
+  // 1-9월 앞에 0 붙이기
+  const formattedMonth = budgetStore.month.toString().padStart(2, "0");
+  const targetDate = `${budgetStore.year}-${formattedMonth}`;
+
+  // 전체 데이터에서 해당 날짜 찾기
   const foundBudget = allBudgets.value.find(
     (b) => b.budgetYearMonth === targetDate,
   );
 
   if (foundBudget) {
     savedTotalAmount.value = foundBudget.budgetTot || 0;
+    // 카테고리별 데이터 매칭
     allCategories.value.forEach((catName) => {
       budgetInputs.value[catName] = foundBudget.budgetCategory?.[catName] || 0;
     });
   } else {
+    // 데이터가 없는 월일 경우 초기화
     savedTotalAmount.value = 0;
     allCategories.value.forEach((catName) => {
       budgetInputs.value[catName] = 0;
@@ -126,45 +136,45 @@ const currentTotalDisplay = computed(() => {
 const fetchData = async () => {
   if (!loginStore.user?.id) return;
   try {
-    const catResp = await axios.get('http://localhost:3000/outcome-category');
+    // 1. 카테고리 목록 로드
+    const catResp = await axios.get("http://localhost:3000/outcome-category");
     allCategories.value = catResp.data;
 
+    // 2. 유저 예산 데이터 로드
     const userResp = await axios.get(
       `http://localhost:3000/users/${loginStore.user.id}`,
     );
-    const userData = userResp.data;
+    allBudgets.value = userResp.data.userBudget || [];
 
-    allBudgets.value = userData.userBudget || [];
+    // 3. 현재 설정된 월 데이터 즉시 표시
     updateBudgetDisplay();
   } catch (err) {
-    console.error('데이터 로드 실패', err);
+    console.error("데이터 로드 실패", err);
   }
 };
-let budget = {};
+
 const saveBudget = () => {
   const tempTotal = currentTotalDisplay.value;
   if (tempTotal > savedTotalAmount.value) {
     alert(`합계(${tempTotal.toLocaleString()}원)가 전체 예산을 초과합니다!`);
     return;
   }
-  const settingDate = `${budgetStore.year}-${budgetStore.month.toString().padStart(2, '0')}`;
-  budget = {
+
+  const settingDate = `${budgetStore.year}-${budgetStore.month.toString().padStart(2, "0")}`;
+  const budgetPayload = {
     budgetYearMonth: settingDate,
     budgetTot: savedTotalAmount.value,
     budgetCategory: { ...budgetInputs.value },
   };
-  console.log('저장될 데이터:', {
-    budgetYearMonth: settingDate,
-    budgetTot: savedTotalAmount.value,
-    budgetCategory: { ...budgetInputs.value },
-  });
-  console.log('저장될 데이터', budget);
 
-  alert('예산 설정이 완료되었습니다.');
+  console.log("서버로 저장될 데이터:", budgetPayload);
+  alert("예산 설정이 완료되었습니다.");
 };
 
-// 월 변경 시 예산 데이터만 업데이트
-watch([budgetStore.month, budgetStore.year], () => {
+/**
+ * [핵심 수정] 스토어의 특정 속성을 감시할 때는 Getter 함수 () => 사용
+ */
+watch([() => budgetStore.month, () => budgetStore.year], () => {
   updateBudgetDisplay();
 });
 
@@ -172,13 +182,11 @@ onMounted(fetchData);
 </script>
 
 <style scoped>
+/* 기존 스타일 유지 */
 .budget-management-page {
   max-width: 1200px;
-  /* margin: 0 auto; */
-  /* padding: 20px; */
   color: #333;
 }
-
 .title {
   font-weight: bold;
   margin-bottom: 5px;
@@ -187,17 +195,6 @@ onMounted(fetchData);
   font-size: 16px;
   color: #bfa5d4;
 }
-
-.month-selector {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 50px;
-  margin: 30px 0;
-  font-size: 24px;
-  font-weight: bold;
-}
-
 .month-select {
   display: flex;
   align-items: center;
@@ -211,25 +208,14 @@ onMounted(fetchData);
   font-size: 35px;
   text-align: center;
   cursor: default;
+  width: 60px;
 }
 .right-arrow {
   font-size: 28px;
   cursor: pointer;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
-
-.nav-btn {
-  border-radius: 5px;
-  padding: 5px 15px;
-  cursor: pointer;
-}
-/* 
-.options-main-container {
-  border-radius: 20px;
-  padding: 70px;
-} */
-
 .total-budget-row {
   font-size: 22px;
   font-weight: bold;
@@ -243,9 +229,6 @@ onMounted(fetchData);
   outline: none;
   font-size: 20px;
 }
-.inner-line {
-  color: #bfa5d4;
-}
 .category-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -255,7 +238,6 @@ onMounted(fetchData);
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   border-bottom: #bfa5d4 1px solid;
 }
 .cat-label {
@@ -268,7 +250,6 @@ onMounted(fetchData);
   text-align: right;
   outline: none;
 }
-
 .button-wrapper {
   display: flex;
   justify-content: flex-end;
