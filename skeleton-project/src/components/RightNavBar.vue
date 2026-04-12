@@ -13,7 +13,7 @@
         >
           <div class="offcanvas-header mt-5">
             <h4
-              class="offcanvas-title cursor-defalut"
+              class="offcanvas-title cursor-default"
               id="offcanvasNavbarLabel"
             >
               Loding account book

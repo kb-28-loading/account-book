@@ -28,7 +28,7 @@ body {
   font-weight: bold;
   cursor: pointer;
 }
-.cursor-defalut {
+.cursor-default {
   cursor: default;
 }
 .cursor-pointer {

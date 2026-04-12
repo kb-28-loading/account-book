@@ -110,6 +110,7 @@ const beforeMonth = async () => {
 .selected-month {
   font-size: 35px;
   text-align: center;
+  cursor: default;
 }
 .right-arrow {
   font-size: 28px;

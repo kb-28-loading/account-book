@@ -7,7 +7,7 @@
 
     <div class="month-selector">
       <button @click="changeMonth(-1)" class="nav-btn">&larr;</button>
-      <span class="current-month">{{ month }}월</span>
+      <span class="current-month">{{ budgetStore.month }}월</span>
       <button @click="changeMonth(1)" class="nav-btn">&rarr;</button>
     </div>
 
@@ -53,15 +53,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from "vue";
-import axios from "axios";
-import { useLoginStore } from "@/stores/login";
+import { ref, onMounted, computed, watch } from 'vue';
+import axios from 'axios';
+import { useLoginStore } from '@/stores/login';
+import { useBudgetStore } from '@/stores/budget';
 
 const loginStore = useLoginStore();
-
-const date = new Date();
-const month = ref(date.getMonth() + 1);
-const year = ref(date.getFullYear());
+const budgetStore = useBudgetStore();
 
 const allCategories = ref([]);
 const budgetInputs = ref({});
@@ -70,19 +68,19 @@ const allBudgets = ref([]);
 
 // 월 변경 로직
 const changeMonth = (delta) => {
-  month.value += delta;
-  if (month.value < 1) {
-    month.value = 12;
-    year.value -= 1;
-  } else if (month.value > 12) {
-    month.value = 1;
-    year.value += 1;
+  budgetStore.month += delta;
+  if (budgetStore.month < 1) {
+    budgetStore.month = 12;
+    budgetStore.year -= 1;
+  } else if (budgetStore.month > 12) {
+    budgetStore.month = 1;
+    budgetStore.year += 1;
   }
 };
 
 // 현재 선택된 월에 맞는 예산 데이터를 매칭
 const updateBudgetDisplay = () => {
-  const targetDate = `${year.value}-${month.value.toString().padStart(2, "0")}`;
+  const targetDate = `${budgetStore.year}-${budgetStore.month.toString().padStart(2, '0')}`;
   const foundBudget = allBudgets.value.find(
     (b) => b.budgetYearMonth === targetDate,
   );
@@ -110,7 +108,7 @@ const currentTotalDisplay = computed(() => {
 const fetchData = async () => {
   if (!loginStore.user?.id) return;
   try {
-    const catResp = await axios.get("http://localhost:3000/outcome-category");
+    const catResp = await axios.get('http://localhost:3000/outcome-category');
     allCategories.value = catResp.data;
 
     const userResp = await axios.get(
@@ -121,27 +119,34 @@ const fetchData = async () => {
     allBudgets.value = userData.userBudget || [];
     updateBudgetDisplay();
   } catch (err) {
-    console.error("데이터 로드 실패", err);
+    console.error('데이터 로드 실패', err);
   }
 };
-
+const budget = {};
 const saveBudget = () => {
   const tempTotal = currentTotalDisplay.value;
   if (tempTotal > savedTotalAmount.value) {
     alert(`합계(${tempTotal.toLocaleString()}원)가 전체 예산을 초과합니다!`);
     return;
   }
-  const settingDate = `${year.value}-${month.value.toString().padStart(2, "0")}`;
-  console.log("저장될 데이터:", {
+  const settingDate = `${budgetStore.year}-${budgetStore.month.toString().padStart(2, '0')}`;
+  budget = {
+    budgetYearMonth: settingDate,
+    budgetTot: savedTotalAmount.value,
+    budgetCategory: { ...budgetInputs.value },
+  };
+  console.log('저장될 데이터:', {
     budgetYearMonth: settingDate,
     budgetTot: savedTotalAmount.value,
     budgetCategory: { ...budgetInputs.value },
   });
-  alert("예산 설정이 완료되었습니다.");
+  console.log('저장될 데이터', budget);
+
+  alert('예산 설정이 완료되었습니다.');
 };
 
 // 월 변경 시 예산 데이터만 업데이트
-watch([month, year], () => {
+watch([budgetStore.month, budgetStore.year], () => {
   updateBudgetDisplay();
 });
 
