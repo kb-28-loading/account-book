@@ -40,6 +40,8 @@
             📅
           </button>
           <button class="query-btn" @click="inputData()">조회</button>
+          <!-- 조회 버튼 누를 때마다 inputData함수 실행 queryCount.value 값이 계속해서 +1이 되고 
+           TransactionLogList를 새로 생성하고 데이터를 다시 불러옴. -->
         </div>
 
         <!-- 달력 팝업 -->
@@ -50,6 +52,7 @@
       </div>
     </div>
     <div class="options-main-container">
+      <!-- v-if="showList": showList가 ture일 때만 이 컴포넌트를 렌더링 -->
       <TransactionLogList
         v-if="showList"
         :startDate="startDate"
@@ -60,6 +63,9 @@
         <button class="add-btn" @click="showModal = true">+</button>
       </div>
       <AddTransactionModal v-if="showModal" @close="onModalClose" />
+      <!--   → $emit('close')
+             → onModalClose() 실행 (showModal = false + 목록 갱신)
+             → AddTransactionModal 사라짐 -->
     </div>
   </div>
 </template>
@@ -98,12 +104,12 @@ const inputData = () => {
 };
 
 const sortLatest = () => {
-  activeFilter.value = "all";
+  activeFilter.value = "all"; // 현재 선택된 필터를 'all'로 바꿈. 전체 내역 버튼에만 active 클래스가 붙어서 강조
   startDate.value = "";
   endDate.value = "";
   inputData();
 };
-
+// 주간 버튼을 클릭했을 때 이번주 일요일~토요일 범위를 설정하는 함수
 const setWeekly = () => {
   activeFilter.value = "weekly";
   const today = new Date();
@@ -117,6 +123,7 @@ const setWeekly = () => {
   // 5 = 금요일
   // 6 = 토요일
   const sunday = new Date(today);
+  // 오늘 날짜에서 요일 숫자만큼 뺀 값이 이번주 일요일임.
   sunday.setDate(today.getDate() - day);
 
   const saturday = new Date(sunday);
@@ -127,12 +134,14 @@ const setWeekly = () => {
   inputData();
 };
 
+// 월간 버튼을 클릭했을 때 이번 달 1일~말일 범위를 설정하는 함수
 const setMonthly = () => {
   activeFilter.value = "monthly";
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth();
-
+  // Date에서 1일은 해당 달의 첫째날
+  // Date에서 0일은 전달의 마지막 날을 의미
   const monthFirst = new Date(year, month, 1);
   const monthLast = new Date(year, month + 1, 0);
 
