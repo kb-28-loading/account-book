@@ -57,6 +57,7 @@ const goJoin = () => {
 
 // 회원가입 완료 시 로그인 창으로 이동
 const goLogin = () => {
+  console.log('강제로 로그인 창으로 이동');
   router.replace('/login');
 };
 
