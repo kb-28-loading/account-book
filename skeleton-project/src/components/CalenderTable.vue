@@ -12,106 +12,51 @@ onMounted(() => {
 // 1-1. 오늘 날짜의 년, 월을 담기
 const today = new Date();
 
-console.log(today);
-// 오늘 날짜에 대한 데이터를 today에 넣기
-// (Tue Apr 07 2026 23:02:31 GMT+0900 (한국 표준시))
-
 const year = ref(today.getFullYear());
-console.log(year); /* 2026 */
-// 오늘에 대한 데이터에서 년에 대한 데이터 반환
-
 const month = ref(today.getMonth());
-console.log(month); /* 3(4월) */
-// 오늘에 대한 데이터에서 월에 대한 데이터 반환
-// -> 하지만 JS에서는 getMonth를 사용할경우(0~11)으로 반환 (0=1월)~(11=12월)
 
 // ===============================================================================
 // 1-2. 달력 만들기 (변경 사항 있을때마다 로드)
-
-// 요일 배열
 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const calenderData = computed(() => {
-  // ===============================================================================
-  // 1-3. 이번달 시작점과 끝지점 구하기
   const firstDay = new Date(year.value, month.value, 1).getDay();
-  // 이번 달의 첫날 요일 (0: 일요일, 1: 월요일...)
-  // new Date(2026, 3, 1).getDay()   4월 1일은 무슨 요일인가?   3(수요일)
-  // **getDay()**는 요일(일~토)을 숫자로 가져오고,
-
   const lastDate = new Date(year.value, month.value + 1, 0).getDate();
-  // 이번 달의 마지막 날짜
-  // new Date(2026, 4, 0).getDate()   4월의 마지막 날짜는 며칠인가?   30(30일)
-  // +1달을 하는 이유 -> 해당 달의 언제가 마지막인지 다달라서 다음달의 0일로 출력
-  // **getDate()**는 날짜(1~31)를 숫자로 가져옵니다.
-
-  // ================================================================================
-  // 2. 달력 만들기
 
   let dates = [];
-  // 전체 달력 (주 단위 배열들을 모아놓을 2차원 배열) 
-
   let week = [];
-  // 한 주 (7개의 칸을 담는 1차원 배열) 
 
-  // 2-1. 1일 이전을 빈칸으로 채우기
   for (let i = 0; i < firstDay; i++) {
     week.push('');
   }
 
-  // 2-2. 달력배열(dates[]) 채우기
   for (let i = 1; i <= lastDate; i++) {
-    // 1일부터 당월을 다 채울 때까지 진행
-
     week.push(i);
-
     if (week.length === 7) {
-      // 주단위 달력이 7칸이 다 차면 작동
-
       dates.push(week);
-      // 전체달력에 주단위 달력 추가
-
       week = [];
-      // 사용후 주단위 달력 비우기
     }
   }
 
-  // 2-3. 막주 채우기
   if (week.length > 0) {
-    // 당월을 다 채우고 나왔는데 마지막 주가 7칸을 다 채우지 못하고 남아 있을 경우
-
     while (week.length < 7) week.push('');
-    // 남은 칸 만큼 빈칸 넣기 반복
-
     dates.push(week);
-    // 빈칸까지 다 차면 마지막 주 단위 넣기
   }
   return dates;
 });
+
 // ================================================================
 // 데이터를 날짜별로 묶어서 수입 지출의 합계를 계산
-
 const dailyMoney = computed(() => {
   const summary = {};
 
-  // userMoneyList의 개수만큼 i를 0부터 1씩 늘리면서 반복
   for (let i = 0; i < moneyStore.userMoneyList.length; i++) {
-
     const item = moneyStore.userMoneyList[i];
 
-    // console.log(i, "번째 item값", item);
-    // console.log("번째 item값", item.date);
-
-
-    // 1. 장부에 해당 날짜 칸이 없으면 새로 만듦
     if (!summary[item.date]) {
       summary[item.date] = { income: 0, outcome: 0 };
     }
-    // summary는 객체임! 대괄호를 사용한건 key값이 date이기 때문에! date 예)2026-04-11
-    //     // -> 이름에 '-'이 들어가면 '.'을 사용해서 가져올수 없음!
-    // summary = { k : {} } 이 형태의 k:v값이 반복임
 
-    // 2. 수입/지출에 따라 금액 더하기
     if (item.type === "수입") {
       summary[item.date].income += item.userMoney;
     } else {
@@ -136,6 +81,7 @@ const getFormattedDate = (day) => {
   return `${year.value}-${fMonth}-${fDay}`;
 };
 </script>
+
 <template>
   <div class="card shadow-sm calendar-card mx-auto custom-border h-100">
 
@@ -153,8 +99,7 @@ const getFormattedDate = (day) => {
 
     <div class="card-body p-0 d-flex flex-column">
       <div class="row g-0 text-center border-bottom days-bg fw-bold days-header">
-        <div v-for="value in daysOfWeek" :key="value"
-          class="col py-2 text-purple">
+        <div v-for="value in daysOfWeek" :key="value" class="col py-2 text-purple">
           {{ value }}
         </div>
       </div>
@@ -171,17 +116,13 @@ const getFormattedDate = (day) => {
               <div class="fw-bold day-num">{{ day }}</div>
 
               <div v-if="dailyMoney[getFormattedDate(day)]" class="money-box">
-                <div v-if="dailyMoney[getFormattedDate(day)].income > 0" class="text-income big-money">
+                <div v-if="dailyMoney[getFormattedDate(day)].income > 0" class="text-income big-money"
+                  :title="'+' + dailyMoney[getFormattedDate(day)].income.toLocaleString()">
                   +{{ dailyMoney[getFormattedDate(day)].income.toLocaleString() }}
                 </div>
-                <div v-if="dailyMoney[getFormattedDate(day)].outcome > 0" class="text-outcome big-money">
+                <div v-if="dailyMoney[getFormattedDate(day)].outcome > 0" class="text-outcome big-money"
+                  :title="'-' + dailyMoney[getFormattedDate(day)].outcome.toLocaleString()">
                   -{{ dailyMoney[getFormattedDate(day)].outcome.toLocaleString() }}
-                  <!-- 
-                  날짜를 클릭 -> getFormattedDate()에서 '2026-04-20'이런식으로 해당값 반환
-                  -> dailyMoney에 2026-04-20에 해당하는 value값 중 outcome, income에 해당하는 데이터를 줌
-                  
-                  toLocaleString() : 50000 -> 50,000으로 변환
-                  -->
                 </div>
               </div>
             </router-link>
@@ -194,62 +135,138 @@ const getFormattedDate = (day) => {
 </template>
 
 <style scoped>
-/* 메인 테두리 및 높이 */
+/* 1. 전체 달력 컨테이너 (테마 및 높이) */
 .custom-border {
   border: 2px solid #BFA5D4 !important;
   border-radius: 20px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  background-color: white;
+  /* 👇 칸 높이가 더 줄었으므로 전체 높이도 700px -> 650px로 콤팩트하게 맞춥니다 */
+  height: 650px;
 }
 
+/* 2. 상단 헤더 (연월 및 화살표) */
 .calendar-header {
   background-color: #BFA5D4 !important;
   padding: 1.2rem !important;
+  flex-shrink: 0;
 }
 
-.header-title { color: #F3F7FF !important; }
-.arrow-btn { cursor: pointer; color: #F3F7FF; transition: all 0.2s; }
-.days-bg { background-color: #FEF2FC; }
-.text-purple { color: #7b4ca1; }
+.header-title {
+  color: #F3F7FF !important;
+}
 
-/* 그리드 및 셀 설정 */
+.arrow-btn {
+  cursor: pointer;
+  color: #F3F7FF;
+  transition: transform 0.2s;
+}
+
+.arrow-btn:hover {
+  transform: scale(1.2);
+}
+
+/* 3. 요일 표시 영역 */
+.days-bg {
+  background-color: #FEF2FC;
+}
+
+.text-purple {
+  color: #7b4ca1;
+}
+
+/* 4. 날짜 그리드 영역 (틈새 제거 완벽 적용) */
 .calendar-grid {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  table-layout: fixed;
 }
 
 .cell-row {
-  flex: 1; /* 5주든 6주든 남은 높이를 동일하게 나눠 가짐 */
-  border-bottom: 1px solid #E1DAE5 !important;
+  display: flex;
+  flex: 1;
+  /* 👇 핵심: 이전 100px의 90%인 90px로 줄여서 칸을 더 얇게 만듭니다 */
+  min-height: 90px;
+  border-bottom: none !important;
 }
 
 .day-cell {
+  flex: 1;
+  border-bottom: 1px solid #E1DAE5 !important;
   border-right: 1px solid #E1DAE5 !important;
+  background-color: white;
+  padding: 0 !important;
   position: relative;
+  min-width: 0;
 }
 
-.day-cell:last-child { border-right: none !important; }
+.day-cell:last-child {
+  border-right: none !important;
+}
 
-/* 5. 👇 글자 크기 대폭 수정 */
+.calendar-grid>.cell-row:last-child .day-cell {
+  border-bottom: none !important;
+}
+
+/* 5. 날짜 내부 요소 (빈틈없이 꽉 채우기) */
+.day-link {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  height: 100%;
+  padding: 8px !important;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.day-link:hover {
+  background-color: #FEF2FC;
+}
+
+.bg-empty {
+  width: 100%;
+  height: 100%;
+  background-color: #fafafa;
+  margin: 0;
+}
+
+/* 6. 글자 및 텍스트 스타일 */
 .day-num {
-  font-size: 1.3rem; /* 날짜 숫자 크게 (기존보다 약 1.3배) */
+  font-size: 1.2rem;
+  font-weight: bold;
   color: #333;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
+}
+
+.money-box {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  width: 100%;
 }
 
 .big-money {
-  font-size: 13px; /* 수입/지출 글자 크게 (기존 10px -> 13px) */
+  font-size: 12px;
   font-weight: 700;
   line-height: 1.2;
+  white-space: nowrap;
+
+  /* 숫자가 길어지면 ... 으로 처리 (유지) */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 100%;
 }
 
-.text-income { color: #0d6efd; }
-.text-outcome { color: #dc3545; }
+.text-income {
+  color: #0d6efd;
+}
 
-.day-link:hover { background-color: #FEF2FC; }
-.bg-empty { background-color: #fafafa; }
-
-/* 주차별 높이 비율 (6주 대비) */
-.h-20 { min-height: 16.66%; } 
+.text-outcome {
+  color: #dc3545;
+}
 </style>
