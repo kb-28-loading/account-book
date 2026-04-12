@@ -3,15 +3,19 @@
     <!-- 헤더 -->
     <div class="header">
       <span class="title-main">예산관리</span>
-      <span class="title-sub">예산확인</span>
+      <span class="title-sub">예산확인 {{ budgetStore.year }}</span>
     </div>
     <hr class="divider" />
 
     <!-- 월 이동 -->
     <div class="month-nav">
-      <span class="nav-btn" @click="prevMonth">←</span>
-      <span class="nav-month">{{ displayYearMonth }}</span>
-      <span class="nav-btn" @click="nextMonth">→</span>
+      <span class="nav-btn" @click="prevMonth"
+        ><i class="fa-solid fa-arrow-left left-arrow"></i
+      ></span>
+      <span class="selected-month">{{ displayYearMonth }}</span>
+      <span class="nav-btn" @click="nextMonth"
+        ><i class="fa-solid fa-arrow-right right-arrow"></i
+      ></span>
     </div>
 
     <!-- 예산 데이터가 있는 경우 -->
@@ -74,27 +78,25 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
-import { useRouter } from "vue-router";
-import axios from "axios";
-import { useLoginStore } from "@/stores/login";
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import axios from 'axios';
+import { useLoginStore } from '@/stores/login';
+import { useBudgetStore } from '@/stores/budget';
 
 const router = useRouter();
 const loginStore = useLoginStore();
-
-const today = new Date();
-const year = ref(today.getFullYear());
-const month = ref(today.getMonth() + 1);
+const budgetStore = useBudgetStore();
 
 const userBudget = ref([]);
 const moneyList = ref([]);
 
 const currentYearMonth = computed(() => {
-  const mm = String(month.value).padStart(2, "0");
-  return `${year.value}-${mm}`;
+  const mm = String(budgetStore.month).padStart(2, '0');
+  return `${budgetStore.year}-${mm}`;
 });
 
-const displayYearMonth = computed(() => `${month.value}월`);
+const displayYearMonth = computed(() => `${budgetStore.month}`);
 
 const monthBudget = computed(
   () =>
@@ -106,7 +108,7 @@ const monthBudget = computed(
 const monthExpenses = computed(() =>
   moneyList.value.filter(
     (item) =>
-      item.type === "지출" && item.date.startsWith(currentYearMonth.value),
+      item.type === '지출' && item.date.startsWith(currentYearMonth.value),
   ),
 );
 
@@ -140,25 +142,25 @@ const categoryPercent = (category, budget) => {
 const clamp = (value) => Math.min(Math.max(value, 0), 100);
 
 const prevMonth = () => {
-  if (month.value === 1) {
-    month.value = 12;
-    year.value--;
+  if (budgetStore.month === 1) {
+    budgetStore.month = 12;
+    budgetStore.year--;
   } else {
-    month.value--;
+    budgetStore.month--;
   }
 };
 
 const nextMonth = () => {
-  if (month.value === 12) {
-    month.value = 1;
-    year.value++;
+  if (budgetStore.month === 12) {
+    budgetStore.month = 1;
+    budgetStore.year++;
   } else {
-    month.value++;
+    budgetStore.month++;
   }
 };
 
 const goToBudgetSetting = () => {
-  router.push({ name: "options/budget-setting" });
+  router.push({ name: 'options/budget-setting' });
 };
 
 const loadData = async () => {
@@ -168,7 +170,7 @@ const loadData = async () => {
     userBudget.value = res.data.userBudget || [];
     moneyList.value = res.data.moneyList || [];
   } catch (err) {
-    console.error("예산 데이터 로드 실패", err);
+    console.error('예산 데이터 로드 실패', err);
   }
 };
 
@@ -216,17 +218,25 @@ onMounted(loadData);
 
 .nav-btn {
   cursor: pointer;
-  font-size: 18px;
+  /* font-size: 18px; */
   color: #bfa5d4;
   user-select: none;
 }
 
-.nav-month {
-  font-size: 16px;
-  font-weight: 500;
-  color: #333;
-  min-width: 60px;
+.left-arrow {
+  font-size: 28px;
+  cursor: pointer;
+}
+.selected-month {
+  font-size: 35px;
   text-align: center;
+  min-width: 60px;
+}
+.right-arrow {
+  font-size: 28px;
+  cursor: pointer;
+  display: flex;
+  justify-content: end;
 }
 
 /* 카드 */
