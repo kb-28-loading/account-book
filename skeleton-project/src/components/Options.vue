@@ -10,38 +10,42 @@
     <div class="main-monitor">
       <div class="left-side-menu">
         <div
-          class="side-menu-title"
+          class="side-menu-title text-select"
           @click="router.push({ name: 'options/transactionDate' })"
         >
           거래내역 상세조회
         </div>
         <RouterLink
           :to="{ name: 'options/transactionDate' }"
-          class="router-link"
+          class="router-link text-select"
           >날짜별 거래내역</RouterLink
         >
         <RouterLink
           :to="{ name: 'options/transactionCategory' }"
-          class="router-link"
+          class="router-link text-select"
           >카테고리별 거래내역</RouterLink
         >
         <br />
         <div
-          class="side-menu-title"
+          class="side-menu-title text-select"
           @click="router.push({ name: 'options/budget' })"
         >
           예산 확인
         </div>
-        <RouterLink :to="{ name: 'options/budget' }" class="router-link"
-          >예산 - 예산 확인</RouterLink
+        <RouterLink
+          :to="{ name: 'options/budget' }"
+          class="router-link text-select"
+          >예산 확인</RouterLink
         >
-        <RouterLink :to="{ name: 'options/budget-setting' }" class="router-link"
-          >예산 - 예산 설정</RouterLink
+        <RouterLink
+          :to="{ name: 'options/budget-setting' }"
+          class="router-link text-select"
+          >예산 설정</RouterLink
         >
         <br />
         <RouterLink
           :to="{ name: 'options/moneyreport' }"
-          class="side-menu-title"
+          class="side-menu-title text-select"
           >월별 리포트</RouterLink
         >
       </div>
