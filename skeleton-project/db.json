@@ -191,7 +191,6 @@
         {
           "budgetYearMonth": "2026-03",
           "budgetTot": 1000000,
-          "id": 991245,
           "budgetCategory": {
             "식비": 300000,
             "문화/여가": 300000,
@@ -387,7 +386,11 @@
       "id": 3
     }
   ],
-  "income-category": ["급여", "배당금", "이자"],
+  "income-category": [
+    "급여",
+    "배당금",
+    "이자"
+  ],
   "outcome-category": [
     "식비",
     "문화/여가",

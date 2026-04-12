@@ -13,7 +13,8 @@ const emit = defineEmits(["post", "close"]);
 const inCategories = ref({ "income-category": [] });
 const outCategories = ref({ "outcome-category": [] });
 const account = ref([]);
-
+// ===============================================
+// 초기 로딩 시 서버에서 데이터 가져오기
 onMounted(async () => {
   const income = await axios.get("/api/income-category");
   const outcome = await axios.get("/api/outcome-category");
@@ -47,6 +48,7 @@ const dd = String(today.getDate()).padStart(2, "0");
 const selectedDate = ref(`${yyyy}-${mm}-${dd}`); // 기본값 설정
 // + 버튼 눌렀을 때 당일의 날짜 불러오기
 // =======================================================
+// 저장 기능
 
 const saveBtn = async () => {
   const newList = {
@@ -60,6 +62,7 @@ const saveBtn = async () => {
     accountInfo: accountInfo.value,
   };
 
+  // 유효성 검사
   if (!userMoney.value) {
     alert("금액을 입력해주세요");
     return;
@@ -86,14 +89,13 @@ const saveBtn = async () => {
     console.log("userId 값 가져오기", res);
     console.log("currentUser에 res.data넣기", currentUser);
 
-    // 2. 기존의 moneyList 배열에 새로운 항목(newList)을 추가합니다.
+    // 2. 기존의 moneyList 배열에 새로운 항목(newList)을 추가
     const updatedMoneyList = [...currentUser.moneyList, newList];
 
-    // 3. 서버에 "이 유저의 moneyList만 이걸로 바꿔줘!"라고 PATCH 요청을 보냅니다.
+    // 3. 서버에 로그인한 유저의 moneyList에만 PATCH 요청을 보냅니다.
     await axios.patch(`/api/users/${userId}`, {
       moneyList: updatedMoneyList,
     });
-    // patch('위치', {K : V}) : 위치에 k 위치에 v값으로 바꿈
 
     console.log("저장 성공 0_<");
     await moneyStore.loadData();
@@ -105,7 +107,7 @@ const saveBtn = async () => {
   }
 };
 // ==============================================================
-// 버튼 누으면 카테고리 바뀌기
+// 수입 / 지출 탭 전환 
 const categoryOn = ref("");
 const income = () => {
   categoryOn.value = false;
@@ -116,13 +118,6 @@ const onCome = () => {
   console.log("지출");
 };
 </script>
-
-결론부터 말씀드리면, 현재의 투박한 입력창 구조를 2번 사진의 모던하고 둥근
-디자인으로 완전히 탈바꿈해 드릴게요. 특히 금액이 상단에 크게 위치하고, 입력
-필드들이 하단에 선(Border) 형태로 깔끔하게 배치되는 디자인을 적용했습니다.
-배경이 어두워지는 효과(Overlay)는 그대로 유지하면서 내부 레이아웃만 세련되게
-바꿨습니다. ## AddTransactionModal.vue 수정 코드 이 코드는 사용자님이 올려주신
-기능 로직을 그대로 유지하면서, 2번 사진의 UI를 완벽하게 재현합니다. HTML
 <template>
   <div class="modal-overlay" @click.self="$emit('close')">
     <div class="modal-card shadow-lg">
@@ -164,7 +159,7 @@ const onCome = () => {
             class="form-select"
           >
             <option value="">수입 카테고리 선택</option>
-            <option v-for="item in inCategories" :key="item">{{ item }}</option>
+            <option v-for="item in inCategories['income-category']" :key="item">{{ item }}</option>
           </select>
           <select
             v-if="categoryOn"
@@ -172,7 +167,7 @@ const onCome = () => {
             class="form-select"
           >
             <option value="">지출 카테고리 선택</option>
-            <option v-for="item in outCategories" :key="item">
+            <option v-for="item in outCategories['income-category']" :key="item">
               {{ item }}
             </option>
           </select>

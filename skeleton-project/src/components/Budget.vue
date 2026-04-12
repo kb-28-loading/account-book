@@ -109,6 +109,7 @@ watch(
   border-radius: 10px;
   height: 130px;
 }
+
 .budget-title {
   margin-top: 15px;
   margin-left: 15px;
@@ -118,16 +119,20 @@ watch(
   text-decoration: underline;
   text-underline-offset: 5px;
 }
+
 .money {
   text-align: center;
-  font-size: 50px;
+  font-size: clamp(24px, 3vw, 50px);
 }
+
 .tot-budget {
   color: #7b4ca1;
 }
+
 .tot-outcome {
   color: red;
 }
+
 .left-budget {
   color: #bfa5d4;
 }

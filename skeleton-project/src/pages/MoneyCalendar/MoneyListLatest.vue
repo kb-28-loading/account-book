@@ -10,7 +10,7 @@ const loginStore = useLoginStore();
 const moneyStore = useMoneyStore();
 
 // ============================================================
-// db.json에서 데이터 가져오기 및 정렬
+// 전체 거래내역 데이터 가져오기 및 날짜순 정렬
 const isSorted = ref(true);
 
 const LatestList = computed(() => {
@@ -27,19 +27,22 @@ const clickedPlus = () => {
 };
 
 // ==========================================================
-// [추가] 페이지네이션 (11개씩)
+// [추가] 페이지네이션 (11개씩 출력)
 const ITEMS_PER_PAGE = 11;
 const currentPage = ref(1);
 
+// 전체 페이지 수 계산
 const totalPages = computed(() =>
   Math.ceil(LatestList.value.length / ITEMS_PER_PAGE)
 );
 
+// 현재 페이지에 해당하는 데이터만 추출
 const paginatedList = computed(() => {
   const start = (currentPage.value - 1) * ITEMS_PER_PAGE;
   return LatestList.value.slice(start, start + ITEMS_PER_PAGE);
 });
 
+// 하단에 표시될 페이지 번호 범위 계산 (최대 3개 표시)
 const visiblePages = computed(() => {
   const total = totalPages.value;
   const cur = currentPage.value;
@@ -51,30 +54,34 @@ const visiblePages = computed(() => {
   return pages;
 });
 
+// 정렬 순서가 바뀌면 첫 페이지로 이동
 watch(isSorted, () => {
   currentPage.value = 1;
 });
 
 // ==========================================================
-// 팝업창 및 기능 로직
-const isModalOpen = ref(false);
-const editModalOpen = ref(false);
-const editData = ref(null);
+// 3. 모달 제어 및 CRUD 기능 로직
+const isModalOpen = ref(false);      // 추가 모달 상태
+const editModalOpen = ref(false);    // 수정 모달 상태
+const editData = ref(null);          // 수정할 데이터 객체
 
 const AddList = () => { isModalOpen.value = true; };
 const isModaClose = () => { isModalOpen.value = false; editModalOpen.value = false; };
 
+// 수정 버튼 클릭 시 해당 데이터를 모달에 전달하고 열기
 const editList = (item) => {
   editData.value = item;
   editModalOpen.value = true;
 };
 
+// 데이터 삭제 로직 (API 연동)
 const deleteList = async (targetid) => {
   if (!confirm("정말 삭제하시겠습니까?")) return;
   try {
     const res = await axios.get(`/api/users/${loginStore.user.id}`);
     const updatedMoneyList = res.data.moneyList.filter(item => item.id !== Number(targetid));
 
+    // 삭제된 리스트로 사용자 정보 업데이트(Patch)
     await axios.patch(`/api/users/${loginStore.user.id}`, {
       moneyList: updatedMoneyList,
     });

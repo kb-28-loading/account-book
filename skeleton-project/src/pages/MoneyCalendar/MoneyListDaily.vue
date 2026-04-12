@@ -21,17 +21,18 @@ const dailyList = computed(() => {
     (item) => item.date === currentRoute.params.selectedDate
   );
 
-  // 정렬 (날짜가 같으므로 보통 ID나 입력 순으로 정렬하게 됩니다)
+  // 최신순 또는 과거순 정렬
   return isSorted.value ? [...list].reverse() : [...list];
 });
 
+// 정렬 상태 토글 함수
 const clickedPlus = () => {
   isSorted.value = !isSorted.value;
 };
 
 // ========================================================
-// 2. [추가] 페이지네이션 (9개씩)
-const ITEMS_PER_PAGE = 9;
+// 2. [추가] 페이지네이션 (11개씩)
+const ITEMS_PER_PAGE = 11;
 const currentPage = ref(1);
 
 const totalPages = computed(() =>
@@ -55,17 +56,19 @@ const visiblePages = computed(() => {
   return pages;
 });
 
-// 날짜가 바뀌거나 정렬이 바뀌면 1페이지로
+// 날짜 변경이나 정렬 변경 시 페이지 번호를 1로 초기화
 watch(() => currentRoute.params.selectedDate, () => { currentPage.value = 1; });
 watch(isSorted, () => { currentPage.value = 1; });
 
 // ========================================================
+// 로그인 여부 확인
 onMounted(() => {
   if (!loginStore.user?.id) {
     router.push('/login');
   }
 });
-
+// =============================================================
+// 수정 기능
 const editData = ref(null);
 const editModalOpen = ref(false);
 
@@ -73,7 +76,8 @@ const editList = (item) => {
   editData.value = item;
   editModalOpen.value = true;
 };
-
+// ===========================================================
+// 삭제 기능 (서버 데이터 삭제 요청 및 로컬 스토어 갱신)
 const deleteList = async (targetid) => {
   if (!confirm("정말 삭제하시겠습니까?")) return;
   const userId = loginStore.user.id;
@@ -89,7 +93,8 @@ const deleteList = async (targetid) => {
     console.log("삭제 실패", err);
   }
 }
-
+// ============================================================
+// 6. 모달 제어 (추가/수정 모달 열기 및 공통 닫기 처리)
 const isModalOpen = ref(false);
 const AddList = () => { isModalOpen.value = true; };
 const isModaClose = () => { isModalOpen.value = false; editModalOpen.value = false; };
@@ -160,7 +165,6 @@ const isModaClose = () => { isModalOpen.value = false; editModalOpen.value = fal
 </template>
 
 <style scoped>
-/* 보라색 테마 설정 */
 .text-purple {
   color: #bfa5d4;
 }
@@ -181,36 +185,35 @@ const isModaClose = () => { isModalOpen.value = false; editModalOpen.value = fal
   border-color: #bfa5d4;
 }
 
-/* 테두리 설정 */
 .custom-border {
   border: 2px solid #BFA5D4 !important;
 }
 
-/* 목록 컨테이너 높이 맞추기 */
+/* 👇 핵심 수정: Home.vue의 반응형 크기에 완벽 호환 */
 .list-container {
-  height: 720px;
-  /* 👈 달력과 맞춘 고정 높이 */
+  height: 100% !important;
+  /* 부모(Home)가 계산해준 크기를 100% 가져다 씁니다 */
+  max-height: 100% !important;
   display: flex;
   flex-direction: column;
   background-color: white;
   border-radius: 20px;
 }
 
-/* 테이블 영역 레이아웃 */
 .table-responsive {
   flex: 1;
   overflow-y: auto;
   margin-bottom: 10px;
+  min-height: 0;
+  /* 👇 핵심: flex 자식이 억지로 부모 높이를 뚫고 나가는 버그 완벽 차단 */
 }
 
 .custom-table {
   font-size: 0.85rem;
   table-layout: fixed;
-  /* 👈 레이아웃 고정 핵심 */
   width: 100%;
 }
 
-/* 플러스 버튼 */
 .add-btn {
   width: 50px;
   height: 50px;
@@ -228,7 +231,6 @@ const isModaClose = () => { isModalOpen.value = false; editModalOpen.value = fal
   font-size: 0.75rem;
 }
 
-/* 페이지네이션 스타일 */
 .pagination-wrap {
   display: flex;
   justify-content: center;
@@ -262,7 +264,6 @@ const isModaClose = () => { isModalOpen.value = false; editModalOpen.value = fal
   padding: 0.2rem 0.6rem;
 }
 
-/* 스크롤바 디자인 */
 .table-responsive::-webkit-scrollbar {
   width: 5px;
 }
