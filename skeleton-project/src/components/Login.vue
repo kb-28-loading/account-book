@@ -34,26 +34,26 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useLoginStore } from "@/stores/login";
+import { ref } from 'vue';
+import { useLoginStore } from '@/stores/login';
 
-const ID = ref("");
-const PW = ref("");
+const ID = ref('');
+const PW = ref('');
 
 const loginStore = useLoginStore();
 
-const emit = defineEmits(["login-success", "go-join"]);
+const emit = defineEmits(['login-success', 'go-join']);
 
 const login = async (ID, PW) => {
   const resp = await loginStore.login(ID, PW);
-  if (resp === "success") {
-    console.log("로그인 정보는 넘어옴");
-    emit("login-success");
+  if (resp === 'success') {
+    console.log('로그인 정보는 넘어옴');
+    emit('login-success');
   }
 };
 
 const goJoin = () => {
-  emit("go-join");
+  emit('go-join');
 };
 </script>
 
@@ -64,22 +64,26 @@ const goJoin = () => {
   align-items: center;
   gap: 60px;
   min-height: 100vh;
-  background-color: #eeeaf8;
+  background-color: #f8f4fe;
 }
 
 .logo-box {
-  background-color: #ffffff;
+  /* background-color: #ffffff;
   border-radius: 30px;
-  padding: 30px;
+  padding: 30px; */
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); */
+
+  width: 542px;
+  height: 360px;
+  overflow: hidden;
+  border-radius: 16px;
 }
 
 .logo-box img {
-  width: 320px;
-  border-radius: 16px;
+  width: 750px;
 }
 
 .login-box {
