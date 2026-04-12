@@ -27,8 +27,8 @@ const clickedPlus = () => {
 };
 
 // ==========================================================
-// [추가] 페이지네이션 (9개씩)
-const ITEMS_PER_PAGE = 9;
+// [추가] 페이지네이션 (11개씩)
+const ITEMS_PER_PAGE = 11;
 const currentPage = ref(1);
 
 const totalPages = computed(() =>
