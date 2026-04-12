@@ -88,6 +88,39 @@ const editList = (item) => {
   editModalOpen.value = true; // 모달을 엽니다
 };
 // ========================================================
+// ==========================================================
+// [추가] 페이지네이션
+const ITEMS_PER_PAGE = 12; // 한 페이지에 표시할 최대 항목 수
+const currentPage = ref(1); // 현재 페이지 번호
+
+// 전체 페이지 수
+const totalPages = computed(() =>
+  Math.ceil(LatestList.value.length / ITEMS_PER_PAGE),
+);
+
+// 현재 페이지에 해당하는 항목만 슬라이싱
+const paginatedList = computed(() => {
+  const start = (currentPage.value - 1) * ITEMS_PER_PAGE;
+  return LatestList.value.slice(start, start + ITEMS_PER_PAGE);
+});
+
+// 현재 페이지를 가운데 기준으로 최대 3개 페이지 번호 표시
+const visiblePages = computed(() => {
+  const total = totalPages.value;
+  const cur = currentPage.value;
+  let start = Math.max(1, cur - 1);
+  let end = Math.min(total, start + 2);
+  if (end - start < 2) start = Math.max(1, end - 2);
+  const pages = [];
+  for (let i = start; i <= end; i++) pages.push(i);
+  return pages;
+});
+
+// 정렬 순서가 바뀌면 첫 페이지로 초기화
+watch(isSorted, () => {
+  currentPage.value = 1;
+});
+// ==========================================================
 </script>
 
 <template>
@@ -114,7 +147,8 @@ const editList = (item) => {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="value in LatestList" :key="value.id">
+          <!-- [추가] paginatedList로 변경 (페이지네이션 적용) -->
+          <tr v-for="value in paginatedList" :key="value.id">
             <td class="text-muted small">{{ value.date }}</td>
             <td>{{ value.type }}</td>
             <td>
@@ -148,6 +182,35 @@ const editList = (item) => {
         </tbody>
       </table>
     </div>
+
+    <!-- ========================================================== -->
+    <!-- [추가] 페이지네이션 버튼 -->
+    <div v-if="totalPages > 1" class="pagination-wrap">
+      <button
+        v-if="currentPage > 1"
+        class="page-btn nav-btn"
+        @click="currentPage--"
+      >
+        prev
+      </button>
+      <button
+        v-for="page in visiblePages"
+        :key="page"
+        class="page-btn"
+        :class="{ active: page === currentPage }"
+        @click="currentPage = page"
+      >
+        -{{ page }}-
+      </button>
+      <button
+        v-if="currentPage < totalPages"
+        class="page-btn nav-btn"
+        @click="currentPage++"
+      >
+        next
+      </button>
+    </div>
+    <!-- ========================================================== -->
 
     <button
       class="btn btn-purple rounded-circle shadow-lg position-absolute add-btn"
@@ -223,6 +286,42 @@ const editList = (item) => {
   padding: 0.1rem 0.4rem;
   font-size: 0.75rem;
 }
+
+/* ========================================================== */
+/* [추가] 페이지네이션 스타일 */
+.pagination-wrap {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.page-btn {
+  background: none;
+  border: none;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.75rem;
+  color: #adb5bd;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.page-btn:hover {
+  color: #495057;
+}
+
+.page-btn.active {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #000;
+}
+
+.nav-btn {
+  font-size: 0.75rem;
+  color: #6c757d;
+  padding: 0.2rem 0.6rem;
+}
+/* ========================================================== */
 
 /* 스크롤바 디자인 */
 .table-responsive::-webkit-scrollbar {
