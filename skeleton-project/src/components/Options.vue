@@ -86,6 +86,7 @@ const router = useRouter();
   width: 200px;
   padding-right: 20px;
   padding-bottom: 100px;
+  border-right: 1px rgb(248, 244, 254) solid;
 }
 
 .side-menu-title {
@@ -107,6 +108,5 @@ const router = useRouter();
   width: 1054px;
   padding-left: 60px;
   padding-bottom: 50px;
-  border-left: 1px rgb(248, 244, 254) solid;
 }
 </style>
