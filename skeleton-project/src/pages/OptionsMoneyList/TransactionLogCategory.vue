@@ -42,18 +42,26 @@
         </tbody>
       </table>
     </div>
+    <div>
+      <button @click="showModal = true">+</button>
+      <AddTransactionModal v-if="showModal" @close="onModalClose" />
+    </div>
   </div>
 </template>
 <script setup>
 import { useLoginStore } from "@/stores/login";
+import { useMoneyStore } from "@/stores/money";
 import { ref } from "vue";
 import axios from "axios";
+import AddTransactionModal from "@/components/AddTransactionModal.vue";
 
 const categoryList = ref([]);
 const selected = ref("");
 const selectedType = ref("");
 const loginStore = useLoginStore();
 const resultList = ref([]);
+const useStore = useMoneyStore();
+const showModal = ref(false);
 
 const onTypeChange = async () => {
   if (selectedType.value === "지출") {
@@ -64,10 +72,8 @@ const onTypeChange = async () => {
     categoryList.value = typeList.data;
   }
 };
-
-const search = async () => {
-  const response = await axios.get(`/api/users/${loginStore.user.id}`);
-  resultList.value = response.data.moneyList.filter(
+const search = () => {
+  resultList.value = useStore.userMoneyList.filter(
     (item) => item.category === selected.value,
   );
 };
@@ -78,5 +84,9 @@ const deleteItem = async (id) => {
   await axios.patch(`/api/users/${loginStore.user.id}`, {
     moneyList: updatedList,
   });
+};
+
+const onModalClose = () => {
+  showModal.value = false;
 };
 </script>

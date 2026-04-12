@@ -27,15 +27,17 @@
 <script setup>
 import { useLoginStore } from "@/stores/login";
 import { ref, onMounted } from "vue";
+import { useMoneyStore } from "@/stores/money";
 import axios from "axios";
 const loginStore = useLoginStore();
 const props = defineProps({
   startDate: String,
   endDate: String,
 });
-const emit = defineEmits(["latest"]);
+
 const allMoneyList = ref([]);
 const moneyList = ref([]);
+const moneyStore = useMoneyStore();
 
 const deleteItem = async (id) => {
   const updatedList = allMoneyList.value.filter((item) => item.id !== id);
@@ -47,9 +49,9 @@ const deleteItem = async (id) => {
 };
 
 onMounted(async () => {
-  const response = await axios.get(`/api/users/${loginStore.user.id}`);
-  allMoneyList.value = response.data.moneyList ?? [];
-  moneyList.value = [...allMoneyList.value];
+  await moneyStore.loadData();
+  allMoneyList.value = [...moneyStore.userMoneyList];
+  moneyList.value = [...moneyStore.userMoneyList];
 
   const isVaildDate = (dateStr) => !isNaN(new Date(dateStr));
 
@@ -65,6 +67,5 @@ onMounted(async () => {
   moneyList.value.sort((a, b) => {
     return new Date(b.date) - new Date(a.date);
   });
-  emit("latest", moneyList);
 });
 </script>

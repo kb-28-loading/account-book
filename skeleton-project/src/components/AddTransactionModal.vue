@@ -1,50 +1,58 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-import { useLoginStore } from '@/stores/login';
-import { useMoneyStore } from '@/stores/money';
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import { useLoginStore } from "@/stores/login";
+import { useMoneyStore } from "@/stores/money";
 
 const moneyStore = useMoneyStore();
 const loginStore = useLoginStore();
-const emit = defineEmits(['post', 'close']);
+const emit = defineEmits(["post", "close"]);
 // ====================================================
 // 카테고리 별 정보담기
 
-const inCategories = ref({ 'income-category': [] });
-const outCategories = ref({ 'outcome-category': [] });
+const inCategories = ref({ "income-category": [] });
+const outCategories = ref({ "outcome-category": [] });
 const account = ref([]);
 
 onMounted(async () => {
-  const income = await axios.get('/api/income-category');
-  const outcome = await axios.get('/api/outcome-category');
+  const income = await axios.get("/api/income-category");
+  const outcome = await axios.get("/api/outcome-category");
   const res = await axios.get(`/api/users/${loginStore.user.id}`);
   inCategories.value = income.data;
   outCategories.value = outcome.data;
   account.value = res.data.account;
 
-  console.log('수입데이터 받아오기', inCategories);
-  console.log('지출데이터 받아오기', outCategories);
-  console.log('결제수단 데이터 받아오기', account);
+  console.log("수입데이터 받아오기", inCategories);
+  console.log("지출데이터 받아오기", outCategories);
+  console.log("결제수단 데이터 받아오기", account);
 });
 
 // =======================================================
 // 입력되는 값 받아서 db.json에 보내기
 
 // 1. 각각의 입력값을 담을 바구니(ref) 선언
-const title = ref('');
-const selectedDate = ref('2026-04-10'); // 기본값 설정
+const title = ref("");
 const userMoney = ref(0);
-const selectedCategory = ref('');
-const memo = ref('');
-const accountInfo = ref('');
+const selectedCategory = ref("");
+const memo = ref("");
+const accountInfo = ref("");
 const id = ref(0);
+
+// =======================================================
+const today = new Date();
+const yyyy = today.getFullYear();
+const mm = String(today.getMonth() + 1).padStart(2, "0");
+const dd = String(today.getDate()).padStart(2, "0");
+const selectedDate = ref(`${yyyy}-${mm}-${dd}`); // 기본값 설정
+// + 버튼 눌렀을 때 당일의 날짜 불러오기
+// =======================================================
 
 const saveBtn = async () => {
   const newList = {
     title: title.value,
     date: selectedDate.value,
     userMoney: userMoney.value,
-    type: categoryOn.value ? '지출' : '수입',
+    type: categoryOn.value ? "지출" : "수입",
     category: selectedCategory.value,
     id: Date.now(),
     memo: memo.value,
@@ -52,19 +60,19 @@ const saveBtn = async () => {
   };
 
   if (!userMoney.value) {
-    alert('금액을 입력해주세요');
+    alert("금액을 입력해주세요");
     return;
   }
   if (!selectedCategory.value) {
-    alert('카테고리를 입력해주세요');
+    alert("카테고리를 입력해주세요");
     return;
   }
   if (!title.value) {
-    alert('거래명을 입력해주세요');
+    alert("거래명을 입력해주세요");
     return;
   }
   if (!accountInfo.value) {
-    alert('결제수단을 선택해주세요')
+    alert("결제수단을 선택해주세요");
     return;
   }
 
@@ -74,8 +82,8 @@ const saveBtn = async () => {
   try {
     const res = await axios.get(`/api/users/${userId}`);
     const currentUser = res.data;
-    console.log('userId 값 가져오기', res);
-    console.log('currentUser에 res.data넣기', currentUser);
+    console.log("userId 값 가져오기", res);
+    console.log("currentUser에 res.data넣기", currentUser);
 
     // 2. 기존의 moneyList 배열에 새로운 항목(newList)을 추가합니다.
     const updatedMoneyList = [...currentUser.moneyList, newList];
@@ -86,26 +94,25 @@ const saveBtn = async () => {
     });
     // patch('위치', {K : V}) : 위치에 k 위치에 v값으로 바꿈
 
-    console.log('저장 성공 0_<');
+    console.log("저장 성공 0_<");
     await moneyStore.loadData();
-    emit('close');
+    emit("close");
     alert("저장완료");
-
   } catch (err) {
-    console.log('저장 실패 0_0....', err);
+    console.log("저장 실패 0_0....", err);
     alert("저장실패");
   }
 };
 // ==============================================================
 // 버튼 누으면 카테고리 바뀌기
-const categoryOn = ref('');
+const categoryOn = ref("");
 const income = () => {
   categoryOn.value = false;
-  console.log('수입');
+  console.log("수입");
 };
 const onCome = () => {
   categoryOn.value = true;
-  console.log('지출');
+  console.log("지출");
 };
 </script>
 
@@ -123,7 +130,11 @@ const onCome = () => {
       <br />
 
       <span>
-        <button @click="income">수입</button><button @click="onCome">지출</button>
+        <button @click="income" :class="{ active: categoryOn === false }">
+          수입</button
+        ><button @click="onCome" :class="{ active: categoryOn === true }">
+          지출
+        </button>
       </span>
 
       <div>카테고리</div>
@@ -144,8 +155,12 @@ const onCome = () => {
       <div>결제수단</div>
       <select v-model="accountInfo">
         <option value="">은행 카테고리를 선택하세요</option>
-        <option v-for="item in account" :key="item.info" :value="`${item.bank}-${item.info}`"> {{ item.bank }}-{{
-          item.info }}
+        <option
+          v-for="item in account"
+          :key="item.info"
+          :value="`${item.bank}-${item.info}`"
+        >
+          {{ item.bank }}-{{ item.info }}
         </option>
       </select>
 
@@ -186,5 +201,10 @@ const onCome = () => {
   padding: 2em;
   border-radius: 20px;
   border: 2px solid #d1c4e9;
+}
+
+button.active {
+  background-color: purple;
+  color: white;
 }
 </style>

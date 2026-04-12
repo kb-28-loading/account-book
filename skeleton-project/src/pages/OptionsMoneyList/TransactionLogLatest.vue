@@ -30,32 +30,31 @@
         v-if="showList"
         :startDate="startDate"
         :endDate="endDate"
-        @latest="latest"
         :key="queryCount"
       />
+    </div>
+    <div>
+      <button @click="showModal = true">+</button>
+      <AddTransactionModal v-if="showModal" @close="onModalClose" />
     </div>
   </div>
 </template>
 <script setup>
 import { ref } from "vue";
 import TransactionLogList from "./TransactionLogList.vue";
+import AddTransactionModal from "@/components/AddTransactionModal.vue";
 
 const showCalendar = ref(false);
 const showList = ref(true);
 const queryCount = ref(0);
 const startDate = ref("yyyy - MM - dd");
 const endDate = ref("yyyy - MM - dd");
-const latestData = ref();
+const showModal = ref(false);
 
 const inputData = () => {
   showList.value = true;
   queryCount.value++;
   console.log(showList.value);
-};
-
-const latest = (moneyList) => {
-  latestData.value = moneyList.value;
-  console.log(latestData.value);
 };
 
 const sortLatest = () => {
@@ -105,6 +104,10 @@ const setMonthly = () => {
 
   startDate.value = formatDate(monthFirst);
   endDate.value = formatDate(monthLast);
+  inputData();
+};
+const onModalClose = () => {
+  showModal.value = false;
   inputData();
 };
 // ---------------------------------------------
