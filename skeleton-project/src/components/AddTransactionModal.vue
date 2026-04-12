@@ -127,7 +127,7 @@ const onCome = () => {
   <div class="modal-overlay" @click.self="$emit('close')">
     <div class="modal-card shadow-lg">
       <div class="modal-header">
-        <span class="header-title">거래명과 연동</span>
+        <span class="header-title">{{ title || "거래명" }}</span>
         <button class="close-btn" @click="$emit('close')">X</button>
       </div>
 
@@ -181,7 +181,8 @@ const onCome = () => {
         <div class="form-row">
           <label>거래명</label>
           <input
-            v-model="title"
+            :value="title"
+            @input="title = $event.target.value"
             class="form-input"
             placeholder="거래명을 입력하세요"
           />
