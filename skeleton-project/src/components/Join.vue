@@ -4,23 +4,25 @@
     <br />
     <div class="main-monitor">
       <h1>회원가입</h1>
-      <div class="row options-main-container join-main-monitor">
+      <div class="options-main-container join-main-monitor">
         <label
-          ><span class="left-menu">이름/닉네임</span
-          ><input type="text" v-model.trim="userName"
+          ><div>이름/닉네임</div>
+          <input type="text" v-model.trim="userName"
         /></label>
         <div>
           <label
-            ><span>아이디</span
-            ><input type="text" v-model.trim="userID" /></label
-          ><span class="btn" @click="checkID">중복확인</span><br />
+            ><div>아이디</div>
+            <input type="text" v-model.trim="userID"
+          /></label>
+          <div class="btn" @click="checkID">중복확인</div>
           <div class="text-danger fs-6">
             {{ usedID === 1 ? '사용중인 아이디입니다.' : '' }}
           </div>
         </div>
 
         <label
-          ><span>비밀번호</span><input type="password" v-model.trim="userPW"
+          ><div>비밀번호</div>
+          <input type="password" v-model.trim="userPW"
         /></label>
         <div>
           <p>
@@ -29,8 +31,8 @@
         </div>
         <div>
           <label
-            ><span>비밀번호 확인</span
-            ><input type="password" v-model.trim="userPWChecked"
+            ><div>비밀번호 확인</div>
+            <input type="password" v-model.trim="userPWChecked"
           /></label>
           <div>
             <p class="text-danger">
@@ -45,20 +47,21 @@
 
         <hr />
         <label
-          ><span>은행</span
-          ><select name="bank" id="bank" v-model="bank">
+          ><div>은행</div>
+          <select name="bank" id="bank" v-model="bank">
             <option value="">은행</option>
             <option v-for="bank in bankList" :value="bank">{{ bank }}</option>
           </select></label
         >
         <label
-          ><span>계좌 이름/번호</span><input type="text" v-model.trims="info"
+          ><div>계좌 이름/번호</div>
+          <input type="text" v-model.trims="info"
         /></label>
         <label
-          ><span>계좌 잔액</span
-          ><input type="text" v-model.number="balance" /></label
+          ><div>계좌 잔액</div>
+          <input type="text" v-model.number="balance" /></label
         ><br />
-        <button @click="checkFullForm">SUBMIT</button>
+        <div><button @click="checkFullForm">SUBMIT</button></div>
       </div>
     </div>
     <Footer />
@@ -211,7 +214,7 @@ const checkFullForm = () => {
   border-top: 3px rgb(123, 76, 161) solid;
   border-left: 3px rgb(123, 76, 161) solid;
   border-right: 3px rgb(123, 76, 161) solid;
-  height: 600px;
+  /* height: 600px; */
 }
 .join-main-monitor {
   padding-bottom: 45px;
@@ -220,16 +223,5 @@ const checkFullForm = () => {
   /* justify-content: center;
   align-items: center; */
   text-align: center;
-}
-.left-menu {
-  width: 200px;
-  display: flex;
-  justify-content: end;
-}
-.center-input {
-  width: 500px;
-}
-.right-button {
-  width: 50px;
 }
 </style>
