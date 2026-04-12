@@ -40,6 +40,7 @@
   </div>
 </template>
 <script setup>
+import AddTransactionModal from "@/components/AddTransactionModal.vue"; // 자식 가져오기
 import { ref } from "vue";
 import TransactionLogList from "./TransactionLogList.vue";
 import AddTransactionModal from "@/components/AddTransactionModal.vue";
