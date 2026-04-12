@@ -12,8 +12,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="value in moneyList" :key="value.listId">
-          <!-- <tr v-for="value in filteredList" :key="value.listId"> 내가 좀 건들여봤는데 다 못했으.. 모르겠으면 그냥 주석 지워  -->
+        <tr v-for="value in moneyList" :key="value.id">
           <td>{{ value.date }}</td>
           <td>{{ value.type }}</td>
           <td>{{ value.title }}</td>
@@ -30,9 +29,6 @@ import { useLoginStore } from "@/stores/login";
 import { ref, onMounted } from "vue";
 import { useMoneyStore } from "@/stores/money";
 import axios from "axios";
-// import { useMoneyStore } from "@/stores/money";
-
-// const moneyStore = useMoneyStore();
 const loginStore = useLoginStore();
 const props = defineProps({
   startDate: String,

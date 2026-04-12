@@ -79,6 +79,12 @@
           "accountInfo": "KB-48550201280534"
         },
         {
+          "title": "schd 배당금",
+          "date": "2026-04-12",
+          "userMoney": 300000,
+          "type": "수입",
+          "category": "배당금",
+          "id": 1775962444825,
           "title": "asdfasdf",
           "date": "2026-04-14",
           "userMoney": 1111111,
