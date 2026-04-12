@@ -25,9 +25,9 @@
           <div class="error-msg" v-if="loginStore.undePW === 1">
             비밀번호가 일치하지 않습니다.
           </div>
-          <button class="login-btn" @click="login(ID, PW)">LOGIN</button>
+          <button class="login-btn" @click.stop="login(ID, PW)">LOGIN</button>
         </div>
-        <div class="go-join" @click="goJoin">회원가입 하기</div>
+        <div class="go-join" @click.stop="goJoin">회원가입 하기</div>
       </div>
     </div>
   </div>
@@ -45,6 +45,8 @@ const loginStore = useLoginStore();
 const emit = defineEmits(['login-success', 'go-join']);
 
 const login = async (ID, PW) => {
+  console.log('로그인 이벤트 실행');
+
   const resp = await loginStore.login(ID, PW);
   if (resp === 'success') {
     console.log('로그인 정보는 넘어옴');

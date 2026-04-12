@@ -1,6 +1,6 @@
 <script setup>
-import AddTransactionModal from '@/components/AddTransactionModal.vue'; // 자식 가져오기
-import EditTransactionModal from '@/components/EditTransactionModal.vue'; // 자식 가져오기
+import AddTransactionModal from '@/components/AddTransactionModal.vue';
+import EditTransactionModal from '@/components/EditTransactionModal.vue';
 import { ref, watch, onMounted, computed } from 'vue';
 import { useLoginStore } from '@/stores/login';
 import { useRoute, useRouter } from 'vue-router';
@@ -8,94 +8,91 @@ import { useMoneyStore } from '@/stores/money';
 import axios from 'axios';
 
 const currentRoute = useRoute();
+const router = useRouter();
 const loginStore = useLoginStore();
 const moneyStore = useMoneyStore();
 
 // =======================================================
-// 주소 바뀌면 해당 주소에 맞는 값들 보여주기(날짜에 맞는 값 띄우기)
+// 1. 날짜에 맞는 리스트 및 정렬 로직
+const isSorted = ref(true);
 
 const dailyList = computed(() => {
-  return moneyStore.userMoneyList.filter(
+  const list = moneyStore.userMoneyList.filter(
     (item) => item.date === currentRoute.params.selectedDate
   );
+
+  // 정렬 (날짜가 같으므로 보통 ID나 입력 순으로 정렬하게 됩니다)
+  return isSorted.value ? [...list].reverse() : [...list];
 });
+
+const clickedPlus = () => {
+  isSorted.value = !isSorted.value;
+};
+
 // ========================================================
-// 처음 주소로 들어갔을 때 작동 할 상황을 대비해 페이지 첫 로드되면 목록 출력
+// 2. [추가] 페이지네이션 (9개씩)
+const ITEMS_PER_PAGE = 9;
+const currentPage = ref(1);
+
+const totalPages = computed(() =>
+  Math.ceil(dailyList.value.length / ITEMS_PER_PAGE)
+);
+
+const paginatedList = computed(() => {
+  const start = (currentPage.value - 1) * ITEMS_PER_PAGE;
+  return dailyList.value.slice(start, start + ITEMS_PER_PAGE);
+});
+
+// 페이지 번호 계산
+const visiblePages = computed(() => {
+  const total = totalPages.value;
+  const cur = currentPage.value;
+  let start = Math.max(1, cur - 1);
+  let end = Math.min(total, start + 2);
+  if (end - start < 2) start = Math.max(1, end - 2);
+  const pages = [];
+  for (let i = start; i <= end; i++) pages.push(i);
+  return pages;
+});
+
+// 날짜가 바뀌거나 정렬이 바뀌면 1페이지로
+watch(() => currentRoute.params.selectedDate, () => { currentPage.value = 1; });
+watch(isSorted, () => { currentPage.value = 1; });
+
+// ========================================================
 onMounted(() => {
   if (!loginStore.user?.id) {
     router.push('/login');
   }
 });
 
-const editData = ref(null);/* 수정할 데이터를 담을 바구니 */
+const editData = ref(null);
 const editModalOpen = ref(false);
 
-// 수정 버튼 클릭 함수
 const editList = (item) => {
-  editData.value = item; // 클릭한 행의 데이터를 담고
-  console.log("수정 할 데이터 기존 값", item);
-
-  editModalOpen.value = true; // 모달을 엽니다
+  editData.value = item;
+  editModalOpen.value = true;
 };
-// ==========================================================
-// 삭제 기능
+
 const deleteList = async (targetid) => {
-  console.log(targetid);
-
   if (!confirm("정말 삭제하시겠습니까?")) return;
-
   const userId = loginStore.user.id;
-
   try {
     const res = await axios.get(`/api/users/${userId}`);
-    console.log('userId 값 가져오기', res);
+    const updatedMoneyList = res.data.moneyList.filter((item) => item.id !== Number(targetid));
 
-    const currentUser = res.data.moneyList;
-    console.log('currentUser에 res.data넣기', currentUser);
-
-    const updatedMoneyList = currentUser.filter((item) => item.id !== Number(targetid));
-    console.log("updatedMoneyList", updatedMoneyList);
-
-    // 3. 서버에 PATCH 요청을 보냅니다.
     await axios.patch(`/api/users/${userId}`, {
       moneyList: updatedMoneyList,
     });
-    console.log("삭제 성공 >_<");
-    await moneyStore.loadData(); // 창고 최신화!
-
-  } catch {
-    console.log("삭제 실패 0_0..");
-
+    await moneyStore.loadData();
+  } catch (err) {
+    console.log("삭제 실패", err);
   }
 }
-// =============================================================
-// 정렬 버튼
-const isSorted = ref(true);
 
-const clickedPlus = () => {
-  if (!isSorted.value) {
-    LatestList.value.sort((a, b) => new Date(b.date) - new Date(a.date));
-    console.log('최신순정렬');
-
-    isSorted.value = true;
-  } else {
-    LatestList.value.sort((a, b) => new Date(a.date) - new Date(b.date));
-    console.log('과거순 정렬');
-    isSorted.value = false;
-  }
-};
-// ==========================================================
-// 팝업창 열고 닫기 부분
-const isModalOpen = ref(false); /* 팝업창의 열림/닫힘 상태를 저장할 변수 */
-const AddList = () => {
-  isModalOpen.value = true;
-};
-
-const isModaClose = () => {
-  isModalOpen.value = false;
-  editModalOpen.value = false;
-};
-// ========================================================
+const isModalOpen = ref(false);
+const AddList = () => { isModalOpen.value = true; };
+const isModaClose = () => { isModalOpen.value = false; editModalOpen.value = false; };
 </script>
 
 <template>
@@ -103,7 +100,7 @@ const isModaClose = () => {
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h5 class="fw-bold m-0 text-purple">해당 날짜 거래내역</h5>
       <button class="btn btn-outline-purple btn-sm" @click="clickedPlus">
-        {{ isSorted ? '과거순정렬' : '최신순정렬' }}
+        {{ isSorted ? '최신순정렬' : '과거순정렬' }}
       </button>
     </div>
 
@@ -111,19 +108,26 @@ const isModaClose = () => {
       <table class="table table-hover align-middle text-center custom-table">
         <thead>
           <tr>
-            <th>거래명</th>
-            <th>카테고리</th>
-            <th>타입</th>
-            <th>금액</th>
-            <th>기능</th>
+            <th style="width: 25%">거래명</th>
+            <th style="width: 20%">카테고리</th>
+            <th style="width: 15%">타입</th>
+            <th style="width: 18%">금액</th>
+            <th style="width: 22%">기능</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="value in dailyList" :key="value.id || value.listId">
-            <td class="text-start ps-3 fw-bold">{{ value.title }}</td>
-            <td><span class="badge bg-light text-dark">{{ value.category }}</span></td>
-            <td>{{ value.type }}</td>
-            <td :class="value.type === '수입' ? 'text-primary' : 'text-danger'" class="fw-bold">
+          <tr v-for="value in paginatedList" :key="value.id || value.listId">
+            <td class="text-start ps-3 fw-bold text-truncate" style="max-width: 0;" :title="value.title">
+              {{ value.title }}
+            </td>
+            <td>
+              <div class="text-truncate" :title="value.category">
+                <span class="badge bg-light text-dark">{{ value.category }}</span>
+              </div>
+            </td>
+            <td class="text-truncate" style="max-width: 0;">{{ value.type }}</td>
+            <td :class="value.type === '수입' ? 'text-primary' : 'text-danger'" class="fw-bold text-truncate"
+              style="max-width: 0;">
               {{ value.userMoney.toLocaleString() }}
             </td>
             <td>
@@ -137,6 +141,15 @@ const isModaClose = () => {
       </table>
     </div>
 
+    <div v-if="totalPages > 1" class="pagination-wrap">
+      <button v-if="currentPage > 1" class="page-btn nav-btn" @click="currentPage--">prev</button>
+      <button v-for="page in visiblePages" :key="page" class="page-btn" :class="{ active: page === currentPage }"
+        @click="currentPage = page">
+        -{{ page }}-
+      </button>
+      <button v-if="currentPage < totalPages" class="page-btn nav-btn" @click="currentPage++">next</button>
+    </div>
+
     <button class="btn btn-purple rounded-circle shadow-lg position-absolute add-btn" @click="AddList">
       <i class="fa-solid fa-plus"></i>
     </button>
@@ -145,36 +158,61 @@ const isModaClose = () => {
     <EditTransactionModal v-if="editModalOpen" :editData="editData" @close="isModaClose" />
   </div>
 </template>
+
 <style scoped>
 /* 보라색 테마 설정 */
-.text-purple { color: #7b4ca1; }
-.btn-purple { background-color: #7b4ca1; color: white; border: none; }
-.btn-purple:hover { background-color: #6a3d8f; color: white; }
-.btn-outline-purple { color: #7b4ca1; border-color: #7b4ca1; }
-
-/* 1. 👇 테두리 설정 (달력과 동일하게 #BFA5D4, 2px) */
-.custom-border { 
-  border: 2px solid #BFA5D4 !important; 
+.text-purple {
+  color: #bfa5d4;
 }
 
-/* 2. 👇 목록 컨테이너 높이 맞추기 */
+.btn-purple {
+  background-color: #bfa5d4;
+  color: white;
+  border: none;
+}
+
+.btn-purple:hover {
+  background-color: #a98bc4;
+  color: white;
+}
+
+.btn-outline-purple {
+  color: #bfa5d4;
+  border-color: #bfa5d4;
+}
+
+/* 테두리 설정 */
+.custom-border {
+  border: 2px solid #BFA5D4 !important;
+}
+
+/* 목록 컨테이너 높이 맞추기 */
 .list-container {
-  height: 100%;       /* 부모 col 높이에 꽉 차게 */
+  height: 720px;
+  /* 👈 달력과 맞춘 고정 높이 */
   display: flex;
   flex-direction: column;
   background-color: white;
+  border-radius: 20px;
 }
 
-/* 3. 👇 테이블 영역이 남은 높이를 다 쓰도록 설정 */
+/* 테이블 영역 레이아웃 */
 .table-responsive {
-  flex: 1;            /* 헤더 제외 남은 공간 다 차지 */
+  flex: 1;
   overflow-y: auto;
   margin-bottom: 10px;
 }
 
-/* 플러스 버튼 위치 조정 */
+.custom-table {
+  font-size: 0.85rem;
+  table-layout: fixed;
+  /* 👈 레이아웃 고정 핵심 */
+  width: 100%;
+}
+
+/* 플러스 버튼 */
 .add-btn {
-  width: 50px;        /* 칸이 좁아졌으므로 크기 살짝 조절 */
+  width: 50px;
   height: 50px;
   right: 20px;
   bottom: 20px;
@@ -185,10 +223,52 @@ const isModaClose = () => {
   justify-content: center;
 }
 
-.custom-table { font-size: 0.85rem; }
-.btn-xs { padding: 0.1rem 0.4rem; font-size: 0.75rem; }
+.btn-xs {
+  padding: 0.1rem 0.4rem;
+  font-size: 0.75rem;
+}
+
+/* 페이지네이션 스타일 */
+.pagination-wrap {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.page-btn {
+  background: none;
+  border: none;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.75rem;
+  color: #adb5bd;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.page-btn:hover {
+  color: #495057;
+}
+
+.page-btn.active {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #000;
+}
+
+.nav-btn {
+  font-size: 0.75rem;
+  color: #6c757d;
+  padding: 0.2rem 0.6rem;
+}
 
 /* 스크롤바 디자인 */
-.table-responsive::-webkit-scrollbar { width: 5px; }
-.table-responsive::-webkit-scrollbar-thumb { background: #dbd0e6; border-radius: 10px; }
+.table-responsive::-webkit-scrollbar {
+  width: 5px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: #dbd0e6;
+  border-radius: 10px;
+}
 </style>

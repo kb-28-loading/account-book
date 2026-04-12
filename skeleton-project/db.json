@@ -135,6 +135,36 @@
           "id": 1775993700741,
           "memo": "",
           "accountInfo": "KB-48550201280534"
+        },
+        {
+          "title": "뽀나쓰",
+          "date": "2026-04-07",
+          "userMoney": 123123,
+          "type": "수입",
+          "category": "배당금",
+          "id": 1776000681018,
+          "memo": "",
+          "accountInfo": "KB-48550201280534"
+        },
+        {
+          "title": "택시",
+          "date": "2026-04-21",
+          "userMoney": 123123,
+          "type": "지출",
+          "category": "교통",
+          "id": 1776000702213,
+          "memo": "",
+          "accountInfo": "KB-48550201280534"
+        },
+        {
+          "title": "수리비",
+          "date": "2026-04-28",
+          "userMoney": 22222,
+          "type": "지출",
+          "category": "월세",
+          "id": 1776000730189,
+          "memo": "",
+          "accountInfo": "KB-48550201280534"
         }
       ],
       "userBudget": [
@@ -357,11 +387,7 @@
       "id": 3
     }
   ],
-  "income-category": [
-    "급여",
-    "배당금",
-    "이자"
-  ],
+  "income-category": ["급여", "배당금", "이자"],
   "outcome-category": [
     "식비",
     "문화/여가",
