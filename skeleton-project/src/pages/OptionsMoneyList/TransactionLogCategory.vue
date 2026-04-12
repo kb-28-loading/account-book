@@ -37,7 +37,11 @@
             <td>{{ value.title }}</td>
             <td>{{ value.category }}</td>
             <td>{{ value.userMoney }}</td>
-            <td><button @click="deleteItem(value.id)">삭제</button></td>
+            <td>
+              <!-- 수정 버튼: 클릭하면 해당 row의 전체 데이터(value)를 openEditModal에 넘김 -->
+              <button @click="openEditModal(value)">수정</button>
+              <button @click="deleteItem(value.id)">삭제</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -46,6 +50,15 @@
       <button @click="showModal = true">+</button>
       <AddTransactionModal v-if="showModal" @close="onModalClose" />
     </div>
+
+    <!-- showEditModal이 true일 때만 모달 렌더링 -->
+    <!-- :editData → 수정할 거래 데이터를 모달 안으로 prop으로 전달 -->
+    <!-- @close → 모달 내부에서 $emit('close') 하면 onEditClose 실행 -->
+    <EditTransactionModal
+      v-if="showEditModal"
+      :editData="editData"
+      @close="onEditClose"
+    />
   </div>
 </template>
 <script setup>
@@ -54,6 +67,7 @@ import { useMoneyStore } from "@/stores/money";
 import { ref } from "vue";
 import axios from "axios";
 import AddTransactionModal from "@/components/AddTransactionModal.vue";
+import EditTransactionModal from "@/components/EditTransactionModal.vue"; // 수정 모달 컴포넌트 불러오기
 
 const categoryList = ref([]);
 const selected = ref("");
@@ -62,6 +76,22 @@ const loginStore = useLoginStore();
 const resultList = ref([]);
 const useStore = useMoneyStore();
 const showModal = ref(false);
+const showEditModal = ref(false); // 수정 모달의 표시 여부 (true면 열림, false면 닫힘)
+const editData = ref(null);       // 수정 버튼을 누른 row의 거래 데이터를 임시 저장
+
+// 수정 버튼 클릭 시 실행
+// item = 클릭한 row의 거래 데이터 (value 전체)
+const openEditModal = (item) => {
+  editData.value = item;          // 해당 거래 데이터를 editData에 저장 → 모달에 prop으로 전달됨
+  showEditModal.value = true;     // 모달 열기
+};
+
+// 모달 안에서 $emit('close') 했을 때 실행
+const onEditClose = async () => {
+  showEditModal.value = false;    // 모달 닫기
+  await useStore.loadData();      // 수정된 내용이 반영된 최신 데이터를 스토어에서 다시 불러오기
+  search();                       // 현재 선택된 카테고리 기준으로 목록 재조회
+};
 
 const onTypeChange = async () => {
   if (selectedType.value === "지출") {
@@ -73,9 +103,9 @@ const onTypeChange = async () => {
   }
 };
 const search = () => {
-  resultList.value = useStore.userMoneyList.filter(
-    (item) => item.category === selected.value,
-  );
+  resultList.value = useStore.userMoneyList
+    .filter((item) => item.category === selected.value)
+    .sort((a, b) => new Date(b.date) - new Date(a.date)); // 최신순 정렬
 };
 const deleteItem = async (id) => {
   const response = await axios.get(`/api/users/${loginStore.user.id}`);

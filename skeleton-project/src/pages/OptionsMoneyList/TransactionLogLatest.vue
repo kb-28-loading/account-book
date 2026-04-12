@@ -2,7 +2,7 @@
   <div>
     <div>
       <h1>거래 내역 조회(DATE)</h1>
-      <hr />
+      <hr class="title-underline" />
     </div>
     <div>
       <div @click="sortLatest"><button>전체 내역</button></div>
