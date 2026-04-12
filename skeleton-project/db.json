@@ -87,11 +87,11 @@
           "id": 1775962444825
         },
         {
-          "title": "asdfasdf",
-          "date": "2026-04-14",
+          "title": "삼성전자",
+          "date": "2026-04-13",
           "userMoney": 1111111,
           "type": "수입",
-          "category": "급여",
+          "category": "배당금",
           "id": 1775930450210,
           "memo": "",
           "accountInfo": "KB-48550201280534"
@@ -337,7 +337,11 @@
       "id": 3
     }
   ],
-  "income-category": ["급여", "배당금", "이자"],
+  "income-category": [
+    "급여",
+    "배당금",
+    "이자"
+  ],
   "outcome-category": [
     "식비",
     "문화/여가",
