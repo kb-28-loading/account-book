@@ -32,8 +32,8 @@
           <tr>
             <th>Date</th>
             <th>타입</th>
-            <th>거래명</th>
             <th>카테고리</th>
+            <th>거래명</th>
             <th>금액</th>
             <th></th>
           </tr>
@@ -42,12 +42,34 @@
           <tr v-for="value in resultList" :key="value.id">
             <td>{{ value.date }}</td>
             <td>{{ value.type }}</td>
+            <td
+              :class="value.type === '수입' ? 'text-primary' : 'text-danger'"
+              class="fw-bold"
+            >
+              <span class="badge bg-light text-dark">{{ value.category }}</span>
+            </td>
             <td>{{ value.title }}</td>
-            <td>{{ value.category }}</td>
-            <td>{{ value.userMoney }}</td>
+            <td
+              :class="value.type === '수입' ? 'text-primary' : 'text-danger'"
+              class="fw-bold"
+            >
+              {{ value.userMoney.toLocaleString() }}
+            </td>
             <td>
-              <button @click="openEditModal(value)">수정</button>
-              <button @click="deleteItem(value.id)">삭제</button>
+              <div class="btn-group gap-1">
+                <button
+                  class="btn btn-xs btn-outline-secondary"
+                  @click="openEditModal(value)"
+                >
+                  수정
+                </button>
+                <button
+                  class="btn btn-xs btn-outline-danger"
+                  @click="deleteItem(value.id)"
+                >
+                  삭제
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -183,5 +205,10 @@ const onModalClose = () => {
 
 .add-btn:hover {
   background-color: #a98bc4;
+}
+
+.btn-xs {
+  padding: 0.1rem 0.4rem;
+  font-size: 0.75rem;
 }
 </style>

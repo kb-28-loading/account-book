@@ -5,9 +5,27 @@
       <hr class="title-underline" />
     </div>
     <div class="controls-bar">
-      <button class="filter-btn" @click="sortLatest">전체 내역</button>
-      <button class="filter-btn" @click="setWeekly">주간</button>
-      <button class="filter-btn" @click="setMonthly">월간</button>
+      <button
+        class="filter-btn"
+        :class="{ active: activeFilter === 'all' }"
+        @click="sortLatest"
+      >
+        전체 내역
+      </button>
+      <button
+        class="filter-btn"
+        :class="{ active: activeFilter === 'weekly' }"
+        @click="setWeekly"
+      >
+        주간
+      </button>
+      <button
+        class="filter-btn"
+        :class="{ active: activeFilter === 'monthly' }"
+        @click="setMonthly"
+      >
+        월간
+      </button>
 
       <!-- 날짜 표시 + 버튼 -->
       <div class="date-box">
@@ -44,6 +62,7 @@ import { ref } from "vue";
 import TransactionLogList from "./TransactionLogList.vue";
 
 const showCalendar = ref(false);
+const activeFilter = ref("all");
 const showList = ref(true);
 const queryCount = ref(0);
 const startDate = ref("");
@@ -57,6 +76,7 @@ const inputData = () => {
 };
 
 const sortLatest = () => {
+  activeFilter.value = "all";
   startDate.value = "";
   endDate.value = "";
   inputData();
@@ -70,6 +90,7 @@ const formatDate = (date) => {
 };
 
 const setWeekly = () => {
+  activeFilter.value = "weekly";
   const today = new Date();
   const day = today.getDay();
   // -> getday로
@@ -94,6 +115,7 @@ const setWeekly = () => {
 };
 
 const setMonthly = () => {
+  activeFilter.value = "monthly";
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth();
@@ -132,6 +154,12 @@ const onModalClose = () => {
 
 .filter-btn:hover {
   background-color: #f3eeff;
+}
+
+.filter-btn.active {
+  background-color: #bfa5d4;
+  color: white;
+  border-color: #bfa5d4;
 }
 
 .date-box {
