@@ -71,9 +71,9 @@
     </div>
 
     <!-- 예산수정 버튼 -->
-    <!-- <div class="btn-wrap">
+    <div class="btn-wrap">
       <button class="edit-btn" @click="goToBudgetSetting">예산수정</button>
-    </div> -->
+    </div>
   </div>
 </template>
 
