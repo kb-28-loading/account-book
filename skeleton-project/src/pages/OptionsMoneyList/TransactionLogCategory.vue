@@ -212,3 +212,57 @@ const onModalClose = () => {
   font-size: 0.75rem;
 }
 </style>
+
+<!--
+  ===== 변수명 용도 설명 =====
+
+  [ref 상태 변수]
+  - categoryList  : 선택된 타입(수입/지출)에 따라 서버에서 불러온 카테고리 목록 배열.
+                    카테고리 선택 <select>의 option 목록으로 v-for 렌더링됨.
+  - selected      : 카테고리 <select>에서 현재 선택된 카테고리 값. v-model로 바인딩됨.
+  - selectedType  : 타입 <select>에서 현재 선택된 값('수입' | '지출' | '').
+                    v-model로 바인딩되며, onTypeChange에서 타입에 맞는 categoryList를 로드하는 데 사용됨.
+  - resultList    : 조회 결과로 표시할 거래 내역 배열. 테이블의 v-for 데이터 소스.
+  - showModal     : AddTransactionModal 표시 여부. true이면 거래 추가 모달이 열림.
+  - showEditModal : EditTransactionModal 표시 여부. true이면 거래 수정 모달이 열림.
+  - editData      : 수정 버튼을 클릭한 row의 거래 데이터를 임시 저장.
+                    EditTransactionModal에 :editData prop으로 전달됨. 초기값 null.
+
+  [스토어 변수]
+  - loginStore    : useLoginStore()로 가져온 로그인 스토어.
+                    deleteItem에서 현재 로그인 유저의 id(loginStore.user.id)를 참조하는 데 사용됨.
+  - useStore      : useMoneyStore()로 가져온 가계부 스토어.
+                    search에서 userMoneyList를 읽고, onEditClose에서 loadData()로 최신 데이터를 재로드하는 데 사용됨.
+
+  [const 함수 변수]
+  - openEditModal : 수정 버튼 클릭 핸들러. 클릭한 row의 데이터를 editData에 저장하고 showEditModal을 true로 설정.
+  - onEditClose   : EditTransactionModal의 @close 이벤트 핸들러.
+                    모달을 닫고 스토어 데이터를 재로드한 뒤 search()로 목록을 재조회함.
+  - onTypeChange  : 타입 <select> 변경 핸들러. selectedType에 따라 서버에서 카테고리 목록을 불러와 categoryList에 저장.
+  - search        : 조회 버튼 클릭 핸들러. useStore.userMoneyList에서 selected(카테고리)와 일치하는 항목만 필터링해
+                    최신순으로 정렬 후 resultList에 저장.
+  - deleteItem    : 삭제 버튼 클릭 핸들러. 서버에서 현재 유저 데이터를 가져와 해당 id 항목을 제거하고
+                    서버·resultList 양쪽을 모두 갱신함.
+  - onModalClose  : AddTransactionModal의 @close 이벤트 핸들러. showModal을 false로 설정해 모달을 닫음.
+
+  [openEditModal 매개변수]
+  - item          : 수정 버튼을 클릭한 row의 거래 데이터 객체(value 전체). editData에 저장됨.
+
+  [onTypeChange 내부 지역 변수]
+  - response      : selectedType이 '지출'일 때 /api/outcome-category 요청의 응답 객체.
+                    response.data를 categoryList에 저장함.
+  - typeList      : selectedType이 '수입'일 때 /api/income-category 요청의 응답 객체.
+                    typeList.data를 categoryList에 저장함.
+
+  [deleteItem 매개변수 및 내부 지역 변수]
+  - id            : 삭제할 거래 항목의 고유 id. deleteItem 함수의 매개변수.
+  - response      : /api/users/:id GET 요청의 응답 객체. 현재 유저의 전체 데이터를 담음.
+  - updatedList   : response.data.moneyList에서 해당 id를 제외한 새 배열.
+                    서버 PATCH 요청 body로 전달되어 삭제 내용을 서버에 반영함.
+
+  [템플릿 루프 변수]
+  - value         : v-for에서 resultList를 순회할 때 각 거래 항목을 가리키는 반복 변수.
+                    date, type, category, title, userMoney, id 프로퍼티를 템플릿에서 사용함.
+  - category      : v-for에서 categoryList를 순회할 때 각 카테고리 문자열을 가리키는 반복 변수.
+-->
+

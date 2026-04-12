@@ -215,3 +215,59 @@ const onModalClose = () => {
   background-color: #a98bc4;
 }
 </style>
+
+<!--
+  ===== 변수명 용도 설명 =====
+
+  [ref 상태 변수]
+  - showCalendar  : 달력 팝업(date input 두 개)의 표시 여부를 제어. true이면 팝업이 열림.
+  - activeFilter  : 현재 선택된 필터 버튼 상태를 추적. 'all' | 'weekly' | 'monthly' 중 하나.
+                    버튼에 active 클래스를 동적으로 적용하는 데 사용됨.
+  - showList      : TransactionLogList 컴포넌트의 렌더링 여부 제어.
+                    v-if 바인딩에 사용되며, 조회 시 강제 재렌더링 트리거 역할도 함.
+  - queryCount    : 조회 버튼을 누를 때마다 1씩 증가하는 카운터.
+                    TransactionLogList의 :key에 바인딩되어, 값이 바뀔 때마다
+                    자식 컴포넌트를 완전히 재생성(강제 리렌더)시킴.
+  - startDate     : 날짜 범위 조회의 시작일. 'YYYY-MM-DD' 형식의 문자열.
+                    달력 input v-model 및 자식 컴포넌트 props로 전달됨.
+  - endDate       : 날짜 범위 조회의 종료일. 'YYYY-MM-DD' 형식의 문자열.
+                    달력 input v-model 및 자식 컴포넌트 props로 전달됨.
+  - showModal     : AddTransactionModal 컴포넌트의 표시 여부 제어.
+                    true이면 거래 추가 모달이 열림.
+
+  [const 함수 변수]
+  - inputData     : 조회 실행 함수. showList를 true로 설정하고 queryCount를 1 증가시켜
+                    TransactionLogList를 강제 재렌더링함. 여러 함수에서 공통으로 호출됨.
+  - sortLatest    : '전체 내역' 버튼 클릭 핸들러. activeFilter를 'all'로 설정하고
+                    startDate·endDate를 초기화한 뒤 inputData()를 호출해 전체 기간 조회.
+  - formatDate    : Date 객체를 'YYYY-MM-DD' 문자열로 변환하는 유틸 함수.
+                    toISOString() 사용 시 UTC+9 시차로 날짜가 하루 밀리는 문제를 피하기 위해
+                    연·월·일을 직접 꺼내 조합함.
+  - setWeekly     : '주간' 버튼 클릭 핸들러. 이번 주 일요일~토요일 범위를
+                    startDate·endDate에 설정하고 inputData()를 호출.
+  - setMonthly    : '월간' 버튼 클릭 핸들러. 이번 달 1일~말일 범위를
+                    startDate·endDate에 설정하고 inputData()를 호출.
+  - onModalClose  : AddTransactionModal의 @close 이벤트 핸들러.
+                    모달을 닫고(showModal = false) inputData()를 호출해 목록을 갱신함.
+
+  [formatDate 매개변수 및 내부 지역 변수]
+  - date          : 변환할 Date 객체를 받는 매개변수.
+  - ye            : date에서 추출한 연도(4자리 숫자).
+  - mo            : date에서 추출한 월(2자리 문자열, 한 자리면 앞에 '0' 패딩).
+  - da            : date에서 추출한 일(2자리 문자열, 한 자리면 앞에 '0' 패딩).
+
+  [setWeekly 내부 지역 변수]
+  - today         : 현재 날짜를 나타내는 Date 객체.
+  - day           : today.getDay()로 얻은 요일 숫자(0=일요일 ~ 6=토요일).
+                    이번 주 일요일을 계산하기 위한 오프셋으로 사용됨.
+  - sunday        : 이번 주 일요일 날짜. today에서 day만큼 빼서 산출.
+  - saturday      : 이번 주 토요일 날짜. sunday에 6일을 더해 산출.
+
+  [setMonthly 내부 지역 변수]
+  - today         : 현재 날짜를 나타내는 Date 객체.
+  - year          : today에서 추출한 연도 숫자.
+  - month         : today에서 추출한 월 인덱스(0~11). Date 생성자에 그대로 전달됨.
+  - monthFirst    : 이번 달 1일을 나타내는 Date 객체.
+  - monthLast     : 이번 달 마지막 날을 나타내는 Date 객체.
+                    new Date(year, month + 1, 0) 으로 다음 달 0일(= 이번 달 말일)을 구함.
+-->
