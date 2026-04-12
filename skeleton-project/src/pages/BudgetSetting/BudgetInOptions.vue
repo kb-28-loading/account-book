@@ -15,7 +15,7 @@
       <div class="total-budget-row">
         <label>전체예산 : </label>
         <input
-          type="number"
+          type="text"
           v-model.number="savedTotalAmount"
           placeholder="0"
           class="total-input"
@@ -63,9 +63,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from "vue";
-import axios from "axios";
-import { useLoginStore } from "@/stores/login";
+import { ref, onMounted, computed, watch } from 'vue';
+import axios from 'axios';
+import { useLoginStore } from '@/stores/login';
 
 const loginStore = useLoginStore();
 
@@ -94,7 +94,7 @@ const changeMonth = (delta) => {
 };
 
 const reportDate = (m, y) => {
-  let settingDate = `${y}-${m.toString().padStart(2, "0")}`;
+  let settingDate = `${y}-${m.toString().padStart(2, '0')}`;
   moneyListFiltered.value = moneyList.value.filter(
     (item) => item.date && item.date.startsWith(settingDate),
   );
@@ -110,7 +110,7 @@ const currentTotalDisplay = computed(() => {
 const fetchData = async () => {
   if (!loginStore.user?.id) return;
   try {
-    const catResp = await axios.get("http://localhost:3000/outcome-category");
+    const catResp = await axios.get('http://localhost:3000/outcome-category');
     allCategories.value = catResp.data;
 
     // 만약 실제 거래내역 API가 있다면 여기서 호출
@@ -132,7 +132,7 @@ const fetchData = async () => {
       });
     }
   } catch (err) {
-    console.error("데이터 로드 실패", err);
+    console.error('데이터 로드 실패', err);
   }
 };
 
@@ -145,8 +145,14 @@ const saveBudget = () => {
   }
 
   // 실제 저장 로직 (Axios post 등 필요 시 추가)
+  // 최종적으로 서버에 넘길 객체 형식 지정
+  const budgetSet = {
+    budgetYearMonth: settingDate,
+    budgetTot: savedTotalAmount,
+    budgetCategory: budgetInputs,
+  };
   alert(`${month.value}월 예산 설정이 완료되었습니다.`);
-  console.log("예산 객체");
+  console.log('예산 객체', budgetSet);
 };
 
 // 월이 바뀔 때마다 데이터를 다시 필터링하도록 감시
@@ -163,7 +169,7 @@ onMounted(fetchData);
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
-  font-family: "Malgun Gothic", sans-serif;
+  font-family: 'Malgun Gothic', sans-serif;
   color: #4a2d6d; /* 보라색 계열 */
 }
 
