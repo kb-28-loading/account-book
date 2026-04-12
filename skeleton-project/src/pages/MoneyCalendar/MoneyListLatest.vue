@@ -105,28 +105,29 @@ const editList = (item) => {
       <table class="table table-hover align-middle text-center custom-table">
         <thead>
           <tr>
-            <th>거래명</th>
-            <th>카테고리</th>
+            <th>Date</th>
             <th>타입</th>
+            <th>카테고리</th>
+            <th>거래명</th>
             <th>금액</th>
-            <th>날짜</th>
             <th>기능</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="value in LatestList" :key="value.id">
-            <td class="text-start ps-3 fw-bold">{{ value.title }}</td>
+            <td class="text-muted small">{{ value.date }}</td>
+            <td>{{ value.type }}</td>
             <td>
               <span class="badge bg-light text-dark">{{ value.category }}</span>
             </td>
-            <td>{{ value.type }}</td>
+            <td class="text-start ps-3 fw-bold">{{ value.title }}</td>
             <td
               :class="value.type === '수입' ? 'text-primary' : 'text-danger'"
               class="fw-bold"
             >
               {{ value.userMoney.toLocaleString() }}
             </td>
-            <td class="text-muted small">{{ value.date }}</td>
+
             <td>
               <div class="btn-group gap-1">
                 <button

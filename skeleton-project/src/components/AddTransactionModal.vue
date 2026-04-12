@@ -32,7 +32,8 @@ onMounted(async () => {
 
 // 1. 각각의 입력값을 담을 바구니(ref) 선언
 const title = ref("");
-const userMoney = ref(0);
+// placeholder="0"이 실제로 보이도록 초기값을 빈 문자열로 설정 (0으로 하면 placeholder가 아닌 실제 값으로 표시됨)
+const userMoney = ref("");
 const selectedCategory = ref("");
 const memo = ref("");
 const accountInfo = ref("");
@@ -51,7 +52,7 @@ const saveBtn = async () => {
   const newList = {
     title: title.value,
     date: selectedDate.value,
-    userMoney: userMoney.value,
+    userMoney: Number(userMoney.value), // 문자열로 입력된 값을 숫자로 변환해서 저장
     type: categoryOn.value ? "지출" : "수입",
     category: selectedCategory.value,
     id: Date.now(),
@@ -131,11 +132,16 @@ const onCome = () => {
       </div>
 
       <div class="amount-section">
+        <!-- v-model 대신 :value + @input 사용 -->
+        <!-- @input: 숫자 외 문자([^0-9]) 입력 시 즉시 제거 -->
+        <!-- inputmode="numeric": 모바일에서 숫자 키패드 표시 -->
         <input
-          v-model="userMoney"
-          type="number"
+          :value="userMoney"
+          @input="(e) => (userMoney = e.target.value.replace(/[^0-9]/g, ''))"
+          type="text"
           class="amount-input"
           placeholder="0"
+          inputmode="numeric"
         />
         <span class="currency">원</span>
       </div>
