@@ -1,63 +1,168 @@
 <template>
-  <div>
-    <h1>로그인 화면</h1>
-    <div>
+  <div class="login-page">
+    <div class="logo-box">
       <img src="@/assets/mainLogo.jpg" alt="메인로고" />
     </div>
-    <div>
-      <h1>LOGIN</h1>
-      <div>
+    <div class="login-box">
+      <h1 class="login-title">LOGIN</h1>
+      <div class="login-form">
         <div @keyup.enter="login(ID, PW)">
-          <input type="text" placeholder="ID" v-model="ID" /> <br />
-          <input type="password" placeholder="PW" v-model="PW" /> <br />
-          <div class="text-danger" v-if="loginStore.undeID === 1">
+          <input
+            class="login-input"
+            type="text"
+            placeholder="id"
+            v-model="ID"
+          />
+          <input
+            class="login-input"
+            type="password"
+            placeholder="pw"
+            v-model="PW"
+          />
+          <div class="error-msg" v-if="loginStore.undeID === 1">
             회원정보가 존재하지 않습니다.
           </div>
-          <div class="text-danger" v-if="loginStore.undePW === 1">
+          <div class="error-msg" v-if="loginStore.undePW === 1">
             비밀번호가 일치하지 않습니다.
           </div>
-          <button @click="login(ID, PW)">Login</button>
+          <button class="login-btn" @click="login(ID, PW)">LOGIN</button>
         </div>
-
-        <br />
-        <div @click="goJoin"><p>회원가입하기</p></div>
+        <div class="go-join" @click="goJoin">회원가입 하기</div>
       </div>
     </div>
   </div>
 </template>
+
 <script setup>
-import { ref } from 'vue';
-import { useLoginStore } from '@/stores/login';
-import { useRouter } from 'vue-router';
+import { ref } from "vue";
+import { useLoginStore } from "@/stores/login";
 
-// 사용자가 로그인 시 입력한 정보를 받을 변수 선언
-const ID = ref('');
-const PW = ref('');
+const ID = ref("");
+const PW = ref("");
 
-// 로그인 한 User 정보 스토어에 저장
 const loginStore = useLoginStore();
 
-// 로그인 완료 시 Home.vue로 이동하기 위한 함수 설정
-// 회원정보 확인 시 loginStore에서 호출
-const emit = defineEmits(['login-success', 'go-join']);
+const emit = defineEmits(["login-success", "go-join"]);
 
 const login = async (ID, PW) => {
   const resp = await loginStore.login(ID, PW);
-  if (resp === 'success') {
-    console.log('로그인 정보는 넘어옴');
-
-    emit('login-success');
+  if (resp === "success") {
+    console.log("로그인 정보는 넘어옴");
+    emit("login-success");
   }
 };
 
-// 회원가입 클릭 시 해당 페이지로 이동
 const goJoin = () => {
-  emit('go-join');
+  emit("go-join");
 };
 </script>
 
-<style>
-img {
-  width: 500px;
+<style scoped>
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  min-height: 100vh;
+  background-color: #eeeaf8;
+}
+
+.logo-box {
+  background-color: #ffffff;
+  border-radius: 30px;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.logo-box img {
+  width: 320px;
+  border-radius: 16px;
+}
+
+.login-box {
+  background-color: #ffffff;
+  border: 2px solid #c9a8e0;
+  border-radius: 24px;
+  padding: 40px 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  min-width: 340px;
+}
+
+.login-title {
+  color: #7b3fa0;
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+
+.login-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid #c9a8e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: #333;
+  outline: none;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  background-color: #fff;
+}
+
+.login-input::placeholder {
+  color: #aaa;
+}
+
+.login-input:focus {
+  border-color: #9b59b6;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #b08ec0;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  transition: background-color 0.2s;
+}
+
+.login-btn:hover {
+  background-color: #9b70b5;
+}
+
+.go-join {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #888;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.go-join:hover {
+  color: #7b3fa0;
+}
+
+.error-msg {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  margin-bottom: 6px;
 }
 </style>
