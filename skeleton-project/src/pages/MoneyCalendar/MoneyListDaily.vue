@@ -160,7 +160,6 @@ const isModaClose = () => { isModalOpen.value = false; editModalOpen.value = fal
 </template>
 
 <style scoped>
-/* 보라색 테마 설정 */
 .text-purple {
   color: #bfa5d4;
 }
@@ -181,36 +180,35 @@ const isModaClose = () => { isModalOpen.value = false; editModalOpen.value = fal
   border-color: #bfa5d4;
 }
 
-/* 테두리 설정 */
 .custom-border {
   border: 2px solid #BFA5D4 !important;
 }
 
-/* 목록 컨테이너 높이 맞추기 */
+/* 👇 핵심 수정: Home.vue의 반응형 크기에 완벽 호환 */
 .list-container {
-  height: 720px;
-  /* 👈 달력과 맞춘 고정 높이 */
+  height: 100% !important;
+  /* 부모(Home)가 계산해준 크기를 100% 가져다 씁니다 */
+  max-height: 100% !important;
   display: flex;
   flex-direction: column;
   background-color: white;
   border-radius: 20px;
 }
 
-/* 테이블 영역 레이아웃 */
 .table-responsive {
   flex: 1;
   overflow-y: auto;
   margin-bottom: 10px;
+  min-height: 0;
+  /* 👇 핵심: flex 자식이 억지로 부모 높이를 뚫고 나가는 버그 완벽 차단 */
 }
 
 .custom-table {
   font-size: 0.85rem;
   table-layout: fixed;
-  /* 👈 레이아웃 고정 핵심 */
   width: 100%;
 }
 
-/* 플러스 버튼 */
 .add-btn {
   width: 50px;
   height: 50px;
@@ -228,7 +226,6 @@ const isModaClose = () => { isModalOpen.value = false; editModalOpen.value = fal
   font-size: 0.75rem;
 }
 
-/* 페이지네이션 스타일 */
 .pagination-wrap {
   display: flex;
   justify-content: center;
@@ -262,7 +259,6 @@ const isModaClose = () => { isModalOpen.value = false; editModalOpen.value = fal
   padding: 0.2rem 0.6rem;
 }
 
-/* 스크롤바 디자인 */
 .table-responsive::-webkit-scrollbar {
   width: 5px;
 }
