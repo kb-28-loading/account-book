@@ -4,37 +4,36 @@
       <h1>거래 내역 조회(DATE)</h1>
       <hr class="title-underline" />
     </div>
-    <div>
-      <div @click="sortLatest"><button>전체 내역</button></div>
-      <div @click="setWeekly"><button>주간</button></div>
-      <div @click="setMonthly"><button>월간</button></div>
+    <div class="controls-bar">
+      <button class="filter-btn" @click="sortLatest">전체 내역</button>
+      <button class="filter-btn" @click="setWeekly">주간</button>
+      <button class="filter-btn" @click="setMonthly">월간</button>
 
       <!-- 날짜 표시 + 버튼 -->
       <div class="date-box">
-        {{ startDate && endDate ? `${startDate} ~ ${endDate}` : "전체 기간" }}
+        <span>{{
+          startDate && endDate ? `${startDate} - ${endDate}` : "전체 기간"
+        }}</span>
         <button @click="showCalendar = !showCalendar">📅</button>
-        <button @click="inputData()">조회</button>
+        <button class="query-btn" @click="inputData()">조회</button>
       </div>
 
-      <!-- font awesome 적용 전 임시 -->
-      <div>
-        <!-- 달력 팝업 -->
-        <div v-if="showCalendar">
-          <input type="date" v-model="startDate" />
-          <input type="date" v-model="endDate" />
-        </div>
+      <!-- 달력 팝업 -->
+      <div v-if="showCalendar" class="calendar-popup">
+        <input type="date" v-model="startDate" />
+        <input type="date" v-model="endDate" />
       </div>
     </div>
-    <div>
+    <div class="options-main-container">
       <TransactionLogList
         v-if="showList"
         :startDate="startDate"
         :endDate="endDate"
         :key="queryCount"
       />
-    </div>
-    <div>
-      <button @click="showModal = true">+</button>
+      <div class="add-btn-wrapper">
+        <button class="add-btn" @click="showModal = true">+</button>
+      </div>
       <AddTransactionModal v-if="showModal" @close="onModalClose" />
     </div>
   </div>
@@ -112,3 +111,79 @@ const onModalClose = () => {
 };
 // ---------------------------------------------
 </script>
+<style scoped>
+.controls-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.filter-btn {
+  border: 1.5px solid #bfa5d4;
+  border-radius: 999px;
+  background: white;
+  padding: 6px 18px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  color: #3d3d3d;
+}
+
+.filter-btn:hover {
+  background-color: #f3eeff;
+}
+
+.date-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  font-size: 14px;
+  color: #3d3d3d;
+}
+
+.query-btn {
+  border: none;
+  border-radius: 999px;
+  background-color: #bfa5d4;
+  color: white;
+  padding: 6px 16px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.query-btn:hover {
+  background-color: #a98bc4;
+}
+
+.calendar-popup {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.add-btn-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 16px 0;
+}
+
+.add-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background-color: #bfa5d4;
+  color: white;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.add-btn:hover {
+  background-color: #a98bc4;
+}
+</style>
