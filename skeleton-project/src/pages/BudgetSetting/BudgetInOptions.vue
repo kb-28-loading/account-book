@@ -2,6 +2,7 @@
   <div>
     <div>
       <div>예산관리 <span>예산설정</span></div>
+      <div>어아ㅏ</div>
 
       <div>
         <span @click="prevMonth">←</span>
