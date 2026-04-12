@@ -21,17 +21,18 @@ const dailyList = computed(() => {
     (item) => item.date === currentRoute.params.selectedDate
   );
 
-  // 정렬 (날짜가 같으므로 보통 ID나 입력 순으로 정렬하게 됩니다)
+  // 최신순 또는 과거순 정렬
   return isSorted.value ? [...list].reverse() : [...list];
 });
 
+// 정렬 상태 토글 함수
 const clickedPlus = () => {
   isSorted.value = !isSorted.value;
 };
 
 // ========================================================
-// 2. [추가] 페이지네이션 (9개씩)
-const ITEMS_PER_PAGE = 9;
+// 2. [추가] 페이지네이션 (11개씩)
+const ITEMS_PER_PAGE = 11;
 const currentPage = ref(1);
 
 const totalPages = computed(() =>
@@ -55,17 +56,19 @@ const visiblePages = computed(() => {
   return pages;
 });
 
-// 날짜가 바뀌거나 정렬이 바뀌면 1페이지로
+// 날짜 변경이나 정렬 변경 시 페이지 번호를 1로 초기화
 watch(() => currentRoute.params.selectedDate, () => { currentPage.value = 1; });
 watch(isSorted, () => { currentPage.value = 1; });
 
 // ========================================================
+// 로그인 여부 확인
 onMounted(() => {
   if (!loginStore.user?.id) {
     router.push('/login');
   }
 });
-
+// =============================================================
+// 수정 기능
 const editData = ref(null);
 const editModalOpen = ref(false);
 
@@ -73,7 +76,8 @@ const editList = (item) => {
   editData.value = item;
   editModalOpen.value = true;
 };
-
+// ===========================================================
+// 삭제 기능 (서버 데이터 삭제 요청 및 로컬 스토어 갱신)
 const deleteList = async (targetid) => {
   if (!confirm("정말 삭제하시겠습니까?")) return;
   const userId = loginStore.user.id;
@@ -89,7 +93,8 @@ const deleteList = async (targetid) => {
     console.log("삭제 실패", err);
   }
 }
-
+// ============================================================
+// 6. 모달 제어 (추가/수정 모달 열기 및 공통 닫기 처리)
 const isModalOpen = ref(false);
 const AddList = () => { isModalOpen.value = true; };
 const isModaClose = () => { isModalOpen.value = false; editModalOpen.value = false; };
