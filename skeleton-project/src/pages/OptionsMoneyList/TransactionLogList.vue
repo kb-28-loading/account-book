@@ -41,21 +41,19 @@ const emit = defineEmits(["latest"]);
 const allMoneyList = ref([]);
 const moneyList = ref([]);
 
-// const deleteItem = async (listId) => {
-//   moneyList.value = moneyList.value.filter((item) => item.listId !== listId);
-//   allMoneyList.value = allMoneyList.value.filter(
-//     (item) => item.listId !== listId,
-//   );
-//   await axios.patch(`/api/users/${loginStore.user.id}`, {
-//     moneyList: allMoneyList.value,
-//   });
-// };
-// 어이 예찬씨 이건 아니죠? 이거 누르면 moneylist가 사라져요 ^^ 수정 부탁해요~!
+const deleteItem = async (id) => {
+  const updatedList = allMoneyList.value.filter((item) => item.id !== id);
+  allMoneyList.value = updatedList;
+  moneyList.value = moneyList.value.filter((item) => item.id !== id);
+  await axios.patch(`/api/users/${loginStore.user.id}`, {
+    moneyList: updatedList,
+  });
+};
 
 onMounted(async () => {
-  const response = await axios.get(`/api/users/${loginStore.user.id}`); // 수정 전
-  allMoneyList.value = response.data.moneyList;
-  moneyList.value = response.data.moneyList;
+  const response = await axios.get(`/api/users/${loginStore.user.id}`);
+  allMoneyList.value = response.data.moneyList ?? [];
+  moneyList.value = [...allMoneyList.value];
 
   const isVaildDate = (dateStr) => !isNaN(new Date(dateStr));
 
