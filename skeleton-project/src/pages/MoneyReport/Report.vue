@@ -117,12 +117,7 @@ const beforeMonth = async () => {
   display: flex;
   justify-content: end;
 }
-.options-main-container {
-  border: 3px solid #bfa5d4;
-  border-radius: 30px 30px 0 0;
-  padding: 30px 30px 0px;
-  height: 90%;
-}
+
 .report-graph-group {
   display: flex;
 }

@@ -1,42 +1,47 @@
 <template>
-  <div>
-    <header>header</header>
+  <div class="outer">
+    <Header />
     <br />
-    <div class="card">
+    <div class="main-monitor">
       <h1>회원가입</h1>
-      <div>
+      <div class="row">
         <label
-          ><span>이름/닉네임</span
-          ><input type="text" v-model.trim="userName" /></label
-        ><br />
-        <label
-          ><span>아이디</span><input type="text" v-model.trim="userID" /></label
-        ><span class="btn" @click="checkID">중복확인</span><br />
-        <div class="text-danger fs-6">
-          {{ usedID === 1 ? '사용중인 아이디입니다.' : '' }}
+          ><span>이름/닉네임</span><input type="text" v-model.trim="userName"
+        /></label>
+        <div>
+          <label
+            ><span>아이디</span
+            ><input type="text" v-model.trim="userID" /></label
+          ><span class="btn" @click="checkID">중복확인</span><br />
+          <div class="text-danger fs-6">
+            {{ usedID === 1 ? '사용중인 아이디입니다.' : '' }}
+          </div>
         </div>
+
         <label
-          ><span>비밀번호</span
-          ><input type="password" v-model.trim="userPW" /></label
-        ><br />
+          ><span>비밀번호</span><input type="password" v-model.trim="userPW"
+        /></label>
         <div>
           <p>
             {{ userPW.length < 8 ? '8자 이상 입력해주세요.' : '' }}
           </p>
         </div>
-        <label
-          ><span>비밀번호 확인</span
-          ><input type="password" v-model.trim="userPWChecked" /></label
-        ><br />
         <div>
-          <p class="text-danger">
-            {{
-              userPW === userPWChecked && userPWChecked !== ''
-                ? ''
-                : '비밀번호가 일치하지 않습니다.'
-            }}
-          </p>
+          <label
+            ><span>비밀번호 확인</span
+            ><input type="password" v-model.trim="userPWChecked"
+          /></label>
+          <div>
+            <p class="text-danger">
+              {{
+                userPW === userPWChecked && userPWChecked !== ''
+                  ? ''
+                  : '비밀번호가 일치하지 않습니다.'
+              }}
+            </p>
+          </div>
         </div>
+
         <hr />
         <label
           ><span>은행</span
@@ -44,11 +49,10 @@
             <option value="">은행</option>
             <option v-for="bank in bankList" :value="bank">{{ bank }}</option>
           </select></label
-        ><br />
+        >
         <label
-          ><span>계좌 이름/번호</span
-          ><input type="text" v-model.trims="info" /></label
-        ><br />
+          ><span>계좌 이름/번호</span><input type="text" v-model.trims="info"
+        /></label>
         <label
           ><span>계좌 잔액</span
           ><input type="text" v-model.number="balance" /></label
@@ -56,11 +60,14 @@
         <button @click="checkFullForm">SUBMIT</button>
       </div>
     </div>
+    <Footer />
   </div>
 </template>
 <script setup>
 import axios from 'axios';
 import { ref } from 'vue';
+import Footer from './Footer.vue';
+import Header from './Header.vue';
 
 // 입력받을 정보를 담을 변수 선언
 const userName = ref('');
@@ -193,3 +200,16 @@ const checkFullForm = () => {
   console.log(checkedForm);
 };
 </script>
+<style scoped>
+.main-monitor {
+  /* 화면 디자인 */
+  margin: 50px 20px 0;
+  padding: 40px 40px 0;
+  background-color: white;
+  border-radius: 60px 60px 0 0;
+  border-top: 3px rgb(123, 76, 161) solid;
+  border-left: 3px rgb(123, 76, 161) solid;
+  border-right: 3px rgb(123, 76, 161) solid;
+  /* height: 600px; */
+}
+</style>
