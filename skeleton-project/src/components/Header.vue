@@ -1,9 +1,14 @@
 <template>
   <div class="header">
-    <img src="@/assets/mainLogo.jpg" alt="메인 로고" />
+    <img
+      src="@/assets/mainLogo.jpg"
+      alt="메인 로고"
+      @click.stop="emit('go-home')"
+      class="cursor-pointer"
+    />
     <!-- 사용자 정보가 없는 경우 화면에 로그아웃 버튼과 상세 메뉴 버튼 노출 안함 -->
     <div class="buttons" v-if="!loginStore.user?.id == false">
-      <span class="text-danger" @click.stop="emit('user-logout')"
+      <span class="text-danger text-select" @click.stop="emit('user-logout')"
         >로그아웃</span
       >
       <RightNavBar

@@ -62,6 +62,7 @@ const goLogin = () => {
 
 // 로그아웃 클릭 시 login.js내 회원정보 비운 뒤, 로그인 화면으로 이동
 const userLogout = () => {
+  alert('로그아웃'); // 이벤트 확인용
   loginStore.logout();
   router.replace('/login');
 };
