@@ -39,23 +39,23 @@
   </div>
 </template>
 <script setup>
-import axios from 'axios';
-import { useReportStore } from '@/stores/report';
-import { onMounted } from 'vue';
-import { ref } from 'vue';
+import axios from "axios";
+import { useReportStore } from "@/stores/report";
+import { onMounted } from "vue";
+import { ref } from "vue";
 
-import ReportLeft from '@/components/MoneyReport/ReportLeft.vue';
-import ReportRight from '@/components/MoneyReport/ReportRight.vue';
+import ReportLeft from "@/components/MoneyReport/ReportLeft.vue";
+import ReportRight from "@/components/MoneyReport/ReportRight.vue";
 
 const reportStore = useReportStore();
 
 const colorList = [
-  '#BFA5D4',
-  '#CDBAE7',
-  '#E1DAE5',
-  '#FEF2FC',
-  '#F3F7FF',
-  '#F8F4FC',
+  "#BFA5D4",
+  "#CDBAE7",
+  "#E1DAE5",
+  "#FEF2FC",
+  "#F3F7FF",
+  "#F8F4FC",
 ];
 
 async () => {
@@ -66,27 +66,27 @@ const nextMonth = async () => {
   if (reportStore.month === 12) {
     reportStore.month = 1;
     reportStore.year++;
-    console.log('다음달', reportStore.month, reportStore.year);
+    console.log("다음달", reportStore.month, reportStore.year);
 
     await reportStore.userData;
   } else {
     reportStore.month++;
-    console.log('다음달', reportStore.month, reportStore.year);
+    console.log("다음달", reportStore.month, reportStore.year);
 
     await reportStore.userData;
-    console.log('확인', reportStore.usedCategoryOutcome);
+    console.log("확인", reportStore.usedCategoryOutcome);
   }
 };
 const beforeMonth = async () => {
   if (reportStore.month === 1) {
     reportStore.month = 12;
     reportStore.year--;
-    console.log('이전달', reportStore.month, reportStore.year);
+    console.log("이전달", reportStore.month, reportStore.year);
 
     await reportStore.userData;
   } else {
     reportStore.month--;
-    console.log('이전달', reportStore.month, reportStore.year);
+    console.log("이전달", reportStore.month, reportStore.year);
 
     await reportStore.userData;
   }
