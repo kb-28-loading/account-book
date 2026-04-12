@@ -28,18 +28,25 @@
       </button>
 
       <!-- 날짜 표시 + 버튼 -->
-      <div class="date-box">
-        <span>{{
-          startDate && endDate ? `${startDate} - ${endDate}` : "전체 기간"
-        }}</span>
-        <button @click="showCalendar = !showCalendar">📅</button>
-        <button class="query-btn" @click="inputData()">조회</button>
-      </div>
+      <!-- class="date-box"   그냥 HTML, 항상 date-box 클래스 고정
+           :class="{ ... }"   Vue 바인딩, 조건에 따라 동적으로 변함 -->
+      <div class="date-box-wrapper">
+        <div class="date-box">
+          <span class="date-range-label">{{
+            // 삼항연산자: true 값일 경우 `${startDate} - ${endDate}` 출력 false일 경우 "전체 기간" 출력
+            startDate && endDate ? `${startDate} - ${endDate}` : "전체 기간"
+          }}</span>
+          <button class="calendar-btn" @click="showCalendar = !showCalendar">
+            📅
+          </button>
+          <button class="query-btn" @click="inputData()">조회</button>
+        </div>
 
-      <!-- 달력 팝업 -->
-      <div v-if="showCalendar" class="calendar-popup">
-        <input type="date" v-model="startDate" />
-        <input type="date" v-model="endDate" />
+        <!-- 달력 팝업 -->
+        <div v-if="showCalendar" class="calendar-popup">
+          <input type="date" v-model="startDate" />
+          <input type="date" v-model="endDate" />
+        </div>
       </div>
     </div>
     <div class="options-main-container">
@@ -61,18 +68,33 @@ import AddTransactionModal from "@/components/AddTransactionModal.vue"; // 자�
 import { ref } from "vue";
 import TransactionLogList from "./TransactionLogList.vue";
 
-const showCalendar = ref(false);
+// 필터 상태
 const activeFilter = ref("all");
-const showList = ref(true);
-const queryCount = ref(0);
+
+// 날짜 관련
 const startDate = ref("");
 const endDate = ref("");
+const showCalendar = ref(false);
+
+// 목록 렌더링 제어
+const showList = ref(true);
+const queryCount = ref(0);
+
+// 모달
 const showModal = ref(false);
+
+// formatDate() -> 한국 기준시간이 UTC+9인 관계로 toISOString 문법 사용 시 기간 설정 오류로 인해 직접 꺼내서 조합
+const formatDate = (date) => {
+  const ye = date.getFullYear();
+  const mo = String(date.getMonth() + 1).padStart(2, "0");
+  const da = String(date.getDate()).padStart(2, "0");
+  return `${ye}-${mo}-${da}`;
+};
 
 const inputData = () => {
   showList.value = true;
   queryCount.value++;
-  console.log(showList.value);
+  showCalendar.value = false; // 조회 시 달력 팝업 닫기
 };
 
 const sortLatest = () => {
@@ -80,13 +102,6 @@ const sortLatest = () => {
   startDate.value = "";
   endDate.value = "";
   inputData();
-};
-// formatDate() -> 한국 기준시간이 UTC+9인 관계로 toISOString 문법 사용 시 기간 설정 오류로 인해 직접 꺼내서 조합
-const formatDate = (date) => {
-  const ye = date.getFullYear();
-  const mo = String(date.getMonth() + 1).padStart(2, "0");
-  const da = String(date.getDate()).padStart(2, "0");
-  return `${ye}-${mo}-${da}`;
 };
 
 const setWeekly = () => {
@@ -101,8 +116,6 @@ const setWeekly = () => {
   // 4 = 목요일
   // 5 = 금요일
   // 6 = 토요일
-  console.log(day);
-
   const sunday = new Date(today);
   sunday.setDate(today.getDate() - day);
 
@@ -127,11 +140,11 @@ const setMonthly = () => {
   endDate.value = formatDate(monthLast);
   inputData();
 };
+
 const onModalClose = () => {
   showModal.value = false;
   inputData();
 };
-// ---------------------------------------------
 </script>
 <style scoped>
 .controls-bar {
@@ -152,6 +165,15 @@ const onModalClose = () => {
   color: #3d3d3d;
 }
 
+.date-range-label {
+  border: 1.5px solid #bfa5d4;
+  border-radius: 999px;
+  padding: 6px 18px;
+  font-size: 14px;
+  color: #3d3d3d;
+  white-space: nowrap;
+}
+
 .filter-btn:hover {
   background-color: #f3eeff;
 }
@@ -160,15 +182,6 @@ const onModalClose = () => {
   background-color: #bfa5d4;
   color: white;
   border-color: #bfa5d4;
-}
-
-.date-box {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-left: auto;
-  font-size: 14px;
-  color: #3d3d3d;
 }
 
 .query-btn {
@@ -186,10 +199,59 @@ const onModalClose = () => {
   background-color: #a98bc4;
 }
 
+.calendar-btn {
+  border: 1.5px solid #bfa5d4;
+  border-radius: 999px;
+  background: white;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.calendar-btn:hover {
+  background-color: #f3eeff;
+}
+
+.date-box-wrapper {
+  position: relative;
+  margin-left: auto;
+}
+
+.date-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #3d3d3d;
+}
+
 .calendar-popup {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
   display: flex;
   gap: 8px;
   align-items: center;
+  background: white;
+  border: 1.5px solid #bfa5d4;
+  border-radius: 12px;
+  padding: 10px 14px;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-popup input[type="date"] {
+  border: 1.5px solid #bfa5d4;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 13px;
+  color: #3d3d3d;
+  outline: none;
+  cursor: pointer;
+}
+
+.calendar-popup input[type="date"]:focus {
+  border-color: #a98bc4;
 }
 
 .add-btn-wrapper {
