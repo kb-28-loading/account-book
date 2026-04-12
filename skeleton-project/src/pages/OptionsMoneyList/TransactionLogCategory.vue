@@ -366,4 +366,3 @@ const onModalClose = () => {
   - page          : v-for에서 visiblePages를 순회할 때 각 페이지 번호를 가리키는 반복 변수.
                     페이지네이션 버튼의 텍스트 및 active 클래스 바인딩에 사용됨.
 -->
-

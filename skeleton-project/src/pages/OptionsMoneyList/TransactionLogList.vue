@@ -96,7 +96,7 @@ const props = defineProps({
   endDate: String,
 });
 
-const ITEMS_PER_PAGE = 12;
+const ITEMS_PER_PAGE = 8;
 const currentPage = ref(1);
 
 const allMoneyList = ref([]);
@@ -188,7 +188,7 @@ onMounted(async () => {
   display: flex;
   justify-content: center;
   gap: 0.25rem;
-  margin-top: 0.75rem;
+  margin-top: 50px;
 }
 
 .page-btn {
