@@ -2,15 +2,15 @@
   <div class="row mx-4 mb-5">
     <div class="col block">
       <div class="budget-title tot-budget">전체 예산</div>
-      <div class="money">{{ totBudget }} 원</div>
+      <div class="money">{{ totBudget.toLocaleString() }} 원</div>
     </div>
     <div class="col mx-5 block">
       <div class="budget-title tot-outcome">총 지출</div>
-      <div class="money">{{ totOutcome }} 원</div>
+      <div class="money">{{ totOutcome.toLocaleString() }} 원</div>
     </div>
     <div class="col block">
       <div class="budget-title left-budget">남은 예산</div>
-      <div class="money">{{ leftBudget }} 원</div>
+      <div class="money">{{ leftBudget.toLocaleString() }} 원</div>
     </div>
   </div>
 </template>

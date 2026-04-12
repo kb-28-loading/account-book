@@ -4,9 +4,10 @@
     <br />
     <div class="main-monitor">
       <h1>회원가입</h1>
-      <div class="row">
+      <div class="row options-main-container join-main-monitor">
         <label
-          ><span>이름/닉네임</span><input type="text" v-model.trim="userName"
+          ><span class="left-menu">이름/닉네임</span
+          ><input type="text" v-model.trim="userName"
         /></label>
         <div>
           <label
@@ -210,6 +211,25 @@ const checkFullForm = () => {
   border-top: 3px rgb(123, 76, 161) solid;
   border-left: 3px rgb(123, 76, 161) solid;
   border-right: 3px rgb(123, 76, 161) solid;
-  /* height: 600px; */
+  height: 600px;
+}
+.join-main-monitor {
+  padding-bottom: 45px;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center;
+  align-items: center; */
+  text-align: center;
+}
+.left-menu {
+  width: 200px;
+  display: flex;
+  justify-content: end;
+}
+.center-input {
+  width: 500px;
+}
+.right-button {
+  width: 50px;
 }
 </style>

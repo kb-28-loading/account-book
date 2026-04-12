@@ -1,10 +1,10 @@
 <script setup>
-import AddTransactionModal from '@/components/AddTransactionModal.vue'; // 자식 가져오기
-import EditTransactionModal from '@/components/EditTransactionModal.vue'; // 자식 가져오기
-import { ref, onMounted, computed, watch, onBeforeUpdate } from 'vue';
-import { useLoginStore } from '@/stores/login';
-import { useMoneyStore } from '@/stores/money';
-import axios from 'axios';
+import AddTransactionModal from "@/components/AddTransactionModal.vue"; // 자식 가져오기
+import EditTransactionModal from "@/components/EditTransactionModal.vue"; // 자식 가져오기
+import { ref, onMounted, computed, watch, onBeforeUpdate } from "vue";
+import { useLoginStore } from "@/stores/login";
+import { useMoneyStore } from "@/stores/money";
+import axios from "axios";
 
 const loginStore = useLoginStore();
 const moneyStore = useMoneyStore();
@@ -53,12 +53,14 @@ const deleteList = async (targetid) => {
 
   try {
     const res = await axios.get(`/api/users/${userId}`);
-    console.log('userId 값 가져오기', res);
+    console.log("userId 값 가져오기", res);
 
     const currentUser = res.data.moneyList;
-    console.log('currentUser에 res.data넣기', currentUser);
+    console.log("currentUser에 res.data넣기", currentUser);
 
-    const updatedMoneyList = currentUser.filter((item) => item.id !== Number(targetid));
+    const updatedMoneyList = currentUser.filter(
+      (item) => item.id !== Number(targetid),
+    );
     console.log("updatedMoneyList", updatedMoneyList);
 
     // 3. 서버에 PATCH 요청을 보냅니다.
@@ -68,16 +70,14 @@ const deleteList = async (targetid) => {
     console.log("삭제 성공 >_<");
 
     await moneyStore.loadData();
-
   } catch {
     console.log("삭제 실패 0_0..");
-
   }
-}
+};
 // =========================================================
 // 클릭 이벤트 데이터 보내기
 
-const editData = ref(null);/* 수정할 데이터를 담을 바구니 */
+const editData = ref(null); /* 수정할 데이터를 담을 바구니 */
 const editModalOpen = ref(false);
 
 // 수정 버튼 클릭 함수
@@ -91,11 +91,13 @@ const editList = (item) => {
 </script>
 
 <template>
-  <div class="card shadow-sm rounded-4 p-3 position-relative list-container custom-border">
+  <div
+    class="card shadow-sm rounded-4 p-3 position-relative list-container custom-border"
+  >
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h5 class="fw-bold m-0 text-purple">전체 거래내역</h5>
       <button class="btn btn-outline-purple btn-sm" @click="clickedPlus">
-        {{ isSorted ? '과거순정렬' : '최신순정렬' }}
+        {{ isSorted ? "과거순정렬" : "최신순정렬" }}
       </button>
     </div>
 
@@ -114,16 +116,31 @@ const editList = (item) => {
         <tbody>
           <tr v-for="value in LatestList" :key="value.id">
             <td class="text-start ps-3 fw-bold">{{ value.title }}</td>
-            <td><span class="badge bg-light text-dark">{{ value.category }}</span></td>
+            <td>
+              <span class="badge bg-light text-dark">{{ value.category }}</span>
+            </td>
             <td>{{ value.type }}</td>
-            <td :class="value.type === '수입' ? 'text-primary' : 'text-danger'" class="fw-bold">
+            <td
+              :class="value.type === '수입' ? 'text-primary' : 'text-danger'"
+              class="fw-bold"
+            >
               {{ value.userMoney.toLocaleString() }}
             </td>
             <td class="text-muted small">{{ value.date }}</td>
             <td>
               <div class="btn-group gap-1">
-                <button class="btn btn-xs btn-outline-secondary" @click="editList(value)">수정</button>
-                <button class="btn btn-xs btn-outline-danger" @click="deleteList(value.id)">삭제</button>
+                <button
+                  class="btn btn-xs btn-outline-secondary"
+                  @click="editList(value)"
+                >
+                  수정
+                </button>
+                <button
+                  class="btn btn-xs btn-outline-danger"
+                  @click="deleteList(value.id)"
+                >
+                  삭제
+                </button>
               </div>
             </td>
           </tr>
@@ -131,29 +148,48 @@ const editList = (item) => {
       </table>
     </div>
 
-    <button class="btn btn-purple rounded-circle shadow-lg position-absolute add-btn" @click="AddList">
+    <button
+      class="btn btn-purple rounded-circle shadow-lg position-absolute add-btn"
+      @click="AddList"
+    >
       <i class="fa-solid fa-plus"></i>
     </button>
 
     <AddTransactionModal v-if="isModalOpen" @close="isModaClose" />
-    <EditTransactionModal v-if="editModalOpen" :editData="editData" @close="isModaClose" />
+    <EditTransactionModal
+      v-if="editModalOpen"
+      :editData="editData"
+      @close="isModaClose"
+    />
   </div>
 </template>
 <style scoped>
 /* 보라색 테마 설정 */
-.text-purple { color: #7b4ca1; }
-.btn-purple { background-color: #7b4ca1; color: white; border: none; }
-.btn-purple:hover { background-color: #6a3d8f; color: white; }
-.btn-outline-purple { color: #7b4ca1; border-color: #7b4ca1; }
+.text-purple {
+  color: #bfa5d4;
+}
+.btn-purple {
+  background-color: #bfa5d4;
+  color: white;
+  border: none;
+}
+.btn-purple:hover {
+  background-color: #a98bc4;
+  color: white;
+}
+.btn-outline-purple {
+  color: #bfa5d4;
+  border-color: #bfa5d4;
+}
 
 /* 1. 👇 테두리 설정 (달력과 동일하게 #BFA5D4, 2px) */
-.custom-border { 
-  border: 2px solid #BFA5D4 !important; 
+.custom-border {
+  border: 2px solid #bfa5d4 !important;
 }
 
 /* 2. 👇 목록 컨테이너 높이 맞추기 */
 .list-container {
-  height: 100%;       /* 부모 col 높이에 꽉 차게 */
+  height: 100%; /* 부모 col 높이에 꽉 차게 */
   display: flex;
   flex-direction: column;
   background-color: white;
@@ -161,14 +197,14 @@ const editList = (item) => {
 
 /* 3. 👇 테이블 영역이 남은 높이를 다 쓰도록 설정 */
 .table-responsive {
-  flex: 1;            /* 헤더 제외 남은 공간 다 차지 */
+  flex: 1; /* 헤더 제외 남은 공간 다 차지 */
   overflow-y: auto;
   margin-bottom: 10px;
 }
 
 /* 플러스 버튼 위치 조정 */
 .add-btn {
-  width: 50px;        /* 칸이 좁아졌으므로 크기 살짝 조절 */
+  width: 50px; /* 칸이 좁아졌으므로 크기 살짝 조절 */
   height: 50px;
   right: 20px;
   bottom: 20px;
@@ -179,10 +215,20 @@ const editList = (item) => {
   justify-content: center;
 }
 
-.custom-table { font-size: 0.85rem; }
-.btn-xs { padding: 0.1rem 0.4rem; font-size: 0.75rem; }
+.custom-table {
+  font-size: 0.85rem;
+}
+.btn-xs {
+  padding: 0.1rem 0.4rem;
+  font-size: 0.75rem;
+}
 
 /* 스크롤바 디자인 */
-.table-responsive::-webkit-scrollbar { width: 5px; }
-.table-responsive::-webkit-scrollbar-thumb { background: #dbd0e6; border-radius: 10px; }
+.table-responsive::-webkit-scrollbar {
+  width: 5px;
+}
+.table-responsive::-webkit-scrollbar-thumb {
+  background: #dbd0e6;
+  border-radius: 10px;
+}
 </style>
