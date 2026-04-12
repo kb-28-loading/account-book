@@ -62,9 +62,10 @@ const budgetLoading = async () => {
 onMounted(async () => {
   // 이번달에 해당하는 문자열 들고오기
   settingDatefunc();
+  console.log('onMounted', settingDate);
 
   // 예산 데이터 불러오기
-  await budgetLoading(moneyStore.reloading);
+  await budgetLoading();
 
   // 총 예산을 report.js에서 계산한 후 받아오기
   await reportStore.userData;
@@ -83,10 +84,14 @@ watch(
 
     // 이번달에 해당하는 문자열 들고오기
     settingDatefunc();
+    console.log('watch', settingDate);
 
     // 예산 데이터 불러오기
     await budgetLoading();
 
+    // 지출 내역 받을 달을 현재 달로 초기화하기
+    reportStore.month = month;
+    reportStore.year = year;
     // 총 예산을 report.js에서 계산한 후 받아오기
     await reportStore.userData;
     // 이번달 총 지출 들고오기
