@@ -1,14 +1,32 @@
 <template>
-  <div class="budget-management-page mb-5">
+  <div class="budget-management-page">
     <header class="header">
-      <h2 class="title">예산관리 <span class="sub-title">예산설정</span></h2>
+      <h1>
+        예산관리 <span class="title-sub">예산설정-{{ budgetStore.year }}</span>
+      </h1>
       <hr class="title-underline" />
     </header>
 
-    <div class="month-selector">
+    <!-- <div class="month-selector">
       <button @click="changeMonth(-1)" class="nav-btn">&larr;</button>
-      <span class="current-month">{{ month }}월</span>
+      <span class="current-month">{{ budgetStore.month }}월</span>
       <button @click="changeMonth(1)" class="nav-btn">&rarr;</button>
+    </div> -->
+
+    <div class="month-select row">
+      <div class="col">
+        <i
+          class="fa-solid fa-arrow-left left-arrow"
+          @click.stop="changeMonth(-1)"
+        ></i>
+      </div>
+      <div class="col selected-month">{{ budgetStore.month }}</div>
+      <div class="col">
+        <i
+          class="fa-solid fa-arrow-right right-arrow"
+          @click.stop="changeMonth(1)"
+        ></i>
+      </div>
     </div>
 
     <div class="options-main-container">
@@ -25,7 +43,7 @@
 
       <hr class="inner-line" />
 
-      <div class="category-grid">
+      <div class="category-grid mt-4">
         <div
           v-for="catName in allCategories"
           :key="catName"
@@ -49,57 +67,55 @@
         현재 카테고리 합계: {{ currentTotalDisplay.toLocaleString() }}원
       </div>
     </div>
-
-    <div v-if="moneyListFiltered.length > 0" class="history-section">
-      <h4>{{ month }}월 거래 내역</h4>
-      <ul class="history-list">
-        <li v-for="item in moneyListFiltered" :key="item.id">
-          {{ item.date }} | {{ item.name }} :
-          {{ item.amount.toLocaleString() }}원
-        </li>
-      </ul>
-    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from "vue";
-import axios from "axios";
-import { useLoginStore } from "@/stores/login";
+import { ref, onMounted, computed, watch } from 'vue';
+import axios from 'axios';
+import { useLoginStore } from '@/stores/login';
+import { useBudgetStore } from '@/stores/budget';
 
 const loginStore = useLoginStore();
+const budgetStore = useBudgetStore();
 
-const date = new Date();
-const month = ref(date.getMonth() + 1);
-const year = ref(date.getFullYear());
-
-const moneyList = ref([]);
-const moneyListFiltered = ref([]);
 const allCategories = ref([]);
 const budgetInputs = ref({});
 const savedTotalAmount = ref(0);
+const allBudgets = ref([]);
 
 // 월 변경 로직
 const changeMonth = (delta) => {
-  month.value += delta;
-  if (month.value < 1) {
-    month.value = 12;
-    year.value -= 1;
-  } else if (month.value > 12) {
-    month.value = 1;
-    year.value += 1;
+  budgetStore.month += delta;
+  if (budgetStore.month < 1) {
+    budgetStore.month = 12;
+    budgetStore.year -= 1;
+  } else if (budgetStore.month > 12) {
+    budgetStore.month = 1;
+    budgetStore.year += 1;
   }
 };
 
-// 날짜 필터링 함수
-const reportDate = (m, y) => {
-  const dateStr = `${y}-${m.toString().padStart(2, "0")}`;
-  moneyListFiltered.value = moneyList.value.filter(
-    (item) => item.date && item.date.startsWith(dateStr),
+// 현재 선택된 월에 맞는 예산 데이터를 매칭
+const updateBudgetDisplay = () => {
+  const targetDate = `${budgetStore.year}-${budgetStore.month.toString().padStart(2, '0')}`;
+  const foundBudget = allBudgets.value.find(
+    (b) => b.budgetYearMonth === targetDate,
   );
+
+  if (foundBudget) {
+    savedTotalAmount.value = foundBudget.budgetTot || 0;
+    allCategories.value.forEach((catName) => {
+      budgetInputs.value[catName] = foundBudget.budgetCategory?.[catName] || 0;
+    });
+  } else {
+    savedTotalAmount.value = 0;
+    allCategories.value.forEach((catName) => {
+      budgetInputs.value[catName] = 0;
+    });
+  }
 };
 
-// 실시간 합계 계산
 const currentTotalDisplay = computed(() => {
   return Object.values(budgetInputs.value).reduce(
     (acc, cur) => acc + (Number(cur) || 0),
@@ -110,7 +126,7 @@ const currentTotalDisplay = computed(() => {
 const fetchData = async () => {
   if (!loginStore.user?.id) return;
   try {
-    const catResp = await axios.get("http://localhost:3000/outcome-category");
+    const catResp = await axios.get('http://localhost:3000/outcome-category');
     allCategories.value = catResp.data;
 
     const userResp = await axios.get(
@@ -118,123 +134,139 @@ const fetchData = async () => {
     );
     const userData = userResp.data;
 
-    if (userData.userBudget && userData.userBudget.length > 0) {
-      const latestData = userData.userBudget[userData.userBudget.length - 1];
-      savedTotalAmount.value = latestData.budgetTot || 0;
-      allCategories.value.forEach((catName) => {
-        budgetInputs.value[catName] = latestData.budgetCategory?.[catName] || 0;
-      });
-    }
-    reportDate(month.value, year.value);
+    allBudgets.value = userData.userBudget || [];
+    updateBudgetDisplay();
   } catch (err) {
-    console.error("데이터 로드 실패", err);
+    console.error('데이터 로드 실패', err);
   }
 };
-
-// [수정된 saveBudget 함수]
+let budget = {};
 const saveBudget = () => {
   const tempTotal = currentTotalDisplay.value;
-
   if (tempTotal > savedTotalAmount.value) {
     alert(`합계(${tempTotal.toLocaleString()}원)가 전체 예산을 초과합니다!`);
     return;
   }
-
-  // 1. 함수 내부에서 날짜 변수를 새로 정의
-  const settingDate = `${year.value}-${month.value.toString().padStart(2, "0")}`;
-
-  // 2. 서버 전송용 객체 생성 (.value를 사용하여 실제 값을 추출)
-  const budgetSet = {
+  const settingDate = `${budgetStore.year}-${budgetStore.month.toString().padStart(2, '0')}`;
+  budget = {
     budgetYearMonth: settingDate,
-    budgetTot: savedTotalAmount.value, // .value 사용
-    budgetCategory: { ...budgetInputs.value }, // 객체 복사본 생성
+    budgetTot: savedTotalAmount.value,
+    budgetCategory: { ...budgetInputs.value },
   };
+  console.log('저장될 데이터:', {
+    budgetYearMonth: settingDate,
+    budgetTot: savedTotalAmount.value,
+    budgetCategory: { ...budgetInputs.value },
+  });
+  console.log('저장될 데이터', budget);
 
-  // alert(`${month.value}월 예산 설정이 완료되었습니다.`);
-  console.log("최종 예산 객체:", budgetSet);
+  alert('예산 설정이 완료되었습니다.');
 };
 
-watch([month, year], () => {
-  reportDate(month.value, year.value);
+// 월 변경 시 예산 데이터만 업데이트
+watch([budgetStore.month, budgetStore.year], () => {
+  updateBudgetDisplay();
 });
 
 onMounted(fetchData);
 </script>
 
 <style scoped>
-/* 가로로 넓게 확장 */
 .budget-management-page {
-  max-width: 2000px;
-  margin: 0 auto;
-  padding: 20px;
+  max-width: 1200px;
+  /* margin: 0 auto; */
+  /* padding: 20px; */
+  color: #333;
+}
+
+.title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.title-sub {
+  font-size: 16px;
+  color: #bfa5d4;
 }
 
 .month-selector {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin: 20px 0;
-  font-size: 22px;
+  gap: 50px;
+  margin: 30px 0;
+  font-size: 24px;
   font-weight: bold;
 }
 
-.nav-btn {
-  background: none;
-  border: none;
+.month-select {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.left-arrow {
   font-size: 28px;
-
   cursor: pointer;
 }
-
-/* 메인 상자 디자인 (가로 확장) */
-.options-main-container {
-  border-radius: 30px;
-  padding: 20px 20px;
+.selected-month {
+  font-size: 35px;
+  text-align: center;
+  cursor: default;
 }
+.right-arrow {
+  font-size: 28px;
+  cursor: pointer;
+  display: flex;
+  justify-content: end;
+}
+
+.nav-btn {
+  border-radius: 5px;
+  padding: 5px 15px;
+  cursor: pointer;
+}
+/* 
+.options-main-container {
+  border-radius: 20px;
+  padding: 70px;
+} */
 
 .total-budget-row {
   font-size: 22px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
-
 .total-input {
   border: none;
-  width: 180px;
-  font-size: 20px;
-  text-align: right;
+  border-bottom: 2px solid #f8f4fe;
+  width: 200px;
+  text-align: center;
   outline: none;
-  margin: 0 10px;
+  font-size: 20px;
 }
-
 .inner-line {
-  margin: 25px 0 40px 0;
+  color: #bfa5d4;
 }
-
-/* 카테고리 그리드 (좌우 간격을 넓게 조정) */
 .category-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 30px 100px;
 }
-
 .category-item {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-}
+  align-items: center;
 
+  border-bottom: #bfa5d4 1px solid;
+}
 .cat-label {
   font-weight: bold;
-  font-size: 17px;
+  cursor: default;
 }
-
 .cat-input {
   border: none;
   width: 120px;
   text-align: right;
   outline: none;
-  font-size: 16px;
 }
 
 .button-wrapper {
@@ -242,22 +274,21 @@ onMounted(fetchData);
   justify-content: flex-end;
   margin-top: 40px;
 }
-
 .complete-btn {
-  background-color: #b39ddb;
+  background-color: #bfa5d4;
   color: white;
   border: none;
-  padding: 10px 35px;
+  padding: 12px 40px;
   border-radius: 15px;
   cursor: pointer;
-  font-size: 17px;
+  font-size: 18px;
   font-weight: bold;
 }
-
+.complete-btn:hover {
+  background-color: #a98bc4;
+}
 .status-info {
-  margin-top: 20px;
+  margin-top: 15px;
   text-align: right;
-
-  font-size: 14px;
 }
 </style>
