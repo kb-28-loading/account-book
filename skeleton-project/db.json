@@ -115,6 +115,26 @@
           "id": 1775930480053,
           "memo": "",
           "accountInfo": "KB-48550201280534"
+        },
+        {
+          "title": "진짜 길 가다 주움",
+          "date": "2026-04-12",
+          "userMoney": 90000000,
+          "type": "수입",
+          "category": "배당금",
+          "id": 1775993683093,
+          "memo": "",
+          "accountInfo": "KB-48550201280534"
+        },
+        {
+          "title": "로또 당첨",
+          "date": "2026-04-12",
+          "userMoney": 100000000,
+          "type": "수입",
+          "category": "배당금",
+          "id": 1775993700741,
+          "memo": "",
+          "accountInfo": "KB-48550201280534"
         }
       ],
       "userBudget": [
