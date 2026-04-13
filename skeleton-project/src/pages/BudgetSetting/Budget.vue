@@ -259,7 +259,7 @@ onMounted(loadData);
 
 /* 카드 */
 .card {
-  border: 1.5px solid #ce93d8;
+  border: 1.5px solid #a98bc4;
   border-radius: 16px;
   padding: 20px;
   background: #fff;
@@ -269,7 +269,7 @@ onMounted(loadData);
 .summary {
   display: flex;
   gap: 20px;
-  color: #7b1fa2;
+  color: #a98bc4;
   font-size: 14px;
   margin-bottom: 12px;
   flex-wrap: wrap;
