@@ -586,6 +586,16 @@
           "id": 1776046262743,
           "memo": "",
           "accountInfo": "KB-94160201040065"
+        },
+        {
+          "title": "붕어빵 장사",
+          "date": "2026-04-17",
+          "userMoney": 900000000,
+          "type": "수입",
+          "category": "급여",
+          "id": 1776046462978,
+          "memo": "",
+          "accountInfo": "KB-94160201040065"
         }
       ],
       "userBudget": [
@@ -599,7 +609,7 @@
       "id": 4
     }
   ],
-  "income-category": ["급여", "배당금", "이자", "기타"],
+  "income-category": ["급여", "배당금", "이자"],
   "outcome-category": [
     "식비",
     "문화/여가",
