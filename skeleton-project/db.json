@@ -406,9 +406,196 @@
           "id": 1776045610387,
           "memo": "",
           "accountInfo": "KB-94160201040065"
+        },
+        {
+          "title": "강원랜드",
+          "date": "2026-04-15",
+          "userMoney": 100000000,
+          "type": "지출",
+          "category": "기타",
+          "id": 1776046262743,
+          "memo": "",
+          "accountInfo": "KB-94160201040065"
+        },
+        {
+          "title": "강원랜드",
+          "date": "2026-04-15",
+          "userMoney": 100000000,
+          "type": "지출",
+          "category": "기타",
+          "id": 1776046262743,
+          "memo": "",
+          "accountInfo": "KB-94160201040065"
+        },
+        {
+          "title": "강원랜드",
+          "date": "2026-04-15",
+          "userMoney": 100000000,
+          "type": "지출",
+          "category": "기타",
+          "id": 1776046262743,
+          "memo": "",
+          "accountInfo": "KB-94160201040065"
+        },
+        {
+          "title": "강원랜드",
+          "date": "2026-04-15",
+          "userMoney": 100000000,
+          "type": "지출",
+          "category": "기타",
+          "id": 1776046262743,
+          "memo": "",
+          "accountInfo": "KB-94160201040065"
+        },
+        {
+          "title": "강원랜드",
+          "date": "2026-04-15",
+          "userMoney": 100000000,
+          "type": "지출",
+          "category": "기타",
+          "id": 1776046262743,
+          "memo": "",
+          "accountInfo": "KB-94160201040065"
+        },
+        {
+          "title": "강원랜드",
+          "date": "2026-04-15",
+          "userMoney": 100000000,
+          "type": "지출",
+          "category": "기타",
+          "id": 1776046262743,
+          "memo": "",
+          "accountInfo": "KB-94160201040065"
+        },
+        {
+          "title": "강원랜드",
+          "date": "2026-04-15",
+          "userMoney": 100000000,
+          "type": "지출",
+          "category": "기타",
+          "id": 1776046262743,
+          "memo": "",
+          "accountInfo": "KB-94160201040065"
+        },
+        {
+          "title": "강원랜드",
+          "date": "2026-04-15",
+          "userMoney": 100000000,
+          "type": "지출",
+          "category": "기타",
+          "id": 1776046262743,
+          "memo": "",
+          "accountInfo": "KB-94160201040065"
+        },
+        {
+          "title": "강원랜드",
+          "date": "2026-04-15",
+          "userMoney": 100000000,
+          "type": "지출",
+          "category": "기타",
+          "id": 1776046262743,
+          "memo": "",
+          "accountInfo": "KB-94160201040065"
+        },
+        {
+          "title": "강원랜드",
+          "date": "2026-04-15",
+          "userMoney": 100000000,
+          "type": "지출",
+          "category": "기타",
+          "id": 1776046262743,
+          "memo": "",
+          "accountInfo": "KB-94160201040065"
+        },
+        {
+          "title": "강원랜드",
+          "date": "2026-04-15",
+          "userMoney": 100000000,
+          "type": "지출",
+          "category": "기타",
+          "id": 1776046262743,
+          "memo": "",
+          "accountInfo": "KB-94160201040065"
+        },
+        {
+          "title": "강원랜드",
+          "date": "2026-04-15",
+          "userMoney": 100000000,
+          "type": "지출",
+          "category": "기타",
+          "id": 1776046262743,
+          "memo": "",
+          "accountInfo": "KB-94160201040065"
+        },
+        {
+          "title": "강원랜드",
+          "date": "2026-04-15",
+          "userMoney": 100000000,
+          "type": "지출",
+          "category": "기타",
+          "id": 1776046262743,
+          "memo": "",
+          "accountInfo": "KB-94160201040065"
+        },
+        {
+          "title": "강원랜드",
+          "date": "2026-04-15",
+          "userMoney": 100000000,
+          "type": "지출",
+          "category": "기타",
+          "id": 1776046262743,
+          "memo": "",
+          "accountInfo": "KB-94160201040065"
+        },
+        {
+          "title": "강원랜드",
+          "date": "2026-04-15",
+          "userMoney": 100000000,
+          "type": "지출",
+          "category": "기타",
+          "id": 1776046262743,
+          "memo": "",
+          "accountInfo": "KB-94160201040065"
+        },
+        {
+          "title": "강원랜드",
+          "date": "2026-04-15",
+          "userMoney": 100000000,
+          "type": "지출",
+          "category": "기타",
+          "id": 1776046262743,
+          "memo": "",
+          "accountInfo": "KB-94160201040065"
+        },
+        {
+          "title": "강원랜드",
+          "date": "2026-04-15",
+          "userMoney": 100000000,
+          "type": "지출",
+          "category": "기타",
+          "id": 1776046262743,
+          "memo": "",
+          "accountInfo": "KB-94160201040065"
+        },
+        {
+          "title": "강원랜드",
+          "date": "2026-04-15",
+          "userMoney": 100000000,
+          "type": "지출",
+          "category": "기타",
+          "id": 1776046262743,
+          "memo": "",
+          "accountInfo": "KB-94160201040065"
         }
       ],
-      "userBudget": [],
+      "userBudget": [
+        {
+          "id": 1776046275552,
+          "budgetYearMonth": "2026-04",
+          "budgetTot": 1000000000,
+          "budgetCategory": {}
+        }
+      ],
       "id": 4
     }
   ],
