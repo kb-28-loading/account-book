@@ -1,8 +1,7 @@
 <template>
-  <!-- <Practice /> -->
-  <RouterLink :to="{ name: 'login' }">로그인</RouterLink>
+  <!-- <RouterLink :to="{ name: 'login' }">로그인</RouterLink>
   <RouterLink :to="{ name: 'home' }">홈</RouterLink>
-  <RouterLink :to="{ name: 'options' }">옵션</RouterLink>
+  <RouterLink :to="{ name: 'options' }">옵션</RouterLink> -->
   <RouterView
     @login-success="goHomeLogin"
     @go-join="goJoin"
@@ -16,8 +15,6 @@
 </template>
 
 <script setup>
-import Practice from './pages/BudgetSetting/Practice.vue';
-import practice from './pages/BudgetSetting/Practice.vue';
 import { useRouter } from 'vue-router';
 import { useLoginStore } from './stores/login';
 import { ref, onMounted } from 'vue';
