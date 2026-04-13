@@ -56,7 +56,8 @@
 <br/>
 
 ## 📸 스크린샷
-| 메인 달력 | 거래 내역 |<img width="989" height="759" alt="image" src="https://github.com/user-attachments/assets/8a43fe34-7a7f-4a8c-928c-45dac64313d6" />
+| 메인 달력 | 거래 내역 |
+<img width="934" height="718" alt="image" src="https://github.com/user-attachments/assets/b60cd117-0ed0-4336-8838-768df43fc574" />
+<img width="939" height="699" alt="image" src="https://github.com/user-attachments/assets/aed42ed5-a527-47c9-9aa8-2cf20cc3788e" />
 
-<img width="1059" height="791" alt="image" src="https://github.com/user-attachments/assets/0c002202-2e77-467a-83a4-5e39a3ee8318" />
 
