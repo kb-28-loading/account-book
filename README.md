@@ -1,4 +1,4 @@
-# 💜 Loading Account Book (로딩 가계부)
+# 💜 Loading (가계부 로딩중)
 
 <div align="center">
 <img width="341" height="267" alt="image" src="https://github.com/user-attachments/assets/619707a5-8958-4f85-bb12-c14d2adbe3df" />
@@ -14,7 +14,7 @@
 <br/>
 
 ## 📝 프로젝트 소개
-**Loading Account Book**은 사용자의 수입과 지출을 직관적으로 관리하고, 목표 예산을 설정하여 스마트한 소비 습관을 기를 수 있도록 돕는 웹 기반 가계부 서비스입니다. 보라색(#bfa5d4) 테마를 바탕으로 금융 데이터를 한눈에 파악할 수 있는 UI를 제공합니다.
+**Loading**은 사용자의 수입과 지출을 직관적으로 관리하고, 목표 예산을 설정하여 스마트한 소비 습관을 기를 수 있도록 돕는 웹 기반 가계부 서비스입니다. 보라색(#bfa5d4) 테마를 바탕으로 금융 데이터를 한눈에 파악할 수 있는 UI를 제공합니다.
 
 <br/>
 
@@ -27,7 +27,7 @@
 <br/>
 
 ## 🛠️ 기술 스택
-- **Frontend:** Vue 3 (Composition API), Pinia, Vue Router, Bootstrap 5
+- **Frontend:** Vue 3 (Composition API), Pinia, Vue Router, Bootstrap 5, fontawesome
 - **Backend:** JSON Server (REST API)
 - **Design:** Figma
 
