@@ -35,10 +35,10 @@
 ## 👥 팀 멤버
 | 이름 | 역할 | 개발 환경 |
 | :---: | :---: | :---: |
-| **한혜지** | **팀장** / Frontend | macOS |
+| **한혜지** | **팀장** / Frontend | Windows |
 | **장진서** | Frontend Developer | Windows |
-| **강예찬** | Frontend Developer | Windows |
-| **한송윤** | Frontend Developer | Windows |
+| **강예찬** | Frontend Developer | macOS |
+| **한송윤** | Frontend Developer | macOS |
 
 <br/>
 
