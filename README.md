@@ -48,7 +48,7 @@
 `npm install`
 
 ### 2. 서버 실행
-`npm run serve-json`
+`json-server db.json`
 `npm run dev`
 
 <br/>
