@@ -8,7 +8,7 @@ export const useMoneyStore = defineStore('money', () => {
   const userMoneyList = ref([]);
   const reloading = ref(0);
 
-  // 데이터 가져오는 함수를 아예 창고 안에 만들어버립니다!
+  // 데이터 가져오는 함수
   const loadData = async () => {
     const loginStore = useLoginStore();
     if (loginStore.user?.id) {
