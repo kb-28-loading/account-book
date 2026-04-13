@@ -109,6 +109,8 @@ const totalPages = computed(() =>
   Math.ceil(moneyList.value.length / ITEMS_PER_PAGE),
 );
 
+// 현재 페이지 기준으로 시작 인덱스 계산 배열 index는 0부터 시작함.
+// slice는 끝 index를 포함하지 않기 때문에 첫 페이지 0~7값 배출
 const paginatedList = computed(() => {
   const start = (currentPage.value - 1) * ITEMS_PER_PAGE;
   return moneyList.value.slice(start, start + ITEMS_PER_PAGE);

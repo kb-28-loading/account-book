@@ -384,12 +384,39 @@
         }
       ],
       "id": 3
+    },
+    {
+      "userID": "뭘봐",
+      "userPW": "105QJ2980",
+      "userName": "강예찬",
+      "account": [
+        {
+          "bank": "KB",
+          "info": "94160201040065",
+          "balance": 1000000000000000000
+        }
+      ],
+      "moneyList": [
+        {
+          "title": "길 가다 주움",
+          "date": "2026-04-13",
+          "userMoney": 10000000000,
+          "type": "수입",
+          "category": "이자",
+          "id": 1776045610387,
+          "memo": "",
+          "accountInfo": "KB-94160201040065"
+        }
+      ],
+      "userBudget": [],
+      "id": 4
     }
   ],
   "income-category": [
     "급여",
     "배당금",
     "이자"
+    "기타"
   ],
   "outcome-category": [
     "식비",
@@ -400,6 +427,7 @@
     "주거/관리비",
     "생활용품",
     "카페"
+    "기타"
   ],
   "bank-category": [
     "KB",
