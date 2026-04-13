@@ -40,7 +40,7 @@
 | **장진서** | Frontend Developer | Windows |
 | **강예찬** | Frontend Developer | macOS |
 | **한송윤** | Frontend Developer | macOS |
-
+숨겨진 조력자 = 제미나이, 클로드
 <br/>
 
 ## 🚀 시작하기
