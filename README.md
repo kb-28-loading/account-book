@@ -47,6 +47,7 @@
 
 ### 1. 패키지 설치
 `npm install`
+`npm install chart.js vue-chartjs`
 
 ### 2. 서버 실행
 `json-server db.json`
