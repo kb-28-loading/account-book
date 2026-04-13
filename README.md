@@ -1,7 +1,8 @@
 # 💜 Loading Account Book (로딩 가계부)
 
 <div align="center">
-  <img src="https://via.placeholder.com/150/bfa5d4/FFFFFF?text=Logo" alt="Project Logo" width="150" height="150" />
+<img width="341" height="267" alt="image" src="https://github.com/user-attachments/assets/619707a5-8958-4f85-bb12-c14d2adbe3df" />
+
   
   ### "당신의 금융에 초점을 맞추다, 스마트한 웹 가계부"
   
