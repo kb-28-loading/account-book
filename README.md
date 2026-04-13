@@ -56,8 +56,12 @@
 <br/>
 
 ## 📸 스크린샷
-| 메인 달력 | 거래 내역 |
+| 메인 달력 |
+
 <img width="934" height="718" alt="image" src="https://github.com/user-attachments/assets/b60cd117-0ed0-4336-8838-768df43fc574" />
+
+| 거래 내역 |
+
 <img width="939" height="699" alt="image" src="https://github.com/user-attachments/assets/aed42ed5-a527-47c9-9aa8-2cf20cc3788e" />
 
 
