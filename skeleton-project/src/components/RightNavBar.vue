@@ -2,11 +2,15 @@
   <div>
     <nav class="navbar float-end">
       <div class="container-fluid">
-        <button class="navbar-toggler" type="button" @click="changeNav">
-          <span class="navbar-toggler-icon"></span>
+        <button class="navbar-toggler color" type="button" @click="changeNav">
+          <!-- <span class="navbar-toggler-icon"></span> -->
+          <i
+            class="fa-solid fa-bars button-style"
+            style="color: rgb(255, 255, 255)"
+          ></i>
         </button>
         <div
-          class="offcanvas offcanvas-end"
+          class="offcanvas offcanvas-end color"
           tabindex="-1"
           id="offcanvasNavbar"
           :class="navClass"
@@ -89,3 +93,17 @@ const navClose = () => {
   state.isNavShow = false;
 };
 </script>
+<style scoped>
+div > .color {
+  background-color: #bfa5d4;
+  color: white;
+}
+.button-style {
+  width: 30px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: #a98bc4;
+}
+</style>
