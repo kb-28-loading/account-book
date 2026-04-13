@@ -18,7 +18,7 @@ const isSorted = ref(true);
 
 const dailyList = computed(() => {
   const list = moneyStore.userMoneyList.filter(
-    (item) => item.date === currentRoute.params.selectedDate
+    (item) => item.date === currentRoute.params.selectedDate,
   );
 
   // 최신순 또는 과거순 정렬
@@ -36,7 +36,7 @@ const ITEMS_PER_PAGE = 11;
 const currentPage = ref(1);
 
 const totalPages = computed(() =>
-  Math.ceil(dailyList.value.length / ITEMS_PER_PAGE)
+  Math.ceil(dailyList.value.length / ITEMS_PER_PAGE),
 );
 
 const paginatedList = computed(() => {
@@ -57,8 +57,15 @@ const visiblePages = computed(() => {
 });
 
 // 날짜 변경이나 정렬 변경 시 페이지 번호를 1로 초기화
-watch(() => currentRoute.params.selectedDate, () => { currentPage.value = 1; });
-watch(isSorted, () => { currentPage.value = 1; });
+watch(
+  () => currentRoute.params.selectedDate,
+  () => {
+    currentPage.value = 1;
+  },
+);
+watch(isSorted, () => {
+  currentPage.value = 1;
+});
 
 // ========================================================
 // 로그인 여부 확인
@@ -79,31 +86,42 @@ const editList = (item) => {
 // ===========================================================
 // 삭제 기능 (서버 데이터 삭제 요청 및 로컬 스토어 갱신)
 const deleteList = async (targetid) => {
-  if (!confirm("정말 삭제하시겠습니까?")) return;
+  if (!confirm('정말 삭제하시겠습니까?')) return;
   const userId = loginStore.user.id;
   try {
     const res = await axios.get(`/api/users/${userId}`);
-    const updatedMoneyList = res.data.moneyList.filter((item) => item.id !== Number(targetid));
+    const updatedMoneyList = res.data.moneyList.filter(
+      (item) => item.id !== Number(targetid),
+    );
 
     await axios.patch(`/api/users/${userId}`, {
       moneyList: updatedMoneyList,
     });
     await moneyStore.loadData();
   } catch (err) {
-    console.log("삭제 실패", err);
+    console.log('삭제 실패', err);
   }
-}
+};
 // ============================================================
 // 6. 모달 제어 (추가/수정 모달 열기 및 공통 닫기 처리)
 const isModalOpen = ref(false);
-const AddList = () => { isModalOpen.value = true; };
-const isModaClose = () => { isModalOpen.value = false; editModalOpen.value = false; };
+const AddList = () => {
+  isModalOpen.value = true;
+};
+const isModaClose = () => {
+  isModalOpen.value = false;
+  editModalOpen.value = false;
+};
 </script>
 
 <template>
-  <div class="card shadow-sm rounded-4 p-3 position-relative list-container custom-border">
+  <div
+    class="card shadow-sm rounded-4 p-3 position-relative list-container custom-border"
+  >
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <h5 class="fw-bold m-0 text-purple">해당 날짜 거래내역</h5>
+      <h5 class="fw-bold m-0 text-purple">
+        {{ currentRoute.params.selectedDate }} 거래내역
+      </h5>
       <button class="btn btn-outline-purple btn-sm" @click="clickedPlus">
         {{ isSorted ? '최신순정렬' : '과거순정렬' }}
       </button>
@@ -122,23 +140,42 @@ const isModaClose = () => { isModalOpen.value = false; editModalOpen.value = fal
         </thead>
         <tbody>
           <tr v-for="value in paginatedList" :key="value.id || value.listId">
-            <td class="text-start ps-3 fw-bold text-truncate" style="max-width: 0;" :title="value.title">
+            <td
+              class="text-start ps-3 fw-bold text-truncate"
+              style="max-width: 0"
+              :title="value.title"
+            >
               {{ value.title }}
             </td>
             <td>
               <div class="text-truncate" :title="value.category">
-                <span class="badge bg-light text-dark">{{ value.category }}</span>
+                <span class="badge bg-light text-dark">{{
+                  value.category
+                }}</span>
               </div>
             </td>
-            <td class="text-truncate" style="max-width: 0;">{{ value.type }}</td>
-            <td :class="value.type === '수입' ? 'text-primary' : 'text-danger'" class="fw-bold text-truncate"
-              style="max-width: 0;">
+            <td class="text-truncate" style="max-width: 0">{{ value.type }}</td>
+            <td
+              :class="value.type === '수입' ? 'text-primary' : 'text-danger'"
+              class="fw-bold text-truncate"
+              style="max-width: 0"
+            >
               {{ value.userMoney.toLocaleString() }}
             </td>
             <td>
               <div class="btn-group gap-1">
-                <button class="btn btn-xs btn-outline-secondary" @click="editList(value)">수정</button>
-                <button class="btn btn-xs btn-outline-danger" @click="deleteList(value.id)">삭제</button>
+                <button
+                  class="btn btn-xs btn-outline-secondary"
+                  @click="editList(value)"
+                >
+                  수정
+                </button>
+                <button
+                  class="btn btn-xs btn-outline-danger"
+                  @click="deleteList(value.id)"
+                >
+                  삭제
+                </button>
               </div>
             </td>
           </tr>
@@ -147,20 +184,44 @@ const isModaClose = () => { isModalOpen.value = false; editModalOpen.value = fal
     </div>
 
     <div v-if="totalPages > 1" class="pagination-wrap">
-      <button v-if="currentPage > 1" class="page-btn nav-btn" @click="currentPage--">prev</button>
-      <button v-for="page in visiblePages" :key="page" class="page-btn" :class="{ active: page === currentPage }"
-        @click="currentPage = page">
+      <button
+        v-if="currentPage > 1"
+        class="page-btn nav-btn"
+        @click="currentPage--"
+      >
+        prev
+      </button>
+      <button
+        v-for="page in visiblePages"
+        :key="page"
+        class="page-btn"
+        :class="{ active: page === currentPage }"
+        @click="currentPage = page"
+      >
         -{{ page }}-
       </button>
-      <button v-if="currentPage < totalPages" class="page-btn nav-btn" @click="currentPage++">next</button>
+      <button
+        v-if="currentPage < totalPages"
+        class="page-btn nav-btn"
+        @click="currentPage++"
+      >
+        next
+      </button>
     </div>
 
-    <button class="btn btn-purple rounded-circle shadow-lg position-absolute add-btn" @click="AddList">
+    <button
+      class="btn btn-purple rounded-circle shadow-lg position-absolute add-btn"
+      @click="AddList"
+    >
       <i class="fa-solid fa-plus"></i>
     </button>
 
     <AddTransactionModal v-if="isModalOpen" @close="isModaClose" />
-    <EditTransactionModal v-if="editModalOpen" :editData="editData" @close="isModaClose" />
+    <EditTransactionModal
+      v-if="editModalOpen"
+      :editData="editData"
+      @close="isModaClose"
+    />
   </div>
 </template>
 
@@ -186,7 +247,7 @@ const isModaClose = () => { isModalOpen.value = false; editModalOpen.value = fal
 }
 
 .custom-border {
-  border: 2px solid #BFA5D4 !important;
+  border: 2px solid #bfa5d4 !important;
 }
 
 /* 👇 핵심 수정: Home.vue의 반응형 크기에 완벽 호환 */
