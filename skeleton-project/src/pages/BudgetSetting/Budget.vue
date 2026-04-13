@@ -196,6 +196,9 @@ onMounted(loadData);
 </script>
 
 <style scoped>
+.budget-wrap {
+  min-height: 523px;
+}
 /* 헤더 */
 .header {
   display: flex;
